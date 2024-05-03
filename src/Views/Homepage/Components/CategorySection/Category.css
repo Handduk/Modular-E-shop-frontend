@@ -1,0 +1,41 @@
+.section-category {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-right: 1rem;
+  margin-bottom: 3rem;
+}
+
+.card-category {
+  width: 50%;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+}
+
+.imgContainer-category {
+  height: 175px;
+  border-radius: 2.5px;
+  border: 1px solid var(--bs-dark);
+  border-radius: 5px;
+}
+
+.img-category {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.link-category {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.link-category > a {
+  text-decoration: none;
+  color: var(--bs-dark);
+  border-bottom: 1px solid var(--bs-dark);
+}
