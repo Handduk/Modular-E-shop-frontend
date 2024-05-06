@@ -1,0 +1,11 @@
+.section-secondSection {
+  background-color: var(--secondary-color);
+}
+
+.header-secondSection {
+  color: var(--main-color);
+}
+
+.text-secondSection {
+  color: var(--main-color);
+}

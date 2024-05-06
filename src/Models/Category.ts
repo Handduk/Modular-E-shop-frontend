@@ -3,4 +3,5 @@ export type Category = {
     name: string,
     img: string,
     link: string,
+    component: JSX.Element,
 }

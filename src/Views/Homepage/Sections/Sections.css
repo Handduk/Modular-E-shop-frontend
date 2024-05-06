@@ -1,4 +1,4 @@
-.mainSection-home {
+.section-section {
   display: flex;
   flex-direction: column;
   margin-bottom: 1rem;
@@ -7,7 +7,7 @@
   align-items: center;
 }
 
-.mainSection-img-home {
+.img-section {
   height: 390px;
   width: 100%;
   object-fit: cover;
@@ -15,30 +15,30 @@
   cursor: pointer;
 }
 
-.mainSection-textArea-home {
+.textArea-section {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 1rem;
 }
 
-.mainSection-header-home {
+.header-section {
   font-size: 2rem;
   font-weight: 800;
   width: 90%;
 }
 
-.mainSection-text-home {
+.text-section {
   width: 90%;
   line-height: 1.3;
 }
 
-.mainSection-btnGroup-home {
+.btnGroup-section {
   width: 90%;
   margin-bottom: 3rem;
 }
 
-.mainSection-btn-home {
+.btn-section {
   margin-right: 1rem;
   border-radius: 1px;
   padding: 0.75rem 2rem;
