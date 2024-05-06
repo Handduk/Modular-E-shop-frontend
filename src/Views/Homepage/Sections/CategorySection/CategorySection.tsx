@@ -2,39 +2,45 @@ import { Image } from "react-bootstrap";
 import { Category } from "../../../../Models/Category";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Category2 } from "../../../Shop/Categorys/Category2/Category2";
+import { Category3 } from "../../../Shop/Categorys/Category3/Category3";
+import { Category4 } from "../../../Shop/Categorys/Category4/Category4";
+import { Category1 } from "../../../Shop/Categorys/Category1/Category1";
 
-//TEMPDATA
-const categoryList: Category[] = [
+export const categoryList: Category[] = [
   {
     id: 1,
     name: "kaffe",
     img: "/IMG/produkt.jpg",
-    link: "/coffee",
+    link: "/shop/coffee",
+    component: <Category1 />,
   },
   {
     id: 2,
     name: "Tillbehör",
     img: "/IMG/press.jpg",
-    link: "/accessories",
+    link: "/shop/accessories",
+    component: <Category2 />,
   },
   {
     id: 3,
     name: "kläder",
     img: "/IMG/keps.jpg",
-    link: "/clothes",
+    link: "/shop/clothes",
+    component: <Category3 />,
   },
   {
     id: 4,
-    name: "koppar",
+    name: "porsil",
     img: "/IMG/koppar.jpg",
-    link: "/cups",
+    link: "/shop/porcelain",
+    component: <Category4 />,
   },
 ];
 
 export const CategorySection = () => {
   const [categorys, setCategorys] = useState<Category[]>(categoryList);
   const navigate = useNavigate();
-
   return (
     <span className="section-category">
       {categorys &&

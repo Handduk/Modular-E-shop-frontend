@@ -25,13 +25,19 @@
   border-bottom: 1px solid var(--bs-dark);
 }
 
-.navToggle-nav {
+.navToggle-nav,
+.navToggle-nav-expanded {
   border: 0;
   margin-right: 1rem;
 }
 
-.navToggle-nav:active {
-  border: 0;
+.navToggle-nav-expanded > .navbar-toggler-icon {
+  background-image: none;
+}
+
+.brandLink-nav {
+  margin-left: 0.7rem;
+  cursor: pointer;
 }
 
 .search-nav {
