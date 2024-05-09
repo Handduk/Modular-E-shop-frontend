@@ -4,12 +4,15 @@ import "./Views/root.css";
 
 import { PageRoutes } from "./PageRoutes";
 import { Navbar } from "./Components/Navbar/Navbar";
+import { CartProvider } from "./Context/CartContext";
 
 export const App = () => {
   return (
     <>
-      <Navbar />
-      <PageRoutes />
+      <CartProvider>
+        <Navbar />
+        <PageRoutes />
+      </CartProvider>
     </>
   );
 };

@@ -1,0 +1,1 @@
+export const SortProducts : string[] = ["Rekommenderat", "Namn A-Ö", "Namn Ö-A", "Lägsta pris först", "Högsta pris först"]
