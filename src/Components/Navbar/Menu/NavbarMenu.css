@@ -3,7 +3,8 @@
   opacity: 0;
   width: 90vw;
   height: calc(100vh - 76px);
-  position: absolute;
+  position: fixed;
+  left: 0;
   overflow-y: hidden;
   transition: all 0.2s linear;
   pointer-events: none;
