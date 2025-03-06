@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+@theme {
+  --color-main-color: white;
+  --color-secondary-color: #252422;
+}
+
+@layer utilities {
+  :root {
+    --main-color: white;
+    --secondary-color: #252422;
+    --section-section: flex flex-col items-center mb-4;
+  }
+}
+
+@layer components {
+  .contentBody {
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--main-color);
+  }
+  .content {
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+  }
+}
