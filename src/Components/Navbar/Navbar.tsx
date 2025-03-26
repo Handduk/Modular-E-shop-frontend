@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import { NavbarMenu } from "./Menu/NavbarMenu";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../Context/CartContext";
+import { User } from "../../Models/User";
+import { getUserById } from "../../services/userApi";
 
 interface SpecialOfferProps {
   message: string;
@@ -33,8 +35,18 @@ export const Navbar = ({ open }: NavbarProps) => {
   const [specialOffer, setSpecialOffer] =
     useState<SpecialOfferProps>(specialOfferObject);
   const [specialLink, setSpecialLink] = useState<string>("/");
-
+  const [user, setUser] = useState<User | null>(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const getUser = async () => {
+    const userFromApi = await getUserById(1);
+    console.log(userFromApi);
+    setUser(userFromApi);
+  };
 
   useEffect(() => {
     if (show || isOpen) {

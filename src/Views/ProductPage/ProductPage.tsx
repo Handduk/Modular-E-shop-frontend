@@ -55,10 +55,11 @@ export const ProductPage = () => {
               {product?.name}
             </div>
             <div className="flex flex-row space-x-2 items-end">
-              {product?.sale ? (
+              {product?.discount ? (
                 <div className="flex flex-col">
                   <span className="font-semibold text-xl text-red-600">
-                    {getSalesPrice(product.price, product.sale).toFixed(2)} kr
+                    {getSalesPrice(product.price, product.discount).toFixed(2)}{" "}
+                    kr
                     <span className="text-secondary-color/70 ms-2 text-lg">
                       inkl. moms
                     </span>
@@ -110,7 +111,7 @@ export const ProductPage = () => {
                     ))}
                   </div>
                 )}
-                {product?.sizes && (
+                {product?.variants && (
                   <div className="flex flex-col space-y-2">
                     <label htmlFor="size">Storlek:</label>
                     <select
@@ -118,7 +119,7 @@ export const ProductPage = () => {
                       id="size"
                       className="w-full border border-black h-12 px-2"
                     >
-                      {product.sizes.map((size, index) => (
+                      {product.variants.map((size, index) => (
                         <option key={index} value={size}>
                           {size}
                         </option>

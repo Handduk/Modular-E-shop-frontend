@@ -18,8 +18,8 @@ export const ShoppingCart = () => {
         const category = categoryList.find((i) => i.id === res.categoryId);
         const item = category?.products.find((i) => i.id === res.id);
         for (let i = 0; i < res.quantity; i++) {
-          if (item?.sale) {
-            totalSale.push(getSalesPrice(item.price, item.sale));
+          if (item?.discount) {
+            totalSale.push(getSalesPrice(item.price, item.discount));
             isSale = true;
           } else {
             totalSale.push(Number(item?.price));

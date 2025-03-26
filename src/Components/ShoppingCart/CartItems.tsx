@@ -29,10 +29,10 @@ export const CartItems = ({ id, categoryId, quantity }: CartItemsProps) => {
             </span>
           )}
         </div>
-        {item?.sale ? (
+        {item?.discount ? (
           <div className="flex">
             <p className="font-semibold text-red-600 mr-2">
-              {getSalesPrice(item.price, item.sale).toFixed(2)} kr
+              {getSalesPrice(item.price, item.discount).toFixed(2)} kr
             </p>
             <p className="line-through">{item.price.toFixed(2)} kr</p>
           </div>
