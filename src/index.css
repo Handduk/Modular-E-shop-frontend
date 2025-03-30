@@ -3,6 +3,7 @@
 @theme {
   --color-main-color: white;
   --color-secondary-color: #252422;
+  --shadow-box: 0 0 10px 5px rgba(37, 36, 34, 0.1);
 }
 
 @layer utilities {
