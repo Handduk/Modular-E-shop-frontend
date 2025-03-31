@@ -5,6 +5,7 @@ import { Login } from "./Views/Login/Login";
 import { Shop } from "./Views/Shop/Shop";
 import { categoryList } from "./Views/Homepage/Sections/CategorySection/CategorySection";
 import { ProductPage } from "./Views/ProductPage/ProductPage";
+import { Admin } from "./Views/Admin/Admin";
 
 export const PageRoutes = () => {
   return (
@@ -13,6 +14,7 @@ export const PageRoutes = () => {
         <Route path="/" element={<Homepage />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/admin" element={<Admin />} />
         <Route path="/shop" element={<Shop />} />
         {categoryList &&
           categoryList.map((res, index) => (

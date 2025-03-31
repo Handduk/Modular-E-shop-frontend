@@ -42,3 +42,17 @@ export const DeleteUser = async (id: number) => {
         throw ex;
     }
 }
+
+export const loginUser = async (email: string, password: string) => {
+    try {
+        const response = await axios.post(`${API_URL}/login`, { email, password });
+        
+        if(!response || !response.data) {
+            return null;
+        }
+
+        return response.data;
+    } catch(ex) {
+        return null;
+    }
+}
