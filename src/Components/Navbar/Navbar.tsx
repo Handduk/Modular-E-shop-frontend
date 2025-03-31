@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import { NavbarMenu } from "./Menu/NavbarMenu";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../Context/CartContext";
+import { User } from "../../Models/User";
+import { getUserById } from "../../services/userApi";
 
 interface SpecialOfferProps {
   message: string;
@@ -33,7 +35,6 @@ export const Navbar = ({ open }: NavbarProps) => {
   const [specialOffer, setSpecialOffer] =
     useState<SpecialOfferProps>(specialOfferObject);
   const [specialLink, setSpecialLink] = useState<string>("/");
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -92,15 +93,12 @@ export const Navbar = ({ open }: NavbarProps) => {
               />
             </div>
             <div
-              className="cursor-pointer px-4 py-0 mx-[3.125rem]"
+              className="cursor-pointer px-4 py-0 mx-[3.125rem] ms-auto mt-2"
               onClick={() => navigate("/")}
             >
               <img src={brandImg} alt="brand logo" className="h-16" />
             </div>
-            <div className="w-11 h-full border-0 flex flex-col justify-center items-center cursor-pointer">
-              <FontAwesomeIcon className="cursor-pointer p-3" icon={faUser} />
-            </div>
-            <div className="w-11 h-full border-0 flex flex-col justify-center items-center cursor-pointer relative">
+            <div className="w-11 h-full ms-auto border-0 flex flex-col justify-center items-center cursor-pointer relative">
               <FontAwesomeIcon icon={faCartShopping} onClick={toggleCart} />
               {cartQuantity > 0 && (
                 <div className="w-5 h-5 text-[0.75rem] self-center absolute rounded-[50%] right-1 top-2 bg-red-600">

@@ -17,7 +17,7 @@ export const NavbarMenu = ({ show, setShow }: menuProps) => {
          : "opacity-0 pointer-events-none"
      }`}
     >
-      <ul className="h-3/5 !pl-0">
+      <ul className="h-full flex flex-col items-stretch !pl-0">
         <div className="flex flex-col text-3xl font-semibold ml-4 mr-0 mt-4 mb-0">
           {categoryList &&
             categoryList.map((res, index) => (
@@ -32,6 +32,20 @@ export const NavbarMenu = ({ show, setShow }: menuProps) => {
                 {res.name}
               </li>
             ))}
+        </div>
+        <div className="w-full mt-auto text-2xl mb-4 mx-4 font-semibold">
+          <li className="">
+            Återförsäljare?{" "}
+            <span
+              className="underline underline-offset-4 cursor-pointer"
+              onClick={() => {
+                navigate("/login");
+                setShow(false);
+              }}
+            >
+              Logga in här
+            </span>
+          </li>
         </div>
       </ul>
     </div>

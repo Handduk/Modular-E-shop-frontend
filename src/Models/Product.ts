@@ -4,9 +4,9 @@ export type Product = {
     brand?: string,
     name: string,
     description: string,
-    img: string[],
     options?: string[],
     price: number,
-    sizes?: string[],
-    sale?: number,
+    variants?: string[],
+    discount?: number,
+    img: string[],
 }

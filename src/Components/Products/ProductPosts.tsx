@@ -26,10 +26,10 @@ export const ProductPosts = ({ products }: ProductPostsProps) => {
             <div className="font-semibold text-neutral-950">
               <div className="flex">{res.name}</div>
               <div className="flex">
-                {res.sale ? (
+                {res.discount ? (
                   <>
                     <p className="text-red-500">
-                      {getSalesPrice(res.price, res.sale).toFixed(2)} kr
+                      {getSalesPrice(res.price, res.discount).toFixed(2)} kr
                     </p>
                     <p className="text-neutral-600 line-through ml-2">
                       {" "}

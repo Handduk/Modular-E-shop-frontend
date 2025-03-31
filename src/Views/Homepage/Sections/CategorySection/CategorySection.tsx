@@ -22,7 +22,7 @@ export const categoryList: Category[] = [
         img: ["/IMG/produkt.jpg"],
         price: 69,
         options: ["Bryggmalet", "Böna"],
-        sizes: ["250g", "500g", "1kg", "2,5kg"],
+        variants: ["250g", "500g", "1kg", "2,5kg"],
       },
       {
         id: 2,
@@ -41,7 +41,7 @@ export const categoryList: Category[] = [
         Architecto alias atque ad perferendis id in ullam accusamus",
         img: ["/IMG/press.jpg", "/IMG/cold-brew.jpg", "/IMG/produkt.jpg"],
         price: 1299,
-        sale: 20,
+        discount: 20,
       },
     ],
   },

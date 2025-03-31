@@ -5,16 +5,20 @@ import "./Views/root.css";
 import { PageRoutes } from "./Pageroutes";
 import { Navbar } from "./Components/Navbar/Navbar";
 import { CartProvider } from "./Context/CartContext";
+import { useLocation } from "react-router-dom";
 
 interface ShoppingcartProps {
   open: boolean;
 }
 
 export const App = ({ open }: ShoppingcartProps) => {
+  const location = useLocation();
+
+  const hideNavbar = ["/reseller", "/admin"];
   return (
     <>
       <CartProvider>
-        <Navbar open={open} />
+        {!hideNavbar.includes(location.pathname) && <Navbar open={open} />}
         <PageRoutes />
       </CartProvider>
     </>
