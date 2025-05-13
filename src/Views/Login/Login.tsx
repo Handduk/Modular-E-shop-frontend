@@ -104,11 +104,11 @@ export const Login = () => {
         </div>
       </div>
       <div
-        className={`absolute text-black font-bold top-32 left-1/2 -translate-x-1/2 text-center pt-2 w-3/4 h-10 bg-neutral-300 shadow-box ${
+        className={`absolute text-red-500 font-semibold top-32 left-1/2 -translate-x-1/2 text-center pt-2 w-3/4 h-10 bg-neutral-300 shadow-box ${
           error ? "block" : "hidden"
         }`}
       >
-        Felaktigt e-postadress eller lösenord.
+        Felaktig e-postadress eller lösenord.
       </div>
     </>
   );

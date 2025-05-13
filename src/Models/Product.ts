@@ -8,5 +8,5 @@ export type Product = {
     price: number,
     variants?: string[],
     discount?: number,
-    img: string[],
+    images: string[],
 }

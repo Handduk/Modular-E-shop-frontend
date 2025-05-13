@@ -10,8 +10,6 @@ import { useEffect, useState } from "react";
 import { NavbarMenu } from "./Menu/NavbarMenu";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../Context/CartContext";
-import { User } from "../../Models/User";
-import { getUserById } from "../../services/userApi";
 
 interface SpecialOfferProps {
   message: string;
