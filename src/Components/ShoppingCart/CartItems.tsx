@@ -19,7 +19,7 @@ export const CartItems = ({ id, categoryId, quantity }: CartItemsProps) => {
 
   return (
     <div className="border-b-secondary-color pb-2 border-b border-solid flex">
-      <img className="h-24 w-20 object-cover me-2" src={item?.img[0]} />
+      <img className="h-24 w-20 object-cover me-2" src={item?.images[0]} />
       <div className="flex flex-col justify-center h-[inherit] mr-auto">
         <div className="text-sm">
           {item?.name}

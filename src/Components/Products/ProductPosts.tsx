@@ -19,7 +19,7 @@ export const ProductPosts = ({ products }: ProductPostsProps) => {
             onClick={() => navigate(`/product?id=${res.id}`)}
           >
             <img
-              src={res.img[0]}
+              src={res.images[0]}
               alt={res.name}
               className="h-full w-full object-cover rounded-[2px]"
             />

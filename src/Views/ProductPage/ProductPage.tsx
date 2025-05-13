@@ -48,7 +48,7 @@ export const ProductPage = () => {
       <div className="content">
         <div className="flex flex-col items-center justify-center">
           <div className="cursor-pointer mb-2">
-            <img src={product?.img[0]} alt={product?.name} />
+            <img src={product?.images[0]} alt={product?.name} />
           </div>
           <div className="w-11/12 flex flex-col space-y-2">
             <div className="text-black text-2xl font-semibold">
@@ -86,7 +86,7 @@ export const ProductPage = () => {
                     {category.products.map((product, index) => (
                       <img
                         key={index}
-                        src={product.img[0]}
+                        src={product.images[0]}
                         alt={product.name}
                         className="size-20 object-cover cursor-pointer"
                         onClick={() => navigate(`/product?id=${product.id}`)}

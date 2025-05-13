@@ -25,7 +25,7 @@ export const NavbarMenu = ({ show, setShow }: menuProps) => {
                 className="pb-4 cursor-pointer"
                 key={index}
                 onClick={() => {
-                  navigate(res.link);
+                  navigate("shop/" + res.name.toLowerCase());
                   setShow(false);
                 }}
               >

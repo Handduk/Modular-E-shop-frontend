@@ -16,6 +16,7 @@ export const ShoppingCart = () => {
       let isSale = false;
       shoppingCartItems.map((res) => {
         const category = categoryList.find((i) => i.id === res.categoryId);
+        if (!category?.products) return;
         const item = category?.products.find((i) => i.id === res.id);
         for (let i = 0; i < res.quantity; i++) {
           if (item?.discount) {
@@ -40,6 +41,7 @@ export const ShoppingCart = () => {
   const getTotalPrice = () => {
     const total = shoppingCartItems.reduce((total, cartItem) => {
       const category = categoryList.find((i) => i.id === cartItem.categoryId);
+      if (!category?.products) return total;
       const item = category?.products.find((i) => i.id === cartItem.id);
       return total + (item?.price || 0) * cartItem.quantity;
     }, 0);
@@ -48,7 +50,7 @@ export const ShoppingCart = () => {
 
   return (
     <span
-      className={`bg-main-color z-[100] w-[90vw] h-[calc(100vh-76px)] py-2 px-4 flex flex-col items-center fixed overflow-y-hidden transition-all duration-200 ease-linear right-0 top-20 
+      className={`bg-main-color z-[100] w-[90vw] h-[calc(100vh)] py-2 px-4 flex flex-col items-center fixed overflow-y-hidden transition-all duration-200 ease-linear right-0 top-20 
   ${
     isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
   }`}

@@ -10,16 +10,14 @@ export const categoryList: Category[] = [
   {
     id: 1,
     name: "Kaffe",
-    img: "/IMG/produkt.jpg",
-    link: "/shop/coffee",
-    component: <Category1 />,
+    images: "/IMG/produkt.jpg",
     products: [
       {
         id: 1,
         categoryId: 1,
         name: "Helgkaffe",
         description: "Kaffe just för helgen",
-        img: ["/IMG/produkt.jpg"],
+        images: ["/IMG/produkt.jpg"],
         price: 69,
         options: ["Bryggmalet", "Böna"],
         variants: ["250g", "500g", "1kg", "2,5kg"],
@@ -29,7 +27,7 @@ export const categoryList: Category[] = [
         categoryId: 1,
         name: "Coldbrew",
         description: "Kallt kaffe",
-        img: ["/IMG/cold-brew.jpg"],
+        images: ["/IMG/cold-brew.jpg"],
         price: 39,
       },
       {
@@ -39,7 +37,7 @@ export const categoryList: Category[] = [
         description:
           "Lorem ipsum dolor sit amet consectetur adipisicing elit.\
         Architecto alias atque ad perferendis id in ullam accusamus",
-        img: ["/IMG/press.jpg", "/IMG/cold-brew.jpg", "/IMG/produkt.jpg"],
+        images: ["/IMG/press.jpg", "/IMG/cold-brew.jpg", "/IMG/produkt.jpg"],
         price: 1299,
         discount: 20,
       },
@@ -48,25 +46,19 @@ export const categoryList: Category[] = [
   {
     id: 2,
     name: "Tillbehör",
-    img: "/IMG/press.jpg",
-    link: "/shop/accessories",
-    component: <Category2 />,
+    images: "/IMG/press.jpg",
     products: [],
   },
   {
     id: 3,
     name: "Kläder",
-    img: "/IMG/keps.jpg",
-    link: "/shop/clothes",
-    component: <Category3 />,
+    images: "/IMG/keps.jpg",
     products: [],
   },
   {
     id: 4,
     name: "Porslin",
-    img: "/IMG/koppar.jpg",
-    link: "/shop/porcelain",
-    component: <Category4 />,
+    images: "/IMG/koppar.jpg",
     products: [],
   },
 ];
@@ -81,15 +73,15 @@ export const CategorySection = () => {
           <div className="w-6/12 pl-4 pb-4" key={index}>
             <div className="h-[175px] border border-secondary-color rounded-[2.5px] border-solid">
               <img
-                src={res.img}
+                src={res.images}
                 alt={res.name}
                 className="h-full w-full object-cover cursor-pointer rounded-[5px]"
-                onClick={() => navigate(res.link)}
+                onClick={() => navigate(`shop/${res.name.toLowerCase()}`)}
               />
             </div>
             <div className="flex justify-center mb-2">
               <a
-                href={res.link}
+                href={`/shop/${res.name.toLowerCase()}`}
                 className="!no-underline !text-secondary-color border-b border-secondary-color"
               >
                 {res.name}
