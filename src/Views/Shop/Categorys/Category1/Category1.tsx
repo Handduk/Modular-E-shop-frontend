@@ -10,14 +10,16 @@ import { SortProducts } from "../../../../Models/Register";
 
 export const Category1 = () => {
   const [category, setCategory] = useState<Category>(categoryList[0]);
-  const [products, setProducts] = useState<Product[]>(category.products);
+  const [products, setProducts] = useState<Product[]>(
+    category.products ? category.products : []
+  );
   const [defaultSort, setDefaultSort] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [prodPerPage, setProdPerPage] = useState<number>(10);
 
   const indexOfLastProd = currentPage * prodPerPage;
   const indexOfFirstProd = indexOfLastProd - prodPerPage;
-  const currentProducts = products.slice(indexOfFirstProd, indexOfLastProd);
+  const currentProducts = products?.slice(indexOfFirstProd, indexOfLastProd);
 
   const paginate = (pagenumber: number) => setCurrentPage(pagenumber);
 
@@ -27,6 +29,7 @@ export const Category1 = () => {
 
   const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
+
     let sortedProducts = [...products];
     switch (value) {
       case "0":
