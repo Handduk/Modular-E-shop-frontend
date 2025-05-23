@@ -10,7 +10,7 @@ export const categoryList: Category[] = [
   {
     id: 1,
     name: "Kaffe",
-    images: "/IMG/produkt.jpg",
+    imageUrl: "/IMG/produkt.jpg",
     products: [
       {
         id: 1,
@@ -46,19 +46,19 @@ export const categoryList: Category[] = [
   {
     id: 2,
     name: "Tillbehör",
-    images: "/IMG/press.jpg",
+    imageUrl: "/IMG/press.jpg",
     products: [],
   },
   {
     id: 3,
     name: "Kläder",
-    images: "/IMG/keps.jpg",
+    imageUrl: "/IMG/keps.jpg",
     products: [],
   },
   {
     id: 4,
     name: "Porslin",
-    images: "/IMG/koppar.jpg",
+    imageUrl: "/IMG/koppar.jpg",
     products: [],
   },
 ];
@@ -73,7 +73,7 @@ export const CategorySection = () => {
           <div className="w-6/12 pl-4 pb-4" key={index}>
             <div className="h-[175px] border border-secondary-color rounded-[2.5px] border-solid">
               <img
-                src={res.images}
+                src={res.imageUrl}
                 alt={res.name}
                 className="h-full w-full object-cover cursor-pointer rounded-[5px]"
                 onClick={() => navigate(`shop/${res.name.toLowerCase()}`)}

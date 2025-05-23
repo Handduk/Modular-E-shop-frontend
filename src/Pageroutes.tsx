@@ -7,6 +7,7 @@ import { categoryList } from "./Views/Homepage/Sections/CategorySection/Category
 import { ProductPage } from "./Views/ProductPage/ProductPage";
 import { Admin } from "./Views/Admin/Admin";
 import { Category1 } from "./Views/Shop/Categorys/Category1/Category1";
+import { AddCategoryProduct } from "./Views/Admin/Components/Products/CategoryProducts";
 
 export const PageRoutes = () => {
   return (
@@ -26,6 +27,7 @@ export const PageRoutes = () => {
             />
           ))}
         <Route path="product" element={<ProductPage />} />
+        <Route path="/admin/category" element={<AddCategoryProduct />} />
       </Routes>
     </>
   );

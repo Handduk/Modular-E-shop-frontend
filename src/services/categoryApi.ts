@@ -13,7 +13,7 @@ export const getAllCategorys = async () => {
     }
 }
 
-export const getSingleCategory = async (id: string) => {
+export const getSingleCategory = async (id: number) => {
     try {
         const response = await axios.get<Category>(`${API_URL}/${id}`);
         return response.data;
