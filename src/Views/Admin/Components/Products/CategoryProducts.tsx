@@ -62,9 +62,11 @@ export const AddCategoryProduct = () => {
 
   return (
     <div className="h-[calc(100vh-80px)] text-center">
-      <h1>{category && category.name}</h1>
+      <div>
+        <h1>{category && category.name}</h1>
+      </div>
       <div className="flex flex-row flex-wrap mx-4 mt-4">
-        <div className="w-full flex flex-row flex-wrap gap-4 ">
+        <div className="w-full flex flex-row flex-wrap gap-4">
           {products &&
             products.map((prod, index) => (
               <div

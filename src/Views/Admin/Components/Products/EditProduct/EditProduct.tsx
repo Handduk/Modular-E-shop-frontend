@@ -5,6 +5,10 @@ import {
   updateProduct,
 } from "../../../../../services/productApi";
 import { removeStorage } from "../../../../../Hooks/localstorage";
+import {
+  handleAddOption,
+  handleAddVariant,
+} from "../../../../../Hooks/Products/AddEdit";
 
 interface EditProductProps {
   prod: Product;
@@ -24,6 +28,8 @@ export const EditProduct = ({
   const [imageFile, setImageFile] = useState<File[]>([]);
   const [imagePreview, setImagePreview] = useState<string[]>([]);
   const [images, setImages] = useState<File[]>([]);
+  const [newOption, setNewOption] = useState<string>("");
+  const [newVariant, setNewVariant] = useState<string>("");
 
   const handleClose = () => {
     setShow(false);
@@ -50,7 +56,6 @@ export const EditProduct = ({
     if (file) {
       const imagePreviewToAdd = URL.createObjectURL(file[0]);
       setImagePreview((imagePreview) => [...imagePreview, imagePreviewToAdd]);
-      console.log("Image file:", file[0]);
     }
   };
 
@@ -62,10 +67,16 @@ export const EditProduct = ({
     formData.append("categoryId", product.categoryId.toString());
     formData.append("description", product.description);
     formData.append("brand", JSON.stringify(product.brand));
-    formData.append("options", JSON.stringify(product.options));
-    formData.append("variants", JSON.stringify(product.variants));
     formData.append("discount", product.discount?.toString() || "");
     formData.append("price", product.price.toString());
+
+    product.options?.forEach((option) => {
+      formData.append("options", option || "");
+    });
+    product.variants?.forEach((variant) => {
+      formData.append("variants", variant || "");
+    });
+
     product.images.forEach((image) => {
       formData.append("keptImages", image);
     });
@@ -118,7 +129,6 @@ export const EditProduct = ({
   useEffect(() => {
     if (show) {
       setProduct(prod);
-      console.log("Product to edit:", prod);
     }
   }, [prod]);
 
@@ -176,6 +186,7 @@ export const EditProduct = ({
                   />
                   <input
                     type="number"
+                    step="any"
                     placeholder="Pris"
                     name="price"
                     value={product.price}
@@ -183,6 +194,110 @@ export const EditProduct = ({
                     className="w-full h-10 border !border-neutral-500 !rounded-md mb-4 px-2"
                     onChange={handleChange}
                   />
+
+                  <label htmlFor="options" className="self-start mb-1 ms-1">
+                    Alternativ
+                  </label>
+                  <div className="w-full flex flex-row items-center mb-2">
+                    <input
+                      id="options"
+                      className="w-36 h-10 border !border-neutral-500 !rounded-md px-2 bg-neutral-200"
+                      type="text"
+                      name="options"
+                      placeholder="Ex: Färg, Storlek"
+                      value={newOption}
+                      onChange={(e) => {
+                        setNewOption(e.target.value);
+                      }}
+                    />
+                    {product &&
+                      product.options &&
+                      product.options.length > 0 && (
+                        <div className="flex flex-row flex-wrap items-center">
+                          {product.options.map((option, index) => (
+                            <div
+                              key={index}
+                              className="h-10 flex items-center bg-secondary-color text-main-color px-2 py-1 rounded-md ms-2 cursor-pointer"
+                              onClick={() => {
+                                setProduct((prev) => ({
+                                  ...prev,
+                                  options: prev.options?.filter(
+                                    (opt) => opt !== option
+                                  ),
+                                }));
+                              }}
+                            >
+                              {option}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    <button
+                      className="h-10 w-10 border !border-neutral-500 !rounded-md bg-neutral-200 ms-2 font-bold !text-xl
+              hover:bg-neutral-300 transition-all duration-200 ease-in-out"
+                      type="button"
+                      onClick={(e) =>
+                        handleAddOption(e, setProduct, setNewOption, newOption)
+                      }
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  <label htmlFor="variants" className="self-start mb-1 ms-1">
+                    Storlek
+                  </label>
+
+                  <div className="w-full flex flex-row items-center mb-2">
+                    <input
+                      id="variants"
+                      className="w-44 h-10 border !border-neutral-500 !rounded-md px-2 bg-neutral-200"
+                      type="text"
+                      name="variants"
+                      placeholder="Ex: S, M, 100g, 1kg"
+                      value={newVariant}
+                      onChange={(e) => {
+                        setNewVariant(e.target.value);
+                      }}
+                    />
+                    {product &&
+                      product.variants &&
+                      product.variants.length > 0 && (
+                        <div className="flex flex-row flex-wrap items-center">
+                          {product.variants.map((variant, index) => (
+                            <div
+                              key={index}
+                              className="h-10 flex items-center bg-secondary-color text-main-color px-2 py-1 rounded-md ms-2 cursor-pointer"
+                              onClick={() => {
+                                setProduct((prev) => ({
+                                  ...prev,
+                                  variants: prev.variants?.filter(
+                                    (opt) => opt !== variant
+                                  ),
+                                }));
+                              }}
+                            >
+                              {variant}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    <button
+                      className="h-10 w-10 border !border-neutral-500 !rounded-md bg-neutral-200 ms-2 font-bold !text-xl
+                                hover:bg-neutral-300 transition-all duration-200 ease-in-out"
+                      type="button"
+                      onClick={(e) =>
+                        handleAddVariant(
+                          e,
+                          newVariant,
+                          setProduct,
+                          setNewVariant
+                        )
+                      }
+                    >
+                      +
+                    </button>
+                  </div>
 
                   {product.images && (
                     <div className="w-full min-h-44 max-h-80 overflow-scroll flex flex-row flex-wrap gap-4 mb-3">
