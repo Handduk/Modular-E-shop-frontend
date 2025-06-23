@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { loginUser } from "../../services/userApi";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../Context/AuthContext";
 
 export const Login = () => {
   const [username, setUsername] = useState<string>("");
@@ -8,6 +9,8 @@ export const Login = () => {
   const [inputType, setInputType] = useState<"password" | "text">("password");
   const [error, setError] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  const { login } = useAuth();
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -22,8 +25,11 @@ export const Login = () => {
     const user = await loginUser(username, password);
     if (!user) {
       setError(true);
-    }
-    if (user) {
+      setTimeout(() => {
+        setError(false);
+      }, 3000);
+    } else {
+      login(user);
       navigate(`/${user.role.toLowerCase()}`);
     }
   };
@@ -104,8 +110,8 @@ export const Login = () => {
         </div>
       </div>
       <div
-        className={`absolute text-red-500 font-semibold top-32 left-1/2 -translate-x-1/2 text-center pt-2 w-3/4 h-10 bg-neutral-300 shadow-box ${
-          error ? "block" : "hidden"
+        className={`absolute text-red-500 font-semibold top-5 left-1/2 -translate-x-1/2 text-center pt-2 w-3/4 h-10 transition-all duration-300 ${
+          error ? "opacity-100" : "opacity-0"
         }`}
       >
         Felaktig e-postadress eller lösenord.
