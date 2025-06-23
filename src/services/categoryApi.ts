@@ -23,7 +23,7 @@ export const getSingleCategory = async (id: number) => {
     }
 }
 
-export const createCategory = async (category: Category) => {
+export const createCategory = async (category: FormData) => {
     try {
         const response = await axios.post(API_URL, category);
         return response.data;
@@ -33,9 +33,9 @@ export const createCategory = async (category: Category) => {
     }
 }
 
-export const updateCategory = async (category: Category) => {
+export const updateCategory = async (category: FormData, id: number) => {
     try {
-        const response = await axios.patch(`${API_URL}/${category.id}`, category);
+        const response = await axios.patch(`${API_URL}/${id}`, category);
         return response.data;
     } catch (ex) {
         console.error(ex);

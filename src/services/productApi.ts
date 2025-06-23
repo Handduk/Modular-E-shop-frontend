@@ -44,7 +44,6 @@ export const updateProduct = async (product: FormData, id: number) => {
 }
 
 export const deleteProduct = async (id: number) => {
-    console.log("Deleting product with ID:", id);
     try{
         if(!id) {
             console.error("ID is undefined or null");

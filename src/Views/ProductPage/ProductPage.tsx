@@ -90,7 +90,7 @@ export const ProductPage = () => {
                   <span>Produkt: </span>
                   <span className="font-bold">{product?.name}</span>
                 </div>
-                {category.products.length > 1 && (
+                {/* {category.products.length > 1 && (
                   <div className="flex flex-row flex-wrap space-x-2 space-y-2">
                     {category.products.map((product, index) => (
                       <img
@@ -102,7 +102,7 @@ export const ProductPage = () => {
                       />
                     ))}
                   </div>
-                )}
+                )} */}
                 {product?.options && (
                   <div className="flex flex-row space-x-4">
                     {product.options.map((option, index) => (

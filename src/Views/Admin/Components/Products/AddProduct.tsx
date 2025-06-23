@@ -1,6 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Product } from "../../../../Models/Product";
-import { createProduct } from "../../../../services/productApi";
+import {
+  handleAddOption,
+  handleAddVariant,
+  handleChangeProduct,
+  handlePostProduct,
+} from "../../../../Hooks/Products/AddEdit";
 
 interface AddProductProps {
   id: number;
@@ -15,50 +20,25 @@ export const AddProduct = ({
   setShow,
   setNewProd,
 }: AddProductProps) => {
-  const [product, setProduct] = useState<Product>();
+  const defaultValue: Product = {
+    id: 0,
+    categoryId: id,
+    name: "",
+    description: "",
+    price: 0,
+    brand: "",
+    options: [],
+    variants: [],
+    discount: 0,
+    images: [],
+  };
+
+  const [product, setProduct] = useState<Product>(defaultValue);
   const [images, setImages] = useState<File[]>([]);
+  const [newOption, setNewOption] = useState<string>("");
+  const [newVariant, setNewVariant] = useState<string>("");
 
   const categoryId = id;
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setProduct(
-      (prev) =>
-        ({
-          ...prev,
-          [name]: name === "price" ? parseFloat(value) : value,
-        } as Product)
-    );
-  };
-
-  const handlePostProduct = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!product) return;
-
-    const formData = new FormData();
-
-    formData.append("name", product?.name || "");
-    formData.append("categoryId", id.toString());
-    formData.append("description", product?.description || "");
-    formData.append("brand", product?.brand || "");
-    formData.append("options", JSON.stringify(product?.options || []));
-    formData.append("variants", JSON.stringify(product?.variants || []));
-    formData.append("discount", product?.discount?.toString() || "");
-    formData.append("price", product?.price.toString() || "");
-    images.forEach((image) => {
-      formData.append("images", image);
-    });
-
-    try {
-      const response = await createProduct(formData);
-      console.log("Product created:", response);
-      setNewProd(true);
-      setShow(false);
-    } catch (error) {
-      console.error("Error creating product:", error);
-    }
-  };
 
   return (
     <div
@@ -78,41 +58,159 @@ export const AddProduct = ({
             X
           </button>
         </div>
-        <div>
+        <div className="flex flex-col items-center">
           <h1 className="text-center text-3xl font-semibold">Ny Produkt</h1>
           <form
-            className="flex flex-col items-center justify-center mt-4"
-            onSubmit={handlePostProduct}
+            className="flex flex-col mt-4 w-8/10"
+            onSubmit={(e) =>
+              handlePostProduct(
+                e,
+                product,
+                categoryId,
+                images,
+                setNewProd,
+                setShow,
+                setProduct
+              )
+            }
           >
             <input type="hidden" name="categoryId" value={categoryId} />
+            <label htmlFor="productName" className="self-start mb-1 ms-1">
+              Produktnamn
+            </label>
             <input
+              id="productName"
               type="text"
-              placeholder="Produktnamn"
               name="name"
-              value={product?.name}
               required
-              className="w-8/10 h-10 border !border-neutral-500 !rounded-md mb-4 px-2"
-              onChange={handleChange}
+              className="h-10 border !border-neutral-500 !rounded-md mb-2 px-2 bg-neutral-200"
+              onChange={(e) => handleChangeProduct(e, setProduct)}
             />
+            <label
+              htmlFor="productDescription"
+              className="self-start mb-1 ms-1"
+            >
+              Beskrivning
+            </label>
             <input
+              id="productDescription"
               type="text"
-              placeholder="Beskrivning"
               name="description"
-              value={product?.description}
               required
-              className="w-8/10 h-10 border !border-neutral-500 !rounded-md mb-4 px-2"
-              onChange={handleChange}
+              className="h-10 border !border-neutral-500 !rounded-md mb-2 px-2 bg-neutral-200"
+              onChange={(e) => handleChangeProduct(e, setProduct)}
             />
+            <label htmlFor="Price" className="self-start mb-1 ms-1">
+              Pris (kr)
+            </label>
             <input
+              id="Price"
               type="number"
-              placeholder="Pris"
+              step="any"
+              defaultValue={0}
               name="price"
-              value={product?.price}
               required
-              className="w-8/10 h-10 border !border-neutral-500 !rounded-md mb-4 px-2"
-              onChange={handleChange}
+              className="h-10 border !border-neutral-500 !rounded-md mb-2 px-2 bg-neutral-200"
+              onChange={(e) => handleChangeProduct(e, setProduct)}
             />
+            <label htmlFor="options" className="self-start mb-1 ms-1">
+              Alternativ
+            </label>
+            <div className="flex flex-row items-center mb-2">
+              <input
+                id="options"
+                className="w-36 h-10 border !border-neutral-500 !rounded-md px-2 bg-neutral-200"
+                type="text"
+                name="options"
+                placeholder="Ex: Färg, Storlek"
+                value={newOption}
+                onChange={(e) => {
+                  setNewOption(e.target.value);
+                }}
+              />
+              {product && product.options && product.options.length > 0 && (
+                <div className="flex flex-row flex-wrap items-center">
+                  {product.options.map((option, index) => (
+                    <div
+                      key={index}
+                      className="h-10 flex items-center bg-secondary-color text-main-color px-2 py-1 rounded-md ms-2 cursor-pointer"
+                      onClick={() => {
+                        setProduct((prev) => ({
+                          ...prev,
+                          options: prev.options?.filter(
+                            (opt) => opt !== option
+                          ),
+                        }));
+                      }}
+                    >
+                      {option}
+                    </div>
+                  ))}
+                </div>
+              )}
+              <button
+                className="h-10 w-10 border !border-neutral-500 !rounded-md bg-neutral-200 ms-2 font-bold !text-xl
+              hover:bg-neutral-300 transition-all duration-200 ease-in-out"
+                type="button"
+                onClick={(e) =>
+                  handleAddOption(e, setProduct, setNewOption, newOption)
+                }
+              >
+                +
+              </button>
+            </div>
+            <label htmlFor="variants" className="self-start mb-1 ms-1">
+              Storlek
+            </label>
+
+            <div className="flex flex-row items-center mb-2">
+              <input
+                id="variants"
+                className="w-44 h-10 border !border-neutral-500 !rounded-md px-2 bg-neutral-200"
+                type="text"
+                name="variants"
+                placeholder="Ex: S, M, 100g, 1kg"
+                value={newVariant}
+                onChange={(e) => {
+                  setNewVariant(e.target.value);
+                }}
+              />
+              {product && product.variants && product.variants.length > 0 && (
+                <div className="flex flex-row flex-wrap items-center">
+                  {product.variants.map((variant, index) => (
+                    <div
+                      key={index}
+                      className="h-10 flex items-center bg-secondary-color text-main-color px-2 py-1 rounded-md ms-2 cursor-pointer"
+                      onClick={() => {
+                        setProduct((prev) => ({
+                          ...prev,
+                          variants: prev.variants?.filter(
+                            (opt) => opt !== variant
+                          ),
+                        }));
+                      }}
+                    >
+                      {variant}
+                    </div>
+                  ))}
+                </div>
+              )}
+              <button
+                className="h-10 w-10 border !border-neutral-500 !rounded-md bg-neutral-200 ms-2 font-bold !text-xl
+              hover:bg-neutral-300 transition-all duration-200 ease-in-out"
+                type="button"
+                onClick={(e) =>
+                  handleAddVariant(e, newVariant, setProduct, setNewVariant)
+                }
+              >
+                +
+              </button>
+            </div>
+            <label htmlFor="images" className="self-start mb-1 ms-1">
+              Produktbilder
+            </label>
             <input
+              id="images"
               type="file"
               accept="image/*"
               name="images"
@@ -122,13 +220,13 @@ export const AddProduct = ({
                 }
               }}
               multiple
-              className="block w-8/10 h-12 text-base border !border-neutral-500 !rounded-md mb-4 file:cursor-pointer cursor-pointer
+              className="block h-12 text-base border !border-neutral-500 !rounded-md mb-4 file:cursor-pointer cursor-pointer bg-neutral-200
               file:h-full file:bg-secondary-color file:text-main-color file:px-2 file:mr-4
                focus:outline-none"
             />
             <button
               type="submit"
-              className="w-8/10 h-10 bg-neutral-200/30 border !border-neutral-500 !rounded-md
+              className=" h-10 bg-neutral-200/30 border !border-neutral-500 !rounded-md
                 hover:bg-neutral-300 transition-all duration-300 ease-in-out"
             >
               Skapa Produkt

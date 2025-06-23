@@ -7,12 +7,13 @@ import { getStorage, setStorage } from "../../../../Hooks/localstorage";
 
 export const ProductList = () => {
   const [categorys, setCategorys] = useState<Category[]>([]);
-
   const [showModal, setShowModal] = useState(false);
+  const [createdCategory, setCreatedCategory] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
   const showAddCategoryModal = () => {
+    setCreatedCategory(false);
     setShowModal(true);
   };
 
@@ -27,7 +28,7 @@ export const ProductList = () => {
 
   useEffect(() => {
     fetchCategorys();
-  }, []);
+  }, [createdCategory]);
 
   const handleNavigate = (category: Category) => {
     setStorage("category", category);
@@ -39,8 +40,8 @@ export const ProductList = () => {
   return (
     <div className="text-center">
       <h1>Produkter</h1>
-      <div className="flex flex-row flex-wrap mx-4 gap-4 mt-4">
-        <div>
+      <div className="flex flex-row flex-wrap mx-4 mt-4">
+        <div className="flex flex-row flex-wrap gap-4 me-4">
           {categorys &&
             categorys.map((cat, index) => (
               <div
@@ -71,7 +72,11 @@ export const ProductList = () => {
           </button>
         </div>
       </div>
-      <AddCategory show={showModal} setShow={setShowModal} />
+      <AddCategory
+        show={showModal}
+        setShow={setShowModal}
+        setCreatedCategory={setCreatedCategory}
+      />
     </div>
   );
 };
