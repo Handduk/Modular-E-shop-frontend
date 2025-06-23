@@ -3,7 +3,7 @@ import { Product } from "../../../../Models/Product";
 import {
   handleAddOption,
   handleAddVariant,
-  handleChange,
+  handleChangeProduct,
   handlePostProduct,
 } from "../../../../Hooks/Products/AddEdit";
 
@@ -84,7 +84,7 @@ export const AddProduct = ({
               name="name"
               required
               className="h-10 border !border-neutral-500 !rounded-md mb-2 px-2 bg-neutral-200"
-              onChange={(e) => handleChange(e, setProduct)}
+              onChange={(e) => handleChangeProduct(e, setProduct)}
             />
             <label
               htmlFor="productDescription"
@@ -98,7 +98,7 @@ export const AddProduct = ({
               name="description"
               required
               className="h-10 border !border-neutral-500 !rounded-md mb-2 px-2 bg-neutral-200"
-              onChange={(e) => handleChange(e, setProduct)}
+              onChange={(e) => handleChangeProduct(e, setProduct)}
             />
             <label htmlFor="Price" className="self-start mb-1 ms-1">
               Pris (kr)
@@ -111,7 +111,7 @@ export const AddProduct = ({
               name="price"
               required
               className="h-10 border !border-neutral-500 !rounded-md mb-2 px-2 bg-neutral-200"
-              onChange={(e) => handleChange(e, setProduct)}
+              onChange={(e) => handleChangeProduct(e, setProduct)}
             />
             <label htmlFor="options" className="self-start mb-1 ms-1">
               Alternativ

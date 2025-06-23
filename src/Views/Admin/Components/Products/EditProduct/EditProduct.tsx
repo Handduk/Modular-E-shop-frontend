@@ -25,7 +25,6 @@ export const EditProduct = ({
   setUpdatedProduct,
 }: EditProductProps) => {
   const [product, setProduct] = useState<Product>(prod);
-  const [imageFile, setImageFile] = useState<File[]>([]);
   const [imagePreview, setImagePreview] = useState<string[]>([]);
   const [images, setImages] = useState<File[]>([]);
   const [newOption, setNewOption] = useState<string>("");
@@ -34,7 +33,6 @@ export const EditProduct = ({
   const handleClose = () => {
     setShow(false);
     setImagePreview([]);
-    setImageFile([]);
     setImages([]);
     removeStorage("product");
   };

@@ -1,7 +1,7 @@
 import { Product } from "../../Models/Product";
 import { createProduct } from "../../services/productApi";
 
-export const handleChange = (e: React.ChangeEvent<HTMLInputElement>, setProduct: React.Dispatch<React.SetStateAction<Product>>) => {
+export const handleChangeProduct = (e: React.ChangeEvent<HTMLInputElement>, setProduct: React.Dispatch<React.SetStateAction<Product>>) => {
     const { name, value } = e.target;
     setProduct(
       (prev) =>
