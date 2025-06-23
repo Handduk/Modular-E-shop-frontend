@@ -6,6 +6,7 @@ import { PageRoutes } from "./Pageroutes";
 import { Navbar } from "./Components/Navbar/Navbar";
 import { CartProvider } from "./Context/CartContext";
 import { useLocation } from "react-router-dom";
+import { AuthProvider } from "./Context/AuthContext";
 
 interface ShoppingcartProps {
   open: boolean;
@@ -14,13 +15,15 @@ interface ShoppingcartProps {
 export const App = ({ open }: ShoppingcartProps) => {
   const location = useLocation();
 
-  const hideNavbar = ["/reseller", "/admin"];
+  const hideNavbar = ["/reseller", "/admin", "/login", "/admin/category"];
   return (
     <>
-      <CartProvider>
-        {!hideNavbar.includes(location.pathname) && <Navbar open={open} />}
-        <PageRoutes />
-      </CartProvider>
+      <AuthProvider>
+        <CartProvider>
+          {!hideNavbar.includes(location.pathname) && <Navbar open={open} />}
+          <PageRoutes />
+        </CartProvider>
+      </AuthProvider>
     </>
   );
 };

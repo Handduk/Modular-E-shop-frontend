@@ -8,6 +8,7 @@ import { ProductPage } from "./Views/ProductPage/ProductPage";
 import { Admin } from "./Views/Admin/Admin";
 import { Category1 } from "./Views/Shop/Categorys/Category1/Category1";
 import { AddCategoryProduct } from "./Views/Admin/Components/Products/CategoryProducts";
+import { ProtectedRoute } from "./Wrappers/ProtectedRoute";
 
 export const PageRoutes = () => {
   return (
@@ -16,7 +17,18 @@ export const PageRoutes = () => {
         <Route path="/" element={<Homepage />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/admin" element={<Admin />} />
+        <Route
+          path="/admin"
+          element={<ProtectedRoute role="ADMIN">{<Admin />}</ProtectedRoute>}
+        />
+        <Route
+          path="/admin/category"
+          element={
+            <ProtectedRoute role="ADMIN">
+              {<AddCategoryProduct />}
+            </ProtectedRoute>
+          }
+        />
         <Route path="/shop" element={<Shop />} />
         {categoryList &&
           categoryList.map((res, index) => (
@@ -27,7 +39,6 @@ export const PageRoutes = () => {
             />
           ))}
         <Route path="product" element={<ProductPage />} />
-        <Route path="/admin/category" element={<AddCategoryProduct />} />
       </Routes>
     </>
   );

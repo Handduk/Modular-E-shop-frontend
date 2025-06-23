@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Accounts } from "./Components/Accounts/Accounts";
 import { Dashboard } from "./Components/Dashboard";
 import { ProductList } from "./Components/Products/ProductList";
+import { getStorage, setStorage } from "../../Hooks/localstorage";
 
 export const Admin = () => {
   const menuList = [
@@ -13,6 +14,21 @@ export const Admin = () => {
   const [selectedView, setSelectedView] = useState<JSX.Element>(
     menuList[0].view
   );
+
+  const handleShowView = (item: { name: string; view: JSX.Element }) => {
+    setSelectedView(item.view);
+    setStorage("adminView", item.name);
+  };
+
+  useEffect(() => {
+    const storedView = getStorage("adminView");
+    if (storedView) {
+      const menuItem = menuList.find((item) => item.name === storedView);
+      if (menuItem) {
+        setSelectedView(menuItem.view);
+      }
+    }
+  }, []);
 
   return (
     <>
@@ -30,7 +46,7 @@ export const Admin = () => {
                       key={index}
                       className="hover:bg-black/20 transition-all duration-200 ease-linear cursor-pointer pl-2 py-2"
                       onClick={() => {
-                        setSelectedView(item.view);
+                        handleShowView(item);
                       }}
                     >
                       {item.name}
