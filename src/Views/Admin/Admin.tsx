@@ -3,6 +3,7 @@ import { Accounts } from "./Components/Accounts/Accounts";
 import { Dashboard } from "./Components/Dashboard";
 import { ProductList } from "./Components/Products/ProductList";
 import { getStorage, setStorage } from "../../Hooks/localstorage";
+import { useAuth } from "../../Context/AuthContext";
 
 export const Admin = () => {
   const menuList = [
@@ -14,6 +15,8 @@ export const Admin = () => {
   const [selectedView, setSelectedView] = useState<JSX.Element>(
     menuList[0].view
   );
+
+  const { logout } = useAuth();
 
   const handleShowView = (item: { name: string; view: JSX.Element }) => {
     setSelectedView(item.view);
@@ -54,7 +57,10 @@ export const Admin = () => {
                   ))}
                 </ul>
               </div>
-              <div className="text-main-color mt-auto mb-2 ms-2 hover:text-yellow-500 transition-all duration-200 ease-linear cursor-pointer">
+              <div
+                className="text-main-color mt-auto mb-2 ms-2 hover:text-yellow-500 transition-all duration-200 ease-linear cursor-pointer"
+                onClick={logout}
+              >
                 Logga ut
               </div>
             </nav>
