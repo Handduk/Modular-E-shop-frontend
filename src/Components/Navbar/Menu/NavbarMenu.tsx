@@ -18,7 +18,8 @@ export const NavbarMenu = ({ show, setShow }: menuProps) => {
        show
          ? "opacity-100 pointer-events-auto"
          : "opacity-0 pointer-events-none"
-     }`}
+     }
+     md:w-1/3`}
     >
       <ul className="h-full flex flex-col items-stretch !pl-0">
         <div className="absolute flex flex-row justify-end w-full">

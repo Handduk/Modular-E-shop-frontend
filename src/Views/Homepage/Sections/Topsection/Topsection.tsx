@@ -46,7 +46,7 @@ export const Topsection = () => {
             />
           </div>
         )}
-        <div className="flex flex-col lg:w-1/2 lg:h-full lg:justify-around lg:mx-4">
+        <div className="flex flex-col lg:w-1/2 lg:h-full lg:justify-center lg:mx-4">
           <div className="flex flex-col items-center mb-4 lg:px-4">
             <div className="text-[2rem] font-extrabold w-full">
               {product?.name}

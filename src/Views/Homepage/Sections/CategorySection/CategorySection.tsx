@@ -5,10 +5,14 @@ export const CategorySection = () => {
   const { categorys } = useProduct();
   const navigate = useNavigate();
   return (
-    <span className="w-full flex flex-wrap justify-center mb-6 pr-4">
+    <section
+      className={`w-full mb-6 pr-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 ${
+        categorys.length <= 3 && "lg:flex lg:flex-row justify-center"
+      }`}
+    >
       {categorys &&
         categorys.map((cat, index) => (
-          <div className="w-6/12 pl-4 pb-4" key={index}>
+          <div className="w-full pl-4 pb-4" key={index}>
             <div className="h-[175px] border border-secondary-color rounded-[2.5px] border-solid">
               <img
                 src={cat.imageUrl}
@@ -18,15 +22,15 @@ export const CategorySection = () => {
               />
             </div>
             <div className="flex justify-center mb-2">
-              <a
-                href={`/shop/${cat.name.toLowerCase()}`}
-                className="!no-underline !text-secondary-color border-b border-secondary-color"
+              <div
+                onClick={() => navigate(`/shop/${cat.name.toLowerCase()}`)}
+                className="text-secondary-color font-semibold"
               >
                 {cat.name}
-              </a>
+              </div>
             </div>
           </div>
         ))}
-    </span>
+    </section>
   );
 };

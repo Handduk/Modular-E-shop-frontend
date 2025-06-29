@@ -5,27 +5,41 @@ import { Category } from "../../Models/Category";
 import { Product } from "../../Models/Product";
 import { getSalesPrice } from "../../Handlers/SalesPrice";
 import { useProduct } from "../../Context/ProductContext";
+import { getSingleCategory } from "../../services/categoryApi";
 
 export const ProductPage = () => {
   const { setCartQuantity } = useCart();
   const { id } = useURLId();
-  const { categorys } = useProduct();
-  const [category, setCategory] = useState<Category | null>();
-  const [product, setProduct] = useState<Product>();
+  const { categorys, products } = useProduct();
+  const [category, setCategory] = useState<Category | null>(null);
+  const [product, setProduct] = useState<Product | null>(null);
   const [selectedCheck, setSelectedCheck] = useState<string | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
-    if (category && category.products) {
-      const prod = category.products.find((prod) => prod.id === id);
-      if (prod) {
-        setCategory(categorys.find((cat) => cat.id === prod.id));
-        setProduct(prod);
-      } else {
-        console.warn("Product not found");
-      }
+    getProduct();
+  }, [products, categorys, id]);
+
+  const getProduct = () => {
+    if (!products || !products.length || !id) return;
+
+    const singleProduct = products.find((prod) => prod.id === id);
+    if (singleProduct) {
+      setProduct(singleProduct);
+      getCategory(singleProduct.categoryId);
+      setLoading(false);
     }
-  }, [category, id]);
+  };
+
+  const getCategory = async (id: number) => {
+    try {
+      const response = await getSingleCategory(id);
+      setCategory(response);
+    } catch (error) {
+      console.error("failed trying to fetch category.", error);
+    }
+  };
 
   useEffect(() => {
     setQuantity(1);
@@ -45,11 +59,12 @@ export const ProductPage = () => {
 
   return (
     <div className="contentBody">
-      <div className="content">
-        <div className="flex flex-col items-center justify-center">
-          <div className="cursor-pointer mb-2">
+      <div className="content lg:h-full lg:flex lg:justify-center lg:items-center">
+        <div className="flex flex-col items-center justify-center lg:h-full lg:flex-row ">
+          <div className="cursor-pointer mb-2 lg:h-3/4 lg:w-1/2">
             {product && product.images && (
               <img
+                className="lg:h-full"
                 src={
                   typeof product?.images[0] === "string"
                     ? product.images[0]
