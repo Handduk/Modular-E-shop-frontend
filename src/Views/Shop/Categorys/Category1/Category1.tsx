@@ -1,21 +1,28 @@
 import { useEffect, useState } from "react";
 import { Category } from "../../../../Models/Category";
-import { categoryList } from "../../../Homepage/Sections/CategorySection/CategorySection";
 import { Product } from "../../../../Models/Product";
 import { ProductPosts } from "../../../../Components/Products/ProductPosts";
 import { PaginationMenu } from "../../../../Components/Products/PaginationMenu";
 import { faBarsStaggered } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { SortProducts } from "../../../../Models/Register";
+import { useProduct } from "../../../../Context/ProductContext";
+import { useLocation } from "react-router-dom";
 
 export const Category1 = () => {
-  const [category, setCategory] = useState<Category>(categoryList[0]);
-  const [products, setProducts] = useState<Product[]>(
-    category.products ? category.products : []
-  );
   const [defaultSort, setDefaultSort] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [prodPerPage, setProdPerPage] = useState<number>(10);
+  const { products } = useProduct();
+  const [prods, setProds] = useState<Product[]>(products);
+  const location = useLocation();
+
+  const categoryName = () => {
+    const getName = location.pathname.split("/")[2];
+    const firstLetter = getName.charAt(0).toUpperCase();
+    const remainingLetters = getName.slice(1);
+    return firstLetter + remainingLetters;
+  };
 
   const indexOfLastProd = currentPage * prodPerPage;
   const indexOfFirstProd = indexOfLastProd - prodPerPage;
@@ -24,6 +31,7 @@ export const Category1 = () => {
   const paginate = (pagenumber: number) => setCurrentPage(pagenumber);
 
   useEffect(() => {
+    console.log(location.pathname);
     setDefaultSort([...products]);
   }, []);
 
@@ -56,14 +64,14 @@ export const Category1 = () => {
         break;
     }
 
-    setProducts(sortedProducts);
+    setProds(sortedProducts);
   };
 
   return (
     <div className="contentBody">
       <div className="content">
         <div className="w-full mb-6 px-3 pt-2">
-          <div className="text-3xl font-extrabold">{category.name}</div>
+          <div className="text-3xl font-extrabold">{categoryName()}</div>
           <div className="leading-[1.3] mb-2">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor
             cumque quibusdam, impedit enim est voluptatum debitis iusto ex odio

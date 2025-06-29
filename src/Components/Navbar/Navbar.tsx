@@ -1,39 +1,23 @@
-import {
-  faBars,
-  faCartShopping,
-  faMagnifyingGlass,
-  faUser,
-  faX,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBars, faCartShopping, faX } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import { NavbarMenu } from "./Menu/NavbarMenu";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "../../Context/CartContext";
+import { useScrollVisibility } from "../../Hooks/useScrollVisibility";
 
-interface SpecialOfferProps {
-  message: string;
-  link: string;
-}
-
-const specialOfferObject: SpecialOfferProps = {
-  message: "special offer",
-  link: "placeholder link",
-};
-
-interface NavbarProps {
-  open: boolean;
-}
-
-export const Navbar = ({ open }: NavbarProps) => {
+export const Navbar = () => {
   const { openCart, cartQuantity, isOpen, closeCart } = useCart();
 
   const [show, setShow] = useState<boolean>(false);
   const [brandImg, setBrandImg] = useState<string>("/IMG/logga.png");
-  const [specialOffer, setSpecialOffer] =
-    useState<SpecialOfferProps>(specialOfferObject);
-  const [specialLink, setSpecialLink] = useState<string>("/");
+  const [init, setInit] = useState<boolean>(false);
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const showNavbar = useScrollVisibility(20);
+
+  const checkLocation = showNavbar || location.pathname !== "/";
 
   useEffect(() => {
     if (show || isOpen) {
@@ -45,6 +29,17 @@ export const Navbar = ({ open }: NavbarProps) => {
       document.body.style.overflow = "auto";
     };
   }, [show, isOpen]);
+
+  useEffect(() => {
+    if (location.pathname === "/") {
+      window.scrollTo({ top: 0, behavior: "instant" });
+      const timeout = setTimeout(() => setInit(true), 500);
+      return () => clearTimeout(timeout);
+    } else {
+      setInit(true);
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+  }, [location.pathname]);
 
   const toggleMenu = () => {
     if (!show) {
@@ -62,20 +57,24 @@ export const Navbar = ({ open }: NavbarProps) => {
 
   return (
     <>
-      <div className="bg-neutral-800 h-20 flex flex-col justify-center items-center sticky top-0">
-        <div className="w-full text-center text-neutral-50">
-          {`${specialOffer.message} `}
-          <a
-            onClick={() => navigate(specialLink)}
-            className="cursor-pointer text-white !no-underline"
-          >
-            {specialOffer.link}
-          </a>
-        </div>
-        <nav className="w-full h-[70%] bg-main-color border-b-neutral-900 py-0 border-b border-solid">
+      <div className="h-20 flex flex-col justify-center items-center fixed top-0 left-0 w-full z-50">
+        <nav
+          className={`w-full h-full py-0 border-b border-solid !z-50
+            ${
+              checkLocation
+                ? "bg-main-color border-b-neutral-900"
+                : "bg-transparent border-0"
+            }
+            ${init ? "opacity-100" : "opacity-0"} ${
+            location.pathname === "/" ? "transition-all duration-200" : ""
+          }`}
+        >
           <div className="flex justify-between items-center h-full">
             <div
-              className="w-11 h-full border-0 flex flex-col justify-center items-center cursor-pointer"
+              className={`w-11 h-full border-0 flex flex-col justify-center items-center cursor-pointer pointer-events-auto transition-all duration-500 z-50
+                 lg:hidden
+                ${checkLocation ? "text-secondary-color" : "text-white"}
+                ${show && "hidden"}`}
               onClick={() => toggleMenu()}
             >
               {show ? (
@@ -84,19 +83,56 @@ export const Navbar = ({ open }: NavbarProps) => {
                 <FontAwesomeIcon icon={faBars} />
               )}
             </div>
-            <div className="w-11 h-full border-0 flex flex-col justify-center items-center cursor-pointer">
+            {/* <div className="w-11 h-full border-0 flex flex-col justify-center items-center cursor-pointer">
               <FontAwesomeIcon
                 icon={faMagnifyingGlass}
                 className="cursor-pointer"
               />
+            </div> */}
+            <div className="h-full flex flex-row items-center w-full max-lg:hidden">
+              <div
+                className={`flex flex-row items-center h-full pe-5 transition-all duration-200 ${
+                  checkLocation
+                    ? "bg-transparent"
+                    : "bg-black/40 shadow-[5px_5px_50px_rgba(0,0,0,0.8)]"
+                }`}
+              >
+                <ol
+                  className={`mb-0 flex space-x-6 text-2xl lg:text-xl z-50 ${
+                    checkLocation ? "text-secondary-color" : "text-white"
+                  }`}
+                >
+                  <li
+                    className="cursor-pointer"
+                    onClick={() => navigate("/shop/kaffe")}
+                  >
+                    Kaffe
+                  </li>
+                  <li>Tillbehör</li>
+                  <li>Merch</li>
+                  <li>Kontakta oss</li>
+                </ol>
+              </div>
+            </div>
+            <div className="absolute top-0 left-0 w-full flex justify-center mt-1">
+              <div
+                className={`${checkLocation && "cursor-pointer"}`}
+                onClick={() => navigate("/")}
+              >
+                <img
+                  src={brandImg}
+                  alt="brand logo"
+                  className={`${
+                    checkLocation ? "scale-100" : "scale-0"
+                  } h-20 transition-all duration-500`}
+                />
+              </div>
             </div>
             <div
-              className="cursor-pointer px-4 py-0 mx-[3.125rem] ms-auto mt-2"
-              onClick={() => navigate("/")}
+              className={`w-11 h-full ms-auto border-0 flex flex-col justify-center items-center cursor-pointer relative
+            transition-all duration-500
+              ${checkLocation ? "text-secondary-color" : "text-white"}`}
             >
-              <img src={brandImg} alt="brand logo" className="h-16" />
-            </div>
-            <div className="w-11 h-full ms-auto border-0 flex flex-col justify-center items-center cursor-pointer relative">
               <FontAwesomeIcon icon={faCartShopping} onClick={toggleCart} />
               {cartQuantity > 0 && (
                 <div className="w-5 h-5 text-[0.75rem] self-center absolute rounded-[50%] right-1 top-2 bg-red-600">

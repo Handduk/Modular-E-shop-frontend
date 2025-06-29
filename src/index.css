@@ -19,10 +19,12 @@
     width: 100vw;
     height: 100vh;
     background-color: var(--main-color);
+    @apply lg:flex lg:flex-col lg:items-center lg:[padding:80px];
   }
   .content {
-    flex: 1;
+    display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
   }
 }

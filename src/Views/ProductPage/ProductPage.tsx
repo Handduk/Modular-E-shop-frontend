@@ -3,15 +3,14 @@ import { useCart } from "../../Context/CartContext";
 import { useURLId } from "../../Hooks/useURLId";
 import { Category } from "../../Models/Category";
 import { Product } from "../../Models/Product";
-import { categoryList } from "../Homepage/Sections/CategorySection/CategorySection";
-import { useNavigate } from "react-router-dom";
 import { getSalesPrice } from "../../Handlers/SalesPrice";
+import { useProduct } from "../../Context/ProductContext";
 
 export const ProductPage = () => {
   const { setCartQuantity } = useCart();
-  const navigate = useNavigate();
   const { id } = useURLId();
-  const [category, setCategory] = useState<Category>(categoryList[0]);
+  const { categorys } = useProduct();
+  const [category, setCategory] = useState<Category | null>();
   const [product, setProduct] = useState<Product>();
   const [selectedCheck, setSelectedCheck] = useState<string | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
@@ -20,6 +19,7 @@ export const ProductPage = () => {
     if (category && category.products) {
       const prod = category.products.find((prod) => prod.id === id);
       if (prod) {
+        setCategory(categorys.find((cat) => cat.id === prod.id));
         setProduct(prod);
       } else {
         console.warn("Product not found");
@@ -84,7 +84,7 @@ export const ProductPage = () => {
                 </span>
               )}
             </div>
-            {category.products && category.products.length > 0 && (
+            {category?.products && category.products.length > 0 && (
               <>
                 <div>
                   <span>Produkt: </span>

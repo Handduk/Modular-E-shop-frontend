@@ -8,8 +8,7 @@ export const setStorage = (key: string, value: any) => {
 export const getStorage = (key: string) => {
     const value = localStorage.getItem(key);
     if(!value){
-        console.error("Value is null or undefined");
-        return null;
+        return;
     }
     return JSON.parse(value);
 }
