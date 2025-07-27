@@ -7,8 +7,10 @@ import {
 import { removeStorage } from "../../../../../Hooks/localstorage";
 import {
   handleAddOption,
-  handleAddVariant,
+  initVariant,
 } from "../../../../../Hooks/Products/AddEdit";
+import { Variant } from "../../../../../Models/Variant";
+import { HandleVariant } from "../../../../../Components/AddEditProd/HandleVariant";
 
 interface EditProductProps {
   prod: Product;
@@ -28,7 +30,8 @@ export const EditProduct = ({
   const [imagePreview, setImagePreview] = useState<string[]>([]);
   const [images, setImages] = useState<File[]>([]);
   const [newOption, setNewOption] = useState<string>("");
-  const [newVariant, setNewVariant] = useState<string>("");
+
+  const [newVariant, setNewVariant] = useState<Variant>(initVariant);
 
   const handleClose = () => {
     setShow(false);
@@ -72,7 +75,7 @@ export const EditProduct = ({
       formData.append("options", option || "");
     });
     product.variants?.forEach((variant) => {
-      formData.append("variants", variant || "");
+      formData.append("variants", JSON.stringify(variant) || "");
     });
 
     product.images.forEach((image) => {
@@ -129,6 +132,10 @@ export const EditProduct = ({
       setProduct(prod);
     }
   }, [prod]);
+
+  useEffect(() => {
+    console.log("Product updated:", product);
+  }, [product]);
 
   return (
     product && (
@@ -202,7 +209,7 @@ export const EditProduct = ({
                       className="w-36 h-10 border !border-neutral-500 !rounded-md px-2 bg-neutral-200"
                       type="text"
                       name="options"
-                      placeholder="Ex: Färg, Storlek"
+                      placeholder="Ex: Färg"
                       value={newOption}
                       onChange={(e) => {
                         setNewOption(e.target.value);
@@ -241,61 +248,12 @@ export const EditProduct = ({
                       +
                     </button>
                   </div>
-
-                  <label htmlFor="variants" className="self-start mb-1 ms-1">
-                    Storlek
-                  </label>
-
-                  <div className="w-full flex flex-row items-center mb-2">
-                    <input
-                      id="variants"
-                      className="w-44 h-10 border !border-neutral-500 !rounded-md px-2 bg-neutral-200"
-                      type="text"
-                      name="variants"
-                      placeholder="Ex: S, M, 100g, 1kg"
-                      value={newVariant}
-                      onChange={(e) => {
-                        setNewVariant(e.target.value);
-                      }}
-                    />
-                    {product &&
-                      product.variants &&
-                      product.variants.length > 0 && (
-                        <div className="flex flex-row flex-wrap items-center">
-                          {product.variants.map((variant, index) => (
-                            <div
-                              key={index}
-                              className="h-10 flex items-center bg-secondary-color text-main-color px-2 py-1 rounded-md ms-2 cursor-pointer"
-                              onClick={() => {
-                                setProduct((prev) => ({
-                                  ...prev,
-                                  variants: prev.variants?.filter(
-                                    (opt) => opt !== variant
-                                  ),
-                                }));
-                              }}
-                            >
-                              {variant}
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    <button
-                      className="h-10 w-10 border !border-neutral-500 !rounded-md bg-neutral-200 ms-2 font-bold !text-xl
-                                hover:bg-neutral-300 transition-all duration-200 ease-in-out"
-                      type="button"
-                      onClick={(e) =>
-                        handleAddVariant(
-                          e,
-                          newVariant,
-                          setProduct,
-                          setNewVariant
-                        )
-                      }
-                    >
-                      +
-                    </button>
-                  </div>
+                  <HandleVariant
+                    product={product}
+                    setProduct={setProduct}
+                    newVariant={newVariant}
+                    setNewVariant={setNewVariant}
+                  />
 
                   {product.images && (
                     <div className="w-full min-h-44 max-h-80 overflow-scroll flex flex-row flex-wrap gap-4 mb-3">

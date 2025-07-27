@@ -67,9 +67,9 @@ export const ShoppingCart = () => {
     >
       <div className="flex justify-between items-center w-full h-1/12">
         <div className="text-xl font-semibold self-center ps-2">Varukorg</div>
-        <button className="px-3 py-2" onClick={() => closeCart()}>
+        <div className="px-3 py-2" onClick={() => closeCart()}>
           <FontAwesomeIcon icon={faX} />
-        </button>
+        </div>
       </div>
 
       <div className="py-2 md:w-full">

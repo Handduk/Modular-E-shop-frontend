@@ -11,7 +11,7 @@ export const Header = () => {
   return (
     <div className="h-screen w-screen overflow-hidden">
       <img
-        src="public\IMG\CS_Rosteriet_7okt_2020.jpg"
+        src="IMG\CS_Rosteriet_7okt_2020.jpg"
         alt="product"
         className="h-full w-full
                        object-cover

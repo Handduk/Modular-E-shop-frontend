@@ -97,7 +97,7 @@ export const Navbar = () => {
                     : "bg-black/40 shadow-[5px_5px_50px_rgba(0,0,0,0.8)]"
                 }`}
               >
-                <ol
+                <ul
                   className={`mb-0 flex space-x-6 text-2xl lg:text-xl z-50 ${
                     checkLocation ? "text-secondary-color" : "text-white"
                   }`}
@@ -111,7 +111,7 @@ export const Navbar = () => {
                   <li>Tillbehör</li>
                   <li>Merch</li>
                   <li>Kontakta oss</li>
-                </ol>
+                </ul>
               </div>
             </div>
             <div className="absolute top-0 left-0 w-full flex justify-center mt-1">

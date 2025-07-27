@@ -1,3 +1,5 @@
+import { Variant } from "./Variant";
+
 export type Product = {
     id: number,
     categoryId: number,
@@ -6,7 +8,7 @@ export type Product = {
     description: string,
     options?: string[],
     price: number,
-    variants?: string[],
+    variants?: Variant[],
     discount?: number,
     images: string[],
 }
