@@ -3,13 +3,13 @@ import { Homepage } from "./Views/Homepage/Main/Homepage";
 import { AboutUs } from "./Views/AboutUs/AboutUs";
 import { Login } from "./Views/Login/Login";
 import { Shop } from "./Views/Shop/Shop";
-import { ProductPage } from "./Views/ProductPage/ProductPage";
+import { ProductPage } from "./Views/Shop/ProductPage";
 import { Admin } from "./Views/Admin/Admin";
-import { Category1 } from "./Views/Shop/Categorys/Category1/Category1";
 import { AddCategoryProduct } from "./Views/Admin/Components/Products/CategoryProducts";
 import { ProtectedRoute } from "./Wrappers/ProtectedRoute";
 import { Checkout } from "./Views/Checkout/checkout";
 import { useProduct } from "./Context/ProductContext";
+import { Products } from "./Views/Shop/Products";
 
 export const PageRoutes = () => {
   const { categorys } = useProduct();
@@ -26,7 +26,7 @@ export const PageRoutes = () => {
           categorys.map((res, index) => (
             <Route
               path={`shop/${res.name}`}
-              element={<Category1 />}
+              element={<Products />}
               key={index}
             />
           ))}

@@ -112,7 +112,6 @@ export const EditProduct = ({
         productToUpdate.images = updatedImages;
         setProduct(productToUpdate);
       }
-      console.log("Updated images:", updatedImages);
     }
   };
 
@@ -132,10 +131,6 @@ export const EditProduct = ({
       setProduct(prod);
     }
   }, [prod]);
-
-  useEffect(() => {
-    console.log("Product updated:", product);
-  }, [product]);
 
   return (
     product && (

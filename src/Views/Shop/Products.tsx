@@ -1,44 +1,63 @@
 import { useEffect, useState } from "react";
-import { Category } from "../../../../Models/Category";
-import { Product } from "../../../../Models/Product";
-import { ProductPosts } from "../../../../Components/Products/ProductPosts";
-import { PaginationMenu } from "../../../../Components/Products/PaginationMenu";
 import { faBarsStaggered } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { SortProducts } from "../../../../Models/Register";
-import { useProduct } from "../../../../Context/ProductContext";
-import { useLocation } from "react-router-dom";
 
-export const Category1 = () => {
+import { useLocation } from "react-router-dom";
+import { Product } from "../../Models/Product";
+import { useProduct } from "../../Context/ProductContext";
+import { SortProducts } from "../../Models/Register";
+import { ProductPosts } from "../../Components/Products/ProductPosts";
+import { PaginationMenu } from "../../Components/Products/PaginationMenu";
+import { Category } from "../../Models/Category";
+
+export const Products = () => {
   const [defaultSort, setDefaultSort] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [prodPerPage, setProdPerPage] = useState<number>(10);
-  const { products } = useProduct();
+  const { products, categorys } = useProduct();
+  const [category, setCategory] = useState<Category>();
   const [prods, setProds] = useState<Product[]>(products);
   const location = useLocation();
 
-  const categoryName = () => {
-    const getName = location.pathname.split("/")[2];
-    const firstLetter = getName.charAt(0).toUpperCase();
-    const remainingLetters = getName.slice(1);
-    return firstLetter + remainingLetters;
+  const getCategory = () => {
+    const categoryPath = decodeURIComponent(location.pathname.split("/")[2]);
+    const firstLetter = categoryPath?.charAt(0).toUpperCase();
+    const restOfString = categoryPath?.slice(1);
+    const fullCategoryName = firstLetter + restOfString;
+    if (!categorys) return;
+    setCategory(categorys.find((cat) => cat.name === fullCategoryName));
+  };
+
+  const getProducts = () => {
+    if (!category) return;
+    const filteredProducts = products.filter(
+      (product) => product.categoryId === category.id
+    );
+    setProds(filteredProducts);
+    setDefaultSort([...filteredProducts]);
   };
 
   const indexOfLastProd = currentPage * prodPerPage;
   const indexOfFirstProd = indexOfLastProd - prodPerPage;
-  const currentProducts = products?.slice(indexOfFirstProd, indexOfLastProd);
+  const currentProducts = prods?.slice(indexOfFirstProd, indexOfLastProd);
 
   const paginate = (pagenumber: number) => setCurrentPage(pagenumber);
 
   useEffect(() => {
     console.log(location.pathname);
-    setDefaultSort([...products]);
+    setDefaultSort([...prods]);
   }, []);
+
+  useEffect(() => {
+    console.log("location", location.pathname);
+    getCategory();
+    getProducts();
+  }, [category, products, location.pathname]);
 
   const handleSort = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
 
-    let sortedProducts = [...products];
+    let sortedProducts = [...prods];
     switch (value) {
       case "0":
         //Recommended
@@ -71,14 +90,14 @@ export const Category1 = () => {
     <div className="contentBody">
       <div className="content">
         <div className="w-full mb-6 px-3 pt-2">
-          <div className="text-3xl font-extrabold">{categoryName()}</div>
-          <div className="leading-[1.3] mb-2">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor
-            cumque quibusdam, impedit enim est voluptatum debitis iusto ex odio
-            exercitationem, dolorum mollitia dignissimos iste ipsum delectus
-          </div>
+          {category && (
+            <div>
+              <div className="text-3xl font-extrabold">{category?.name}</div>
+              <div className="leading-[1.3] mb-2">{category?.description}</div>
+            </div>
+          )}
           <div className="text-neutral-800 text-[0.9rem] mb-2">
-            {products.length} PRODUKTER
+            {prods.length} <span>PRODUKTER</span>
           </div>
           <div className="flex flex-row justify-between">
             <div className="pr-2 flex items-center">
@@ -104,14 +123,12 @@ export const Category1 = () => {
             </div>
           </div>
         </div>
-        <span className="">
-          <ProductPosts products={currentProducts} />
-        </span>
-        {products && products.length > 10 && (
+        <ProductPosts products={currentProducts} />
+        {prods && prods.length > 10 && (
           <div>
             <PaginationMenu
               prodPerPage={prodPerPage}
-              totalProducts={products.length}
+              totalProducts={prods.length}
               currentPage={currentPage}
               paginate={paginate}
             />

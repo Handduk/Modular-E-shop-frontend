@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Accounts } from "./Components/Accounts/Accounts";
 import { Dashboard } from "./Components/Dashboard";
-import { ProductList } from "./Components/Products/ProductList";
+import { ProductList } from "./Components/Categorys/ProductList";
 import { getStorage, setStorage } from "../../Hooks/localstorage";
 import { useAuth } from "../../Context/AuthContext";
 

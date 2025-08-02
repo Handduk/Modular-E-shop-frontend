@@ -5,9 +5,11 @@ import { NavbarMenu } from "./Menu/NavbarMenu";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "../../Context/CartContext";
 import { useScrollVisibility } from "../../Hooks/useScrollVisibility";
+import { useProduct } from "../../Context/ProductContext";
 
 export const Navbar = () => {
   const { openCart, cartQuantity, isOpen, closeCart } = useCart();
+  const { categorys } = useProduct();
 
   const [show, setShow] = useState<boolean>(false);
   const [brandImg, setBrandImg] = useState<string>("/IMG/logga.png");
@@ -102,15 +104,22 @@ export const Navbar = () => {
                     checkLocation ? "text-secondary-color" : "text-white"
                   }`}
                 >
-                  <li
-                    className="cursor-pointer"
-                    onClick={() => navigate("/shop/kaffe")}
-                  >
-                    Kaffe
-                  </li>
-                  <li>Tillbehör</li>
-                  <li>Merch</li>
-                  <li>Kontakta oss</li>
+                  {categorys &&
+                    categorys.map((res, index) => (
+                      <li
+                        className="cursor-pointer"
+                        key={index}
+                        onClick={() => {
+                          navigate(
+                            "shop/" + encodeURIComponent(res.name.toLowerCase())
+                          );
+                          setShow(false);
+                        }}
+                      >
+                        {decodeURIComponent(res.name)}
+                      </li>
+                    ))}
+                  <li className="cursor-pointer">Kontakta oss</li>
                 </ul>
               </div>
             </div>

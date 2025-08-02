@@ -42,3 +42,13 @@ export const updateCategory = async (category: FormData, id: number) => {
         throw ex;
     }
 }
+
+export const deleteCategory = async (id: number) => {
+    try {
+        const response = await axios.delete(`${API_URL}/${id}`);
+        return response.status;
+    } catch (ex) {
+        console.error(ex);
+        throw ex;
+    }
+}

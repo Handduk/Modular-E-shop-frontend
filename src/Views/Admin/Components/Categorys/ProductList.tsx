@@ -51,7 +51,7 @@ export const ProductList = () => {
                 onClick={() => handleNavigate(cat)}
               >
                 <img
-                  src={cat.imageUrl}
+                  src={cat.image}
                   alt={cat.name}
                   className="rounded-2xl inset-0 w-full h-full object-cover"
                 />

@@ -17,7 +17,7 @@ export const AddCategory = ({
     id: 0,
     name: "",
     description: "",
-    imageUrl: "",
+    image: "",
   });
   const [image, setImage] = useState<File | null>(null);
 

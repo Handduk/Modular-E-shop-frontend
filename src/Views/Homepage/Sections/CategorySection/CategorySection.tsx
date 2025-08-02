@@ -13,9 +13,12 @@ export const CategorySection = () => {
       {categorys &&
         categorys.map((cat, index) => (
           <div className="w-full pl-4 pb-4" key={index}>
-            <div className="h-[175px] border border-secondary-color rounded-[2.5px] border-solid">
+            <div
+              className="h-[175px] border border-secondary-color rounded-[2.5px] border-solid
+            md:h-[250px] lg:h-[400px]"
+            >
               <img
-                src={cat.imageUrl}
+                src={cat.image}
                 alt={cat.name}
                 className="h-full w-full object-cover cursor-pointer rounded-[5px]"
                 onClick={() => navigate(`shop/${cat.name.toLowerCase()}`)}
@@ -24,7 +27,7 @@ export const CategorySection = () => {
             <div className="flex justify-center mb-2">
               <div
                 onClick={() => navigate(`/shop/${cat.name.toLowerCase()}`)}
-                className="text-secondary-color font-semibold"
+                className="text-secondary-color font-semibold lg:text-2xl"
               >
                 {cat.name}
               </div>
