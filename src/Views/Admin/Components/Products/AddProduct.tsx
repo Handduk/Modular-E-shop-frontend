@@ -2,10 +2,12 @@ import { useState } from "react";
 import { Product } from "../../../../Models/Product";
 import {
   handleAddOption,
-  handleAddVariant,
   handleChangeProduct,
   handlePostProduct,
+  initVariant,
 } from "../../../../Hooks/Products/AddEdit";
+import { Variant } from "../../../../Models/Variant";
+import { HandleVariant } from "../../../../Components/AddEditProd/HandleVariant";
 
 interface AddProductProps {
   id: number;
@@ -36,7 +38,7 @@ export const AddProduct = ({
   const [product, setProduct] = useState<Product>(defaultValue);
   const [images, setImages] = useState<File[]>([]);
   const [newOption, setNewOption] = useState<string>("");
-  const [newVariant, setNewVariant] = useState<string>("");
+  const [newVariant, setNewVariant] = useState<Variant>(initVariant);
 
   const categoryId = id;
 
@@ -163,49 +165,12 @@ export const AddProduct = ({
               Storlek
             </label>
 
-            <div className="flex flex-row items-center mb-2">
-              <input
-                id="variants"
-                className="w-44 h-10 border !border-neutral-500 !rounded-md px-2 bg-neutral-200"
-                type="text"
-                name="variants"
-                placeholder="Ex: S, M, 100g, 1kg"
-                value={newVariant}
-                onChange={(e) => {
-                  setNewVariant(e.target.value);
-                }}
-              />
-              {product && product.variants && product.variants.length > 0 && (
-                <div className="flex flex-row flex-wrap items-center">
-                  {product.variants.map((variant, index) => (
-                    <div
-                      key={index}
-                      className="h-10 flex items-center bg-secondary-color text-main-color px-2 py-1 rounded-md ms-2 cursor-pointer"
-                      onClick={() => {
-                        setProduct((prev) => ({
-                          ...prev,
-                          variants: prev.variants?.filter(
-                            (opt) => opt !== variant
-                          ),
-                        }));
-                      }}
-                    >
-                      {variant}
-                    </div>
-                  ))}
-                </div>
-              )}
-              <button
-                className="h-10 w-10 border !border-neutral-500 !rounded-md bg-neutral-200 ms-2 font-bold !text-xl
-              hover:bg-neutral-300 transition-all duration-200 ease-in-out"
-                type="button"
-                onClick={(e) =>
-                  handleAddVariant(e, newVariant, setProduct, setNewVariant)
-                }
-              >
-                +
-              </button>
-            </div>
+            <HandleVariant
+              product={product}
+              setProduct={setProduct}
+              newVariant={newVariant}
+              setNewVariant={setNewVariant}
+            />
             <label htmlFor="images" className="self-start mb-1 ms-1">
               Produktbilder
             </label>

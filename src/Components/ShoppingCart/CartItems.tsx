@@ -1,8 +1,8 @@
 import { useCart } from "../../Context/CartContext";
-import { categoryList } from "../../Views/Homepage/Sections/CategorySection/CategorySection";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { getSalesPrice } from "../../Handlers/SalesPrice";
+import { useProduct } from "../../Context/ProductContext";
 
 interface CartItemsProps {
   id: number;
@@ -12,7 +12,9 @@ interface CartItemsProps {
 
 export const CartItems = ({ id, categoryId, quantity }: CartItemsProps) => {
   const { removeFromCart } = useCart();
-  const category = categoryList.find((i) => i.id === categoryId);
+  const { categorys } = useProduct();
+  const category = categorys.find((i) => i.id === categoryId);
+  if (category?.products === undefined) return null;
   const item = category?.products.find((i) => i.id === id);
   if (category === null) return null;
   if (item === null) return null;

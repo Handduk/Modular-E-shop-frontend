@@ -10,6 +10,9 @@ import {
 import { Category } from "../../../../Models/Category";
 import { AddProduct } from "./AddProduct";
 import { EditProduct } from "./EditProduct/EditProduct";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPen } from "@fortawesome/free-solid-svg-icons";
+import { EditCategory } from "../Categorys/EditCategory";
 
 export const AddCategoryProduct = () => {
   const { id } = useURLId();
@@ -26,11 +29,15 @@ export const AddCategoryProduct = () => {
     price: 0,
     categoryId: 0,
   });
-  const [showModal, setShowModal] = useState(false);
-  const [showProductModal, setShowProductModal] = useState(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showProductModal, setShowProductModal] = useState<boolean>(false);
+  const [showEditCategoryModal, setShowEditCategoryModal] =
+    useState<boolean>(false);
   const [newProd, setNewProd] = useState<boolean>(false);
   const [deletedProd, setDeletedProd] = useState<boolean>(false);
   const [updatedProduct, setUpdatedProduct] = useState<boolean>(false);
+  const [deleteCategory, setDeletedCategory] = useState<boolean>(false);
+  const [updateCategory, setUpdatedCategory] = useState<boolean>(false);
 
   const category = getStorage("category") as Category;
 
@@ -56,14 +63,35 @@ export const AddCategoryProduct = () => {
     setShowProductModal(true);
   };
 
+  const handleCategoryModal = () => {
+    setShowEditCategoryModal(true);
+    setUpdatedCategory(false);
+    setDeletedCategory(false);
+  };
+
   useEffect(() => {
     fetchCategorys();
-  }, [id, newProd, deletedProd]);
+  }, [
+    id,
+    newProd,
+    deletedProd,
+    updatedProduct,
+    deleteCategory,
+    updateCategory,
+  ]);
 
   return (
     <div className="h-[calc(100vh-80px)] text-center">
-      <div>
-        <h1>{category && category.name}</h1>
+      <div className="w-full h-fit flex justify-end">
+        <div className="w-1/2 flex flex-row items-center justify-between me-[48px]">
+          <h1>{category && category.name}</h1>
+          <span title="Redigera kategori" className="text-2xl cursor-pointer">
+            <FontAwesomeIcon
+              icon={faPen}
+              onClick={() => handleCategoryModal()}
+            />
+          </span>
+        </div>
       </div>
       <div className="flex flex-row flex-wrap mx-4 mt-4">
         <div className="w-full flex flex-row flex-wrap gap-4">
@@ -112,6 +140,13 @@ export const AddCategoryProduct = () => {
         setUpdatedProduct={setUpdatedProduct}
         show={showProductModal}
         setShow={setShowProductModal}
+      />
+      <EditCategory
+        cat={category}
+        show={showEditCategoryModal}
+        setShow={setShowEditCategoryModal}
+        setDeletedCat={setDeletedCategory}
+        setUpdatedCat={setUpdatedCategory}
       />
     </div>
   );

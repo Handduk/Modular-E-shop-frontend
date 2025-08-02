@@ -14,14 +14,15 @@ export const ProductPosts = ({ products }: ProductPostsProps) => {
       {products &&
         products.map((res) => (
           <div
-            className=" w-6/12 h-full cursor-pointer pl-4 pb-4"
+            className="w-1/2 h-full pl-4 pb-4 md:w-1/3 lg:w-1/4"
             key={res.id}
-            onClick={() => navigate(`/product?id=${res.id}`)}
           >
             <img
               src={res.images[0]}
               alt={res.name}
-              className="h-full w-full object-cover rounded-[2px]"
+              className="h-52 w-full object-cover rounded-[2px] cursor-pointer 
+               md:h-72 lg:w-10/12 lg:h-96"
+              onClick={() => navigate(`/product?id=${res.id}`)}
             />
             <div className="font-semibold text-neutral-950">
               <div className="flex">{res.name}</div>

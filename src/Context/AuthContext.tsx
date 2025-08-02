@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { getStorage, removeStorage, setStorage } from "../Hooks/localstorage";
+import { useLocation } from "react-router-dom";
 
 interface User {
   username: string;
@@ -16,8 +17,10 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const location = useLocation();
 
   useEffect(() => {
+    if (location.pathname !== "/login") return;
     const savedUser = getStorage("user") as User | null;
     if (savedUser) {
       setUser(savedUser);

@@ -3,20 +3,33 @@ import { Homepage } from "./Views/Homepage/Main/Homepage";
 import { AboutUs } from "./Views/AboutUs/AboutUs";
 import { Login } from "./Views/Login/Login";
 import { Shop } from "./Views/Shop/Shop";
-import { categoryList } from "./Views/Homepage/Sections/CategorySection/CategorySection";
-import { ProductPage } from "./Views/ProductPage/ProductPage";
+import { ProductPage } from "./Views/Shop/ProductPage";
 import { Admin } from "./Views/Admin/Admin";
-import { Category1 } from "./Views/Shop/Categorys/Category1/Category1";
 import { AddCategoryProduct } from "./Views/Admin/Components/Products/CategoryProducts";
 import { ProtectedRoute } from "./Wrappers/ProtectedRoute";
+import { Checkout } from "./Views/Checkout/checkout";
+import { useProduct } from "./Context/ProductContext";
+import { Products } from "./Views/Shop/Products";
 
 export const PageRoutes = () => {
+  const { categorys } = useProduct();
   return (
     <>
       <Routes>
         <Route path="/" element={<Homepage />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/shop" element={<Shop />} />
+        <Route path="/product" element={<ProductPage />} />
+        <Route path="/checkout" element={<Checkout />} />
+        {categorys &&
+          categorys.map((res, index) => (
+            <Route
+              path={`shop/${res.name}`}
+              element={<Products />}
+              key={index}
+            />
+          ))}
         <Route
           path="/admin"
           element={<ProtectedRoute role="ADMIN">{<Admin />}</ProtectedRoute>}
@@ -29,16 +42,6 @@ export const PageRoutes = () => {
             </ProtectedRoute>
           }
         />
-        <Route path="/shop" element={<Shop />} />
-        {categoryList &&
-          categoryList.map((res, index) => (
-            <Route
-              path={`shop/${res.name}`}
-              element={<Category1 />}
-              key={index}
-            />
-          ))}
-        <Route path="product" element={<ProductPage />} />
       </Routes>
     </>
   );

@@ -1,21 +1,30 @@
 import { useCart } from "../../Context/CartContext";
 import { CartItems } from "./CartItems";
-import { categoryList } from "../../Views/Homepage/Sections/CategorySection/CategorySection";
 import { useEffect, useState } from "react";
 import { getSalesPrice } from "../../Handlers/SalesPrice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
+import { useNavigate } from "react-router-dom";
+import { useProduct } from "../../Context/ProductContext";
 
 export const ShoppingCart = () => {
   const { closeCart, shoppingCartItems, isOpen } = useCart();
+  const { categorys } = useProduct();
   const [sale, setSale] = useState<number>(0);
+
+  const navigate = useNavigate();
+
+  const handleNavigate = () => {
+    navigate("/checkout");
+    closeCart();
+  };
 
   useEffect(() => {
     const getTotalSale = () => {
       let totalSale: number[] = [];
       let isSale = false;
       shoppingCartItems.map((res) => {
-        const category = categoryList.find((i) => i.id === res.categoryId);
+        const category = categorys.find((i) => i.id === res.categoryId);
         if (!category?.products) return;
         const item = category?.products.find((i) => i.id === res.id);
         for (let i = 0; i < res.quantity; i++) {
@@ -40,7 +49,7 @@ export const ShoppingCart = () => {
 
   const getTotalPrice = () => {
     const total = shoppingCartItems.reduce((total, cartItem) => {
-      const category = categoryList.find((i) => i.id === cartItem.categoryId);
+      const category = categorys.find((i) => i.id === cartItem.categoryId);
       if (!category?.products) return total;
       const item = category?.products.find((i) => i.id === cartItem.id);
       return total + (item?.price || 0) * cartItem.quantity;
@@ -50,20 +59,21 @@ export const ShoppingCart = () => {
 
   return (
     <span
-      className={`bg-main-color z-[100] w-[90vw] h-[calc(100vh)] py-2 px-4 flex flex-col items-center fixed overflow-y-hidden transition-all duration-200 ease-linear right-0 top-20 
+      className={`fixed top-0 bg-main-color z-[100] w-[90vw] h-screen py-2 flex flex-col items-center overflow-hidden right-0
+        md:w-1/4 
   ${
     isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-  }`}
+  } transition-all duration-200 ease-linear`}
     >
-      <div className="flex justify-between items-center w-full py-2">
-        <div className="text-xl font-semibold self-center">Varukorg</div>
-        <button onClick={() => closeCart()}>
+      <div className="flex justify-between items-center w-full h-1/12">
+        <div className="text-xl font-semibold self-center ps-2">Varukorg</div>
+        <div className="px-3 py-2" onClick={() => closeCart()}>
           <FontAwesomeIcon icon={faX} />
-        </button>
+        </div>
       </div>
 
-      <div className="py-2">
-        <div className="overflow-y-scroll space-y-2">
+      <div className="py-2 md:w-full">
+        <div className="overflow-y-scroll space-y-2 md:w-full">
           {shoppingCartItems.map((res) => (
             <CartItems key={res.id} {...res} />
           ))}
@@ -83,7 +93,10 @@ export const ShoppingCart = () => {
               </>
             )}
           </div>
-          <div className="sticky flex flex-col w-[333px] border-t-[color:var(--bs-gray)] bg-[white] pt-2 border-t border-solid bottom-0">
+          <div
+            className="sticky flex flex-col w-[333px] border-t-[color:var(--bs-gray)] bg-[white] pt-2 border-t border-solid bottom-0
+          md:w-full md:px-4"
+          >
             <div className="flex justify-between font-semibold mb-4">
               <div className="">Totalt</div>
               <div className="">
@@ -92,7 +105,10 @@ export const ShoppingCart = () => {
                   : `${getTotalPrice().toFixed(2)} kr`}
               </div>
             </div>
-            <button className="bg-secondary-color py-3 text-main-color mb-4 rounded">
+            <button
+              className="bg-secondary-color py-3 text-main-color mb-4 rounded"
+              onClick={() => handleNavigate()}
+            >
               GÅ TILL KASSAN
             </button>
           </div>

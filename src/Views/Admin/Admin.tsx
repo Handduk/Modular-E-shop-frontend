@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Accounts } from "./Components/Accounts/Accounts";
 import { Dashboard } from "./Components/Dashboard";
-import { ProductList } from "./Components/Products/ProductList";
+import { ProductList } from "./Components/Categorys/ProductList";
 import { getStorage, setStorage } from "../../Hooks/localstorage";
 import { useAuth } from "../../Context/AuthContext";
 
@@ -35,7 +35,7 @@ export const Admin = () => {
 
   return (
     <>
-      <div className="contentBody">
+      <div className="contentBody p-0">
         <div className="content h-full">
           <div className="w-full h-full flex">
             <nav className="w-1/8 bg-secondary-color flex flex-col py-2">

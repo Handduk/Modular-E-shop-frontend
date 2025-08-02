@@ -23,6 +23,21 @@ export const getProductById = async (id: number) => {
     }
 }
 
+export const getProductListForCheckout = async (ids: number[]) => {
+    if (!ids || ids.length === 0) {
+        console.error("IDs array is undefined, null, or empty");
+        return [];
+    }
+    try {
+        console.log(`Fetching products for checkout with IDs: ${ids}`);
+        const response = await axios.get<Product[]>(`${API_URL}/${ids}`);
+        return response.data;
+    } catch (ex) {
+        console.error(`Error fetching products for checkout: ${ex}`);
+        throw ex
+    }
+}
+
 export const createProduct = async (product: FormData) => {
     try{
         const response = await axios.post<Product>(API_URL, product);
