@@ -64,11 +64,11 @@ export const ProductPage = () => {
   return (
     <div className="contentBody">
       <div className="content lg:h-full lg:flex lg:justify-center lg:items-center">
-        <div className="flex flex-col items-center justify-center lg:h-full lg:flex-row ">
-          <div className="cursor-pointer mb-2 lg:h-3/4 lg:w-1/2">
+        <div className="flex flex-col items-center justify-center lg:h-full lg:w-full lg:flex-row lg:mt-[80px] lg:space-x-10">
+          <div className="cursor-pointer mb-2 lg:h-full lg:w-full">
             {product && product.images && (
               <img
-                className="lg:h-full"
+                className="lg:h-full object-cover"
                 src={
                   typeof product?.images[0] === "string"
                     ? product.images[0]
@@ -155,7 +155,7 @@ export const ProductPage = () => {
                               className={`h-full flex items-center p-2 py-2 me-2 rounded-md cursor-pointer
                 ${
                   isSelected
-                    ? "bg-lime-500 text-black"
+                    ? "bg-yellow-500 text-black"
                     : "bg-secondary-color text-main-color"
                 }`}
                               onClick={() => setChosenVariant(variant)}

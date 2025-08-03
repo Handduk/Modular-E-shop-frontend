@@ -59,8 +59,8 @@ export const ShoppingCart = () => {
 
   return (
     <span
-      className={`fixed top-0 bg-main-color z-[100] w-[90vw] h-screen py-2 flex flex-col items-center overflow-hidden right-0
-        md:w-1/4 
+      className={`fixed top-0 bg-main-color z-[100] w-[80vw] h-screen py-2 flex flex-col items-center overflow-hidden right-0
+        md:w-2/6 xl:w-1/4
   ${
     isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
   } transition-all duration-200 ease-linear`}
@@ -72,7 +72,7 @@ export const ShoppingCart = () => {
         </div>
       </div>
 
-      <div className="py-2 md:w-full">
+      <div className="py-2 w-full">
         <div className="overflow-y-scroll space-y-2 md:w-full">
           {shoppingCartItems.map((res) => (
             <CartItems key={res.id} {...res} />
@@ -94,8 +94,8 @@ export const ShoppingCart = () => {
             )}
           </div>
           <div
-            className="sticky flex flex-col w-[333px] border-t-[color:var(--bs-gray)] bg-[white] pt-2 border-t border-solid bottom-0
-          md:w-full md:px-4"
+            className="sticky flex flex-col w-full border-t-[color:var(--bs-gray)] bg-[white] pt-2 border-t border-solid bottom-0
+          px-4"
           >
             <div className="flex justify-between font-semibold mb-4">
               <div className="">Totalt</div>

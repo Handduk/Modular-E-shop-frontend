@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Section, sectionData } from "../../../../Models/Section";
 import { useProduct } from "../../../../Context/ProductContext";
 import { Product } from "../../../../Models/Product";
 
 export const Topsection = () => {
-  const [section, setSection] = useState<Section>(sectionData[0]);
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const { products, mainPageProduct, searchForProduct } = useProduct();
@@ -25,11 +23,6 @@ export const Topsection = () => {
 
   const navigate = useNavigate();
 
-  const getInfoLink = () => {
-    const infoLink = section.link.split("/")[1];
-    navigate(`/${infoLink}`);
-  };
-
   return (
     <>
       <section className="flex flex-col items-center w-full mb-4 lg:flex-row px-4">
@@ -42,7 +35,7 @@ export const Topsection = () => {
               alt="product"
               className="h-96 w-full object-cover object-bottom cursor-pointer my-2
             md:h-120 md:object-[25%_85%] lg:object-[25%_75%] lg:h-140 rounded-md border"
-              onClick={() => navigate("shop/kaffe")}
+              onClick={() => navigate(`/product?id=${product?.id}`)}
             />
           </div>
         )}
@@ -56,7 +49,7 @@ export const Topsection = () => {
           <div className="w-full mb-6 flex items-center lg:mb-0 lg:px-4">
             <button
               className="border border-black py-2.5 px-4 rounded-xs !mr-6"
-              onClick={() => navigate("")}
+              onClick={() => navigate(`/product?id=${product?.id}`)}
             >
               Läs mer
             </button>
