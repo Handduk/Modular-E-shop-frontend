@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Product } from "../../../../../Models/Product";
 import {
   deleteProduct,
+  getProductById,
   updateProduct,
 } from "../../../../../services/productApi";
 import { removeStorage } from "../../../../../Hooks/localstorage";
@@ -11,6 +12,7 @@ import {
 } from "../../../../../Hooks/Products/AddEdit";
 import { Variant } from "../../../../../Models/Variant";
 import { HandleVariant } from "../../../../../Components/AddEditProd/HandleVariant";
+import { UpdateProductDTO } from "../../../../../Models/dto/updateProductDTO";
 
 interface EditProductProps {
   prod: Product;
@@ -33,6 +35,22 @@ export const EditProduct = ({
 
   const [newVariant, setNewVariant] = useState<Variant>(initVariant);
 
+  const getProduct = async () => {
+    const response = await getProductById(prod.id);
+    if (response) {
+      setProduct(response);
+      setImagePreview([]);
+      setImages([]);
+      setNewVariant(initVariant);
+    }
+  };
+
+  useEffect(() => {
+    if (show) {
+      getProduct();
+    }
+  }, [prod]);
+
   const handleClose = () => {
     setShow(false);
     setImagePreview([]);
@@ -42,6 +60,7 @@ export const EditProduct = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    if (!product) return;
     setProduct((prevProduct) => ({
       ...prevProduct,
       [name]: value,
@@ -63,26 +82,44 @@ export const EditProduct = ({
   const handleUpdateProduct = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!product) return;
+    const dto: UpdateProductDTO = {
+      brand: product.brand,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      discount: product.discount,
+      options: product.options,
+      newImages: images,
+      keptImages: product.images,
+      variants: product.variants || [],
+      variantImages: [],
+    };
+    if (!dto) return;
     const formData = new FormData();
-    formData.append("name", product.name);
-    formData.append("categoryId", product.categoryId.toString());
-    formData.append("description", product.description);
-    formData.append("brand", JSON.stringify(product.brand));
-    formData.append("discount", product.discount?.toString() || "");
-    formData.append("price", product.price.toString());
+    formData.append("name", dto.name);
+    formData.append("description", dto.description);
+    formData.append("brand", dto.brand || "");
+    formData.append("discount", dto.discount?.toString() || "");
+    formData.append("price", dto.price.toString());
 
-    product.options?.forEach((option) => {
+    dto.options?.forEach((option) => {
       formData.append("options", option || "");
     });
-    product.variants?.forEach((variant) => {
-      formData.append("variants", JSON.stringify(variant) || "");
+
+    formData.append("variantJson", JSON.stringify(dto.variants));
+
+    dto.newImages.forEach((image) => {
+      formData.append("newImages", image);
     });
 
-    product.images.forEach((image) => {
+    dto.keptImages.forEach((image) => {
       formData.append("keptImages", image);
     });
-    images.forEach((image) => {
-      formData.append("newImages", image);
+
+    dto.variantImages.forEach(({ variantId, file }) => {
+      const filename = `variant_${variantId}_${file.name}`;
+      const blob = new File([file], filename, { type: file.type });
+      formData.append("variantImages", blob);
     });
 
     try {
@@ -125,12 +162,6 @@ export const EditProduct = ({
       setDeletedProd(true);
     }
   };
-
-  useEffect(() => {
-    if (show) {
-      setProduct(prod);
-    }
-  }, [prod]);
 
   return (
     product && (

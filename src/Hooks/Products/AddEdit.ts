@@ -1,3 +1,4 @@
+import { CreateProductDTO } from "../../Models/dto/createProductDTO";
 import { Product } from "../../Models/Product";
 import { Variant } from "../../Models/Variant";
 import { createProduct } from "../../services/productApi";
@@ -5,8 +6,9 @@ import { createProduct } from "../../services/productApi";
 export  const initVariant: Variant = {
     id: 0,
     productId: 0,
-    name: "",
-    price: 0,
+    variantName: "",
+    variantPrice: 0,
+    variantImg: "",
   };
 
 export const handleChangeProduct = (e: React.ChangeEvent<HTMLInputElement>, setProduct: React.Dispatch<React.SetStateAction<Product>>) => {
@@ -26,10 +28,9 @@ export const handleChangeProduct = (e: React.ChangeEvent<HTMLInputElement>, setP
       setProduct: React.Dispatch<React.SetStateAction<Product>>,
      setNewVariant: React.Dispatch<React.SetStateAction<Variant>>) => {
     e.preventDefault();
-    console.log(newVariant);
-    if (newVariant.name === "" && (product.variants?.length === 0 || !product.variants)) { 
+    if (newVariant.variantName === "" && (product.variants?.length === 0 || !product.variants)) { 
       if(window.confirm("Du har inte angett en variant, vill du fortsätta?")) {
-        const productPrice = newVariant.price;
+        const productPrice = newVariant.variantPrice;
         const initProduct = {
           ...product,
           variants: [],
@@ -47,7 +48,6 @@ export const handleChangeProduct = (e: React.ChangeEvent<HTMLInputElement>, setP
           variants: [...variant, newVariant],
         } as Product;
       }
-      console.log(prev)
       return prev;
     });
     setNewVariant(initVariant);
@@ -76,22 +76,41 @@ export const handleChangeProduct = (e: React.ChangeEvent<HTMLInputElement>, setP
 
   export const setFormData = (product : Product, id : number, images : File[]) => {
     if (!product) return;
-
+    const dto: CreateProductDTO = {
+      categoryId: id,
+      brand: product.brand,
+      name: product.name,
+      description: product.description,
+      options: product.options,
+      price: product.price,
+      discount: product.discount,
+      images: images,
+      variants: product.variants || [],
+      variantImages: [],
+    } 
+    if (!dto) return;
     const formData = new FormData();
+    formData.append("categoryId", dto.categoryId.toString());
+    formData.append("name", dto.name);
+    formData.append("description", dto.description);
+    formData.append("brand", dto.brand || "");
+    formData.append("discount", dto.discount?.toString() || "");
+    formData.append("price", dto.price.toString());
 
-    formData.append("name", product?.name || "");
-    formData.append("categoryId", id.toString());
-    formData.append("description", product?.description || "");
-    formData.append("brand", product?.brand || "");
-    formData.append("discount", product?.discount?.toString() || "");
-    formData.append("price", product?.price.toString().replace(",", ".") || "0");
+    dto.options?.forEach((option) => {
+      formData.append("options", option || "");
+    });
 
-    product.options?.forEach((option) => {
-      formData.append("options", option || "");})
-      product.variants?.forEach((variant) => {
-      formData.append("variants", JSON.stringify(variant) || "");});
-    images.forEach((image) => {
-      formData.append("images", image);
+    dto.images.forEach((file) => {
+      formData.append("images", file);
+    });
+
+    formData.append("variantJson", JSON.stringify(dto.variants));
+
+    dto.variantImages.forEach(({ variantId, file }) => {
+      const filename = `variant_${variantId}_${file.name}`;
+      const blob = new File([file], filename, { type: file.type });
+      formData.append("variantImages", blob);
     });
     return formData as FormData;
   }
@@ -115,7 +134,6 @@ export const handleChangeProduct = (e: React.ChangeEvent<HTMLInputElement>, setP
         }
       const response = await createProduct(formData);
       console.log("Product created:", response);
-      console.log("FormData:", formData);
       setNewProd(true);
       setShow(false);
       setProduct({

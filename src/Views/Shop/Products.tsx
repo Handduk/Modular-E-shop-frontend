@@ -44,12 +44,10 @@ export const Products = () => {
   const paginate = (pagenumber: number) => setCurrentPage(pagenumber);
 
   useEffect(() => {
-    console.log(location.pathname);
     setDefaultSort([...prods]);
   }, []);
 
   useEffect(() => {
-    console.log("location", location.pathname);
     getCategory();
     getProducts();
   }, [category, products, location.pathname]);
@@ -87,7 +85,7 @@ export const Products = () => {
   };
 
   return (
-    <div className="contentBody">
+    <div className="contentBody max-lg:py-[80px]">
       <div className="content">
         <div className="w-full mb-6 px-3 pt-2">
           {category && (

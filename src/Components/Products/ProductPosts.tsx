@@ -13,10 +13,7 @@ export const ProductPosts = ({ products }: ProductPostsProps) => {
     <div className="w-full h-1/2 flex flex-wrap pr-4">
       {products &&
         products.map((res) => (
-          <div
-            className="w-1/2 h-full pl-4 pb-4 md:w-1/3 lg:w-1/4"
-            key={res.id}
-          >
+          <div className="w-1/2 h-fit pl-4 pb-4 md:w-1/3 lg:w-1/4" key={res.id}>
             <img
               src={res.images[0]}
               alt={res.name}
