@@ -1,6 +1,7 @@
 export type Variant = {
     id: number;
     productId: number;
-    name: string;
-    price: number;
+    variantName: string;
+    variantPrice: number;
+    variantImg?: string;
 }

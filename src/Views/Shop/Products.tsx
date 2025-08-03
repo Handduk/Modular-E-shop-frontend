@@ -44,12 +44,10 @@ export const Products = () => {
   const paginate = (pagenumber: number) => setCurrentPage(pagenumber);
 
   useEffect(() => {
-    console.log(location.pathname);
     setDefaultSort([...prods]);
   }, []);
 
   useEffect(() => {
-    console.log("location", location.pathname);
     getCategory();
     getProducts();
   }, [category, products, location.pathname]);

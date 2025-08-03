@@ -6,6 +6,8 @@ import { Product } from "../../Models/Product";
 import { getSalesPrice } from "../../Handlers/SalesPrice";
 import { useProduct } from "../../Context/ProductContext";
 import { getSingleCategory } from "../../services/categoryApi";
+import { getProductById } from "../../services/productApi";
+import { Variant } from "../../Models/Variant";
 
 export const ProductPage = () => {
   const { setCartQuantity } = useCart();
@@ -14,6 +16,7 @@ export const ProductPage = () => {
   const [category, setCategory] = useState<Category | null>(null);
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedCheck, setSelectedCheck] = useState<string | null>(null);
+  const [chosenVariant, setChosenVariant] = useState<Variant | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -21,13 +24,14 @@ export const ProductPage = () => {
     getProduct();
   }, [products, categorys, id]);
 
-  const getProduct = () => {
+  const getProduct = async () => {
     if (!products || !products.length || !id) return;
 
-    const singleProduct = products.find((prod) => prod.id === id);
-    if (singleProduct) {
-      setProduct(singleProduct);
-      getCategory(singleProduct.categoryId);
+    const response = await getProductById(id);
+    if (response) {
+      setProduct(response);
+      getCategory(response.categoryId);
+      setChosenVariant(response.variants ? response.variants[0] : null);
       setLoading(false);
     }
   };
@@ -76,7 +80,10 @@ export const ProductPage = () => {
           </div>
           <div className="w-11/12 flex flex-col space-y-2">
             <div className="text-black text-2xl font-semibold">
-              {product?.name}
+              {product?.name}{" "}
+              <span className="secondary-color font-normal">
+                {chosenVariant?.variantName}
+              </span>
             </div>
             <div className="flex flex-row space-x-2 items-end">
               {product?.discount ? (
@@ -88,15 +95,16 @@ export const ProductPage = () => {
                       inkl. moms
                     </span>
                   </span>
-                  <span className="text-neutral-600 text-md">
-                    Ordinarie pris:{" "}
+                  <div className="text-neutral-600 text-md">
+                    Ordinarie pris:
                     <span className="line-through">{product.price} kr</span>
-                  </span>
+                  </div>
                 </div>
               ) : (
-                <span className="font-semibold text-xl">
-                  {product?.price} kr
-                </span>
+                <div className="font-semibold text-xl">
+                  {!chosenVariant ? product?.price : chosenVariant.variantPrice}{" "}
+                  kr
+                </div>
               )}
             </div>
             {category?.products && category.products.length > 0 && (
@@ -136,19 +144,28 @@ export const ProductPage = () => {
                   </div>
                 )}
                 {product?.variants && (
-                  <div className="flex flex-col space-y-2">
-                    <label htmlFor="size">Storlek:</label>
-                    <select
-                      name="size"
-                      id="size"
-                      className="w-full border border-black h-12 px-2"
-                    >
-                      {product.variants.map((size, index) => (
-                        <option key={index} value={size}>
-                          {size}
-                        </option>
-                      ))}
-                    </select>
+                  <div className="w-full h-full flex flex-row items-center">
+                    {product.variants.length > 0 && (
+                      <div className="w-fit my-2 h-full flex flex-row flex-wrap items-center">
+                        {product.variants.map((variant, index) => {
+                          const isSelected = chosenVariant?.id === variant.id;
+                          return (
+                            <div
+                              key={index}
+                              className={`h-full flex items-center p-2 py-2 me-2 rounded-md cursor-pointer
+                ${
+                  isSelected
+                    ? "bg-lime-500 text-black"
+                    : "bg-secondary-color text-main-color"
+                }`}
+                              onClick={() => setChosenVariant(variant)}
+                            >
+                              <div>{variant.variantName}</div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                 )}
               </>

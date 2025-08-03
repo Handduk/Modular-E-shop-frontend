@@ -26,13 +26,13 @@ export const HandleVariant = ({
             id="variantName"
             className="w-44 h-10 border !border-neutral-500 !rounded-md px-2 bg-neutral-200"
             type="text"
-            name="name"
+            name="variantName"
             placeholder="Ex: S, M, 100g, 1kg"
-            value={newVariant.name}
+            value={newVariant.variantName}
             onChange={(e) => {
               setNewVariant((prev) => ({
                 ...prev,
-                name: e.target.value,
+                variantName: e.target.value,
               }));
             }}
           />
@@ -46,14 +46,15 @@ export const HandleVariant = ({
             id="variantPrice"
             className="w-44 h-10 border !border-neutral-500 !rounded-md px-2 bg-neutral-200"
             type="number"
-            name="price"
+            name="variantPrice"
             step="any"
             placeholder="Ex: 100, 200"
-            value={newVariant.price}
+            value={newVariant.variantPrice}
             onChange={(e) => {
               setNewVariant((prev) => ({
                 ...prev,
-                price: parseInt(e.target.value, 10),
+                productId: product.id,
+                variantPrice: parseInt(e.target.value, 10),
               }));
             }}
           />
@@ -75,8 +76,8 @@ export const HandleVariant = ({
                 }}
               >
                 <div className="flex flex-col gap-2">
-                  <span>{variant.name}</span>
-                  <span>{variant.price} kr</span>
+                  <span>{variant.variantName}</span>
+                  <span>{variant.variantPrice} kr</span>
                 </div>
               </div>
             ))}
@@ -87,7 +88,6 @@ export const HandleVariant = ({
                                             hover:bg-neutral-300 transition-all duration-200 ease-in-out"
           type="button"
           onClick={(e) => {
-            console.log(newVariant);
             handleAddVariant(e, newVariant, product, setProduct, setNewVariant);
           }}
         >

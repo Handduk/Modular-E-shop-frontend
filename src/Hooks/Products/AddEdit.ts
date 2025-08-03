@@ -5,8 +5,9 @@ import { createProduct } from "../../services/productApi";
 export  const initVariant: Variant = {
     id: 0,
     productId: 0,
-    name: "",
-    price: 0,
+    variantName: "",
+    variantPrice: 0,
+    variantImg: "",
   };
 
 export const handleChangeProduct = (e: React.ChangeEvent<HTMLInputElement>, setProduct: React.Dispatch<React.SetStateAction<Product>>) => {
@@ -26,10 +27,9 @@ export const handleChangeProduct = (e: React.ChangeEvent<HTMLInputElement>, setP
       setProduct: React.Dispatch<React.SetStateAction<Product>>,
      setNewVariant: React.Dispatch<React.SetStateAction<Variant>>) => {
     e.preventDefault();
-    console.log(newVariant);
-    if (newVariant.name === "" && (product.variants?.length === 0 || !product.variants)) { 
+    if (newVariant.variantName === "" && (product.variants?.length === 0 || !product.variants)) { 
       if(window.confirm("Du har inte angett en variant, vill du fortsätta?")) {
-        const productPrice = newVariant.price;
+        const productPrice = newVariant.variantPrice;
         const initProduct = {
           ...product,
           variants: [],
@@ -47,7 +47,6 @@ export const handleChangeProduct = (e: React.ChangeEvent<HTMLInputElement>, setP
           variants: [...variant, newVariant],
         } as Product;
       }
-      console.log(prev)
       return prev;
     });
     setNewVariant(initVariant);
@@ -115,7 +114,6 @@ export const handleChangeProduct = (e: React.ChangeEvent<HTMLInputElement>, setP
         }
       const response = await createProduct(formData);
       console.log("Product created:", response);
-      console.log("FormData:", formData);
       setNewProd(true);
       setShow(false);
       setProduct({
