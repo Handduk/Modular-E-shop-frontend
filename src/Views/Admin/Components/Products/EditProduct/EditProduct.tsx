@@ -58,7 +58,11 @@ export const EditProduct = ({
     removeStorage("product");
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     if (!product) return;
     setProduct((prevProduct) => ({
@@ -187,7 +191,7 @@ export const EditProduct = ({
               <h1 className="text-center text-3xl font-semibold">
                 {product.name}
               </h1>
-              <div className="flex flex-col items-center mt-4">
+              <div className="flex flex-col items-center mt-4 h-3/4 overflow-auto">
                 <form
                   className="flex flex-col items-center justify-center mt-4 w-8/10"
                   onSubmit={handleUpdateProduct}
@@ -206,13 +210,12 @@ export const EditProduct = ({
                     className="w-full h-10 border !border-neutral-500 !rounded-md mb-4 px-2"
                     onChange={handleChange}
                   />
-                  <input
-                    type="text"
+                  <textarea
                     placeholder="Beskrivning"
                     name="description"
                     value={product.description}
                     required
-                    className="w-full h-10 border !border-neutral-500 !rounded-md mb-4 px-2"
+                    className="w-full min-h-16 max-h-40 border border-neutral-500 rounded-md mb-4 px-2"
                     onChange={handleChange}
                   />
                   <input

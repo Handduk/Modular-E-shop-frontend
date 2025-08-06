@@ -1,7 +1,6 @@
 import { useCart } from "../../Context/CartContext";
 import { CartItems } from "./CartItems";
 import { useEffect, useState } from "react";
-import { getSalesPrice } from "../../Handlers/SalesPrice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
@@ -23,7 +22,7 @@ export const ShoppingCart = () => {
     const getTotalSale = () => {
       let totalSale: number[] = [];
       let isSale = false;
-      shoppingCartItems.map((res) => {
+      /* shoppingCartItems.map((res) => {
         const category = categorys.find((i) => i.id === res.categoryId);
         if (!category?.products) return;
         const item = category?.products.find((i) => i.id === res.id);
@@ -35,7 +34,7 @@ export const ShoppingCart = () => {
             totalSale.push(Number(item?.price));
           }
         }
-      });
+      }); */
 
       if (isSale) {
         const sum = totalSale.reduce((total, val) => total + val, 0);
@@ -49,10 +48,11 @@ export const ShoppingCart = () => {
 
   const getTotalPrice = () => {
     const total = shoppingCartItems.reduce((total, cartItem) => {
-      const category = categorys.find((i) => i.id === cartItem.categoryId);
-      if (!category?.products) return total;
-      const item = category?.products.find((i) => i.id === cartItem.id);
-      return total + (item?.price || 0) * cartItem.quantity;
+      if (!cartItem.product) return total;
+      const itemPrice = cartItem.variant
+        ? cartItem.variant.variantPrice
+        : cartItem.product.price;
+      return total + itemPrice * cartItem.quantity;
     }, 0);
     return total;
   };
@@ -67,15 +67,18 @@ export const ShoppingCart = () => {
     >
       <div className="flex justify-between items-center w-full h-1/12">
         <div className="text-xl font-semibold self-center ps-2">Varukorg</div>
-        <div className="px-3 py-2" onClick={() => closeCart()}>
+        <div className="px-3 py-2 cursor-pointer" onClick={() => closeCart()}>
           <FontAwesomeIcon icon={faX} />
         </div>
       </div>
 
-      <div className="py-2 w-full">
+      <div className="py-2 w-full overflow-auto">
         <div className="overflow-y-scroll space-y-2 md:w-full">
           {shoppingCartItems.map((res) => (
-            <CartItems key={res.id} {...res} />
+            <CartItems
+              key={res.variant ? res.variant.id : res.product.id}
+              item={res}
+            />
           ))}
           <div className="flex flex-col">
             {sale !== 0 && (
@@ -98,7 +101,7 @@ export const ShoppingCart = () => {
           px-4"
           >
             <div className="flex justify-between font-semibold mb-4">
-              <div className="">Totalt</div>
+              <div className="">Pris exkl. Frakt</div>
               <div className="">
                 {sale !== 0
                   ? `${sale?.toFixed(2)} kr`

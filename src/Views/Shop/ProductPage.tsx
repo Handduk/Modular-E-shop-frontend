@@ -1,28 +1,24 @@
 import { useEffect, useState } from "react";
 import { useCart } from "../../Context/CartContext";
 import { useURLId } from "../../Hooks/useURLId";
-import { Category } from "../../Models/Category";
 import { Product } from "../../Models/Product";
 import { getSalesPrice } from "../../Handlers/SalesPrice";
 import { useProduct } from "../../Context/ProductContext";
-import { getSingleCategory } from "../../services/categoryApi";
 import { getProductById } from "../../services/productApi";
 import { Variant } from "../../Models/Variant";
 
 export const ProductPage = () => {
   const { setCartQuantity } = useCart();
   const { id } = useURLId();
-  const { categorys, products } = useProduct();
-  const [category, setCategory] = useState<Category | null>(null);
+  const { products } = useProduct();
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedCheck, setSelectedCheck] = useState<string | null>(null);
   const [chosenVariant, setChosenVariant] = useState<Variant | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
-  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     getProduct();
-  }, [products, categorys, id]);
+  }, [products, id]);
 
   const getProduct = async () => {
     if (!products || !products.length || !id) return;
@@ -30,18 +26,16 @@ export const ProductPage = () => {
     const response = await getProductById(id);
     if (response) {
       setProduct(response);
-      getCategory(response.categoryId);
-      setChosenVariant(response.variants ? response.variants[0] : null);
-      setLoading(false);
-    }
-  };
-
-  const getCategory = async (id: number) => {
-    try {
-      const response = await getSingleCategory(id);
-      setCategory(response);
-    } catch (error) {
-      console.error("failed trying to fetch category.", error);
+      setSelectedCheck(
+        response.options && response.options.length >= 0
+          ? response.options[0]
+          : null
+      );
+      setChosenVariant(
+        response.variants && response.variants?.length <= 0
+          ? response.variants[0]
+          : null
+      );
     }
   };
 
@@ -69,11 +63,7 @@ export const ProductPage = () => {
             {product && product.images && (
               <img
                 className="lg:h-full object-cover"
-                src={
-                  typeof product?.images[0] === "string"
-                    ? product.images[0]
-                    : URL.createObjectURL(product.images[0])
-                }
+                src={product.images[0]}
                 alt={product?.name}
               />
             )}
@@ -107,13 +97,11 @@ export const ProductPage = () => {
                 </div>
               )}
             </div>
-            {category?.products && category.products.length > 0 && (
-              <>
-                <div>
-                  <span>Produkt: </span>
-                  <span className="font-bold">{product?.name}</span>
-                </div>
-                {/* {category.products.length > 1 && (
+            <div>
+              <span>Produkt: </span>
+              <span className="font-bold">{product?.name}</span>
+            </div>
+            {/* {category.products.length > 1 && (
                   <div className="flex flex-row flex-wrap space-x-2 space-y-2">
                     {category.products.map((product, index) => (
                       <img
@@ -126,49 +114,47 @@ export const ProductPage = () => {
                     ))}
                   </div>
                 )} */}
-                {product?.options && (
-                  <div className="flex flex-row space-x-4">
-                    {product.options.map((option, index) => (
-                      <div className="flex items-center" key={index}>
-                        <input
-                          type="checkbox"
-                          id={option}
-                          value={option}
-                          className="size-6 me-2 cursor-pointer"
-                          checked={selectedCheck === option}
-                          onChange={() => handleCheckboxChange(option)}
-                        />
-                        <label htmlFor={option}>{option}</label>
-                      </div>
-                    ))}
+            {product?.options && (
+              <div className="flex flex-row space-x-4">
+                {product.options.map((option, index) => (
+                  <div className="flex items-center" key={index}>
+                    <input
+                      type="checkbox"
+                      id={option}
+                      value={option}
+                      className="size-6 me-2 cursor-pointer"
+                      checked={selectedCheck === option}
+                      onChange={() => handleCheckboxChange(option)}
+                    />
+                    <label htmlFor={option}>{option}</label>
                   </div>
-                )}
-                {product?.variants && (
-                  <div className="w-full h-full flex flex-row items-center">
-                    {product.variants.length > 0 && (
-                      <div className="w-fit my-2 h-full flex flex-row flex-wrap items-center">
-                        {product.variants.map((variant, index) => {
-                          const isSelected = chosenVariant?.id === variant.id;
-                          return (
-                            <div
-                              key={index}
-                              className={`h-full flex items-center p-2 py-2 me-2 rounded-md cursor-pointer
+                ))}
+              </div>
+            )}
+            {product?.variants && (
+              <div className="w-full h-full flex flex-row items-center">
+                {product.variants.length > 0 && (
+                  <div className="w-fit my-2 h-full flex flex-row flex-wrap items-center">
+                    {product.variants.map((variant, index) => {
+                      const isSelected = chosenVariant?.id === variant.id;
+                      return (
+                        <div
+                          key={index}
+                          className={`h-full flex items-center p-2 py-2 me-2 rounded-md cursor-pointer
                 ${
                   isSelected
                     ? "bg-yellow-500 text-black"
                     : "bg-secondary-color text-main-color"
                 }`}
-                              onClick={() => setChosenVariant(variant)}
-                            >
-                              <div>{variant.variantName}</div>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
+                          onClick={() => setChosenVariant(variant)}
+                        >
+                          <div>{variant.variantName}</div>
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
-              </>
+              </div>
             )}
             <div className="flex w-full h-12">
               <button
@@ -191,8 +177,19 @@ export const ProductPage = () => {
               <button
                 className="border border-secondary-color w-full h-full bg-secondary-color text-main-color"
                 onClick={() => {
+                  console.log("Adding to cart:", {
+                    product,
+                    selectedCheck,
+                    chosenVariant,
+                    quantity,
+                  });
                   product &&
-                    setCartQuantity(product.id, product.categoryId, quantity);
+                    setCartQuantity(
+                      product,
+                      selectedCheck,
+                      chosenVariant,
+                      quantity
+                    );
                 }}
               >
                 Lägg i varukorg
@@ -202,7 +199,7 @@ export const ProductPage = () => {
               <span className="text-black text-xl font-semibold">
                 Produktinformation
               </span>
-              <span className="text-black text-base">
+              <span className="text-black text-base whitespace-pre-line">
                 {product?.description}
               </span>
             </div>

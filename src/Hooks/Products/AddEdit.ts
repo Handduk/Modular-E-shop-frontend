@@ -11,7 +11,7 @@ export  const initVariant: Variant = {
     variantImg: "",
   };
 
-export const handleChangeProduct = (e: React.ChangeEvent<HTMLInputElement>, setProduct: React.Dispatch<React.SetStateAction<Product>>) => {
+export const handleChangeProduct = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>, setProduct: React.Dispatch<React.SetStateAction<Product>>) => {
     const { name, value } = e.target;
     setProduct(
       (prev) =>

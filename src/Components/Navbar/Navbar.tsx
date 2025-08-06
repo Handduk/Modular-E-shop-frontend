@@ -142,9 +142,16 @@ export const Navbar = () => {
             transition-all duration-500
               ${checkLocation ? "text-secondary-color" : "text-white"}`}
             >
-              <FontAwesomeIcon icon={faCartShopping} onClick={toggleCart} />
+              <FontAwesomeIcon
+                icon={faCartShopping}
+                className="text-2xl me-2 max-lg:text-lg max-lg:me-0"
+                onClick={toggleCart}
+              />
               {cartQuantity > 0 && (
-                <div className="w-5 h-5 text-[0.75rem] self-center absolute rounded-[50%] right-1 top-2 bg-red-600">
+                <div
+                  className="w-6 h-6 text-sm absolute rounded-[50%] right-1 top-3 bg-red-600
+                max-sm:w-5 max-sm:h-5 max-sm:text-[0.8rem] max-sm:top-4"
+                >
                   <p className="text-white text-center font-semibold">
                     {cartQuantity}
                   </p>
