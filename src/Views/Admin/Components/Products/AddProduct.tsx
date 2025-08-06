@@ -60,7 +60,7 @@ export const AddProduct = ({
             X
           </button>
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center h-[91%] overflow-auto">
           <h1 className="text-center text-3xl font-semibold">Ny Produkt</h1>
           <form
             className="flex flex-col mt-4 w-8/10"
@@ -94,12 +94,11 @@ export const AddProduct = ({
             >
               Beskrivning
             </label>
-            <input
+            <textarea
               id="productDescription"
-              type="text"
               name="description"
               required
-              className="h-10 border !border-neutral-500 !rounded-md mb-2 px-2 bg-neutral-200"
+              className="w-full min-h-16 max-h-40 bg-neutral-200 border !border-neutral-500 rounded-md mb-4 px-2"
               onChange={(e) => handleChangeProduct(e, setProduct)}
             />
             <label htmlFor="Price" className="self-start mb-1 ms-1">
@@ -161,10 +160,6 @@ export const AddProduct = ({
                 +
               </button>
             </div>
-            <label htmlFor="variants" className="self-start mb-1 ms-1">
-              Storlek
-            </label>
-
             <HandleVariant
               product={product}
               setProduct={setProduct}

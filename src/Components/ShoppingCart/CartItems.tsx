@@ -1,55 +1,68 @@
 import { useCart } from "../../Context/CartContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faX } from "@fortawesome/free-solid-svg-icons";
+import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { getSalesPrice } from "../../Handlers/SalesPrice";
-import { useProduct } from "../../Context/ProductContext";
+import { CartItem } from "../../Models/Cart";
+import { useNavigate } from "react-router-dom";
 
 interface CartItemsProps {
-  id: number;
-  categoryId: number;
-  quantity: number;
+  item: CartItem;
 }
 
-export const CartItems = ({ id, categoryId, quantity }: CartItemsProps) => {
+export const CartItems = ({ item }: CartItemsProps) => {
   const { removeFromCart } = useCart();
-  const { categorys } = useProduct();
-  const category = categorys.find((i) => i.id === categoryId);
-  if (category?.products === undefined) return null;
-  const item = category?.products.find((i) => i.id === id);
-  if (category === null) return null;
-  if (item === null) return null;
+
+  const navigate = useNavigate();
 
   return (
-    <div className="border-b-secondary-color pb-2 border-b border-solid flex">
-      <img className="h-24 w-20 object-cover me-2" src={item?.images[0]} />
+    <div className="border-b-secondary-color pb-2 border-b border-solid flex px-2">
+      <img
+        className="h-24 w-20 object-cover me-2 cursor-pointer"
+        src={item.product?.images[0]}
+        alt={item.product?.name}
+        onClick={() => navigate(`/product?id=${item.product?.id}`)}
+      />
       <div className="flex flex-col justify-center h-[inherit] mr-auto">
-        <div className="text-sm">
-          {item?.name}
-          {quantity > 1 && (
-            <span className="text-[0.7rem] text-secondary-color ml-2">
-              {quantity}x
-            </span>
+        <div className="text-md text-black space-y-1">
+          {item.product.brand &&
+            item.product.brand !== `"null"` &&
+            item.product.brand !== "null" && <div>{item.product.brand}</div>}
+          <div className="font-bold">{item.product?.name}</div>
+          {item.product?.discount ? (
+            <div className="flex">
+              <p className="font-semibold text-red-600 mr-2">
+                {getSalesPrice(
+                  item.product.price,
+                  item.product.discount
+                ).toFixed(2)}{" "}
+                kr
+              </p>
+              <p className="line-through">{item.product.price.toFixed(2)} kr</p>
+            </div>
+          ) : (
+            <div className="font-semibold">
+              {!item.variant?.variantPrice
+                ? item.product.price
+                : item.variant?.variantPrice.toFixed(2)}{" "}
+              kr
+            </div>
           )}
+          <div>
+            <div>{item.option && item.option}</div>
+            <div>{item.variant && item.variant.variantName}</div>
+          </div>
+          <div className="font-semibold">
+            Antal: <span>{item.quantity}</span>
+          </div>
         </div>
-        {item?.discount ? (
-          <div className="flex">
-            <p className="font-semibold text-red-600 mr-2">
-              {getSalesPrice(item.price, item.discount).toFixed(2)} kr
-            </p>
-            <p className="line-through">{item.price.toFixed(2)} kr</p>
-          </div>
-        ) : (
-          <div className="text-sm text-secondary-color">
-            {item?.price.toFixed(2)} kr
-          </div>
-        )}
       </div>
-      <div className="flex justify-center items-center">
-        <button
-          className="px-2 py-1 rounded border border-black"
-          onClick={() => removeFromCart(Number(item?.id))}
-        >
-          <FontAwesomeIcon icon={faX} />
+      <div className="flex justify-center items-start">
+        <button className="px-2 py-1" onClick={() => removeFromCart(item)}>
+          <FontAwesomeIcon
+            icon={faTrash}
+            className="text-xl"
+            title="Radera produkt"
+          />
         </button>
       </div>
     </div>
