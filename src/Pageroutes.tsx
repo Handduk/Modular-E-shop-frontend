@@ -7,9 +7,11 @@ import { ProductPage } from "./Views/Shop/ProductPage";
 import { Admin } from "./Views/Admin/Admin";
 import { AddCategoryProduct } from "./Views/Admin/Components/Products/CategoryProducts";
 import { ProtectedRoute } from "./Wrappers/ProtectedRoute";
-import { Checkout } from "./Views/Checkout/checkout";
 import { useProduct } from "./Context/ProductContext";
 import { Products } from "./Views/Shop/Products";
+import { Terms } from "./Views/Terms/terms";
+import { Cart } from "./Views/Cart/Cart/cart";
+import { Checkout } from "./Views/Cart/Checkout/checkout";
 
 export const PageRoutes = () => {
   const { categorys } = useProduct();
@@ -21,7 +23,9 @@ export const PageRoutes = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="/product" element={<ProductPage />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
+        <Route path="/terms" element={<Terms />} />
         {categorys &&
           categorys.map((res, index) => (
             <Route
