@@ -4,17 +4,15 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import { useProduct } from "../../Context/ProductContext";
 
 export const ShoppingCart = () => {
   const { closeCart, shoppingCartItems, isOpen } = useCart();
-  const { categorys } = useProduct();
   const [sale, setSale] = useState<number>(0);
 
   const navigate = useNavigate();
 
   const handleNavigate = () => {
-    navigate("/checkout");
+    navigate("/cart");
     closeCart();
   };
 
@@ -74,11 +72,8 @@ export const ShoppingCart = () => {
 
       <div className="py-2 w-full overflow-auto">
         <div className="overflow-y-scroll space-y-2 md:w-full">
-          {shoppingCartItems.map((res) => (
-            <CartItems
-              key={res.variant ? res.variant.id : res.product.id}
-              item={res}
-            />
+          {shoppingCartItems.map((res, index) => (
+            <CartItems key={index} item={res} />
           ))}
           <div className="flex flex-col">
             {sale !== 0 && (

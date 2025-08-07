@@ -56,6 +56,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     value: number
   ) => {
     if (!product) return;
+
     console.log(
       "Setting cart quantity for product:",
       product.name,
@@ -63,6 +64,10 @@ export const CartProvider = ({ children }: CartProviderProps) => {
       value
     );
     console.log(shoppingCartItems);
+    if (product.variants && variant === null) {
+      window.alert("Välj en storlek innan du lägger till i varukorgen");
+      return;
+    }
     setShoppingCartItems((currItems) => {
       if (
         currItems.find(
