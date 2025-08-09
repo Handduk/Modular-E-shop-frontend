@@ -9,6 +9,7 @@ import { SortProducts } from "../../Models/Register";
 import { ProductPosts } from "../../Components/Products/ProductPosts";
 import { PaginationMenu } from "../../Components/Products/PaginationMenu";
 import { Category } from "../../Models/Category";
+import { Footer } from "../../Components/Footer/footer";
 
 export const Products = () => {
   const [defaultSort, setDefaultSort] = useState<Product[]>([]);
@@ -132,6 +133,7 @@ export const Products = () => {
             />
           </div>
         )}
+        <Footer />
       </div>
     </div>
   );

@@ -44,7 +44,9 @@ export const Topsection = () => {
             <div className="text-[2rem] font-extrabold w-full">
               {product?.name}
             </div>
-            <div className="w-full leading-5">{product?.description}</div>
+            <div className="w-full whitespace-pre-line">
+              {product?.description}
+            </div>
           </div>
           <div className="w-full mb-6 flex items-center lg:mb-0 lg:px-4">
             <button

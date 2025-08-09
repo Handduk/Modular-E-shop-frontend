@@ -37,7 +37,7 @@ export const Checkout = () => {
   }, [paymentId, navigate]);
 
   return (
-    <div className="contentBody h-[calc(100vh-5rem)] flex items-center justify-center">
+    <div className="contentBody flex items-center justify-center">
       <div
         id="checkout-container-div"
         style={{ width: "100%", height: "100%" }}

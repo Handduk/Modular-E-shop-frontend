@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 export const Cart = () => {
   const { shoppingCartItems } = useCart();
   const [items, setItems] = useState<CheckoutItems[]>([]);
-  const [shippingCost, setShippingCost] = useState<number>(0);
+  const [shippingCost, setShippingCost] = useState<number>(59);
 
   const navigate = useNavigate();
 
@@ -47,29 +47,42 @@ export const Cart = () => {
   }, [shoppingCartItems]);
 
   return (
-    <div className="contentBody h-[calc(100vh-5rem)]">
-      <div className="h-full w-full flex flex-row  justify-center mt-10 space-x-5">
-        <div className="w-1/2 h-fit border border-neutral-400 rounded-sm p-4">
+    <div className="contentBody">
+      <div className="h-full w-full flex flex-col justify-around mt-20 space-x-5 lg:flex-row lg:justify-center lg:mt-10">
+        <div
+          className="w-full h-[calc(100%-11rem)] border border-neutral-400 rounded-sm p-2 mb-44
+         md:p-4 lg:w-1/2 lg:h-fit lg:mb-0 overflow-auto "
+        >
           <CartProducts items={items} setItems={setItems} />
         </div>
-        <div className="w-1/3 h-full mt-10">
-          <div className="w-10/12 h-fit bg-neutral-100 rounded-sm p-4">
-            <div className="flex flex-col space-y-4">
-              <div className="font-semibold text-xl flex justify-between">
+        <div className="w-full h-44 fixed bottom-0 left-0 z-50 lg:w-1/3 md:h-52 lg:h-full lg:mt-10 lg:static">
+          <div className="w-full h-full bg-neutral-100 rounded-sm p-3 lg:p-4 lg:w-10/12 lg:h-fit">
+            <div className="flex flex-col space-y-2 lg:space-y-4">
+              <div className="font-semibold text-lg flex justify-between lg:text-xl">
                 <div>Summa</div>
                 <div>
                   {getTotalPrice().toFixed(2)}
                   <span className="ms-1">kr</span>
                 </div>
               </div>
-              <div className="font-semibold text-xl flex justify-between mb-6">
+              <div className="font-semibold text-lg flex justify-between md:text-xl md:mb-6">
                 <div>Frakt</div>
-                <div>Frakt beräknas i kassan</div>
+                <div>
+                  {items.length
+                    ? shippingCost.toFixed(2)
+                    : getTotalPrice().toFixed(2)}
+                  <span className="ms-1">kr</span>
+                </div>
               </div>
-              <div className="font-semibold text-xl flex justify-between border-t-1 border-neutral-400">
+              <div
+                className="font-semibold text-lg flex justify-between border-t-1 border-neutral-400 mb-0 
+              md:!mb-2 md:text-xl"
+              >
                 <div>Total</div>
                 <div>
-                  {(getTotalPrice() + shippingCost).toFixed(2)}
+                  {items.length
+                    ? (getTotalPrice() + shippingCost).toFixed(2)
+                    : getTotalPrice().toFixed(2)}
                   <span className="ms-1">kr</span>
                 </div>
               </div>
