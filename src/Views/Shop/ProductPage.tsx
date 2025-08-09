@@ -6,13 +6,14 @@ import { getSalesPrice } from "../../Handlers/SalesPrice";
 import { useProduct } from "../../Context/ProductContext";
 import { getProductById } from "../../services/productApi";
 import { Variant } from "../../Models/Variant";
+import { Footer } from "../../Components/Footer/footer";
 
 export const ProductPage = () => {
   const { setCartQuantity } = useCart();
   const { id } = useURLId();
   const { products } = useProduct();
   const [product, setProduct] = useState<Product | null>(null);
-  const [selectedCheck, setSelectedCheck] = useState<string | null>(null);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [chosenVariant, setChosenVariant] = useState<Variant | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
 
@@ -26,7 +27,7 @@ export const ProductPage = () => {
     const response = await getProductById(id);
     if (response) {
       setProduct(response);
-      setSelectedCheck(
+      setSelectedOption(
         response.options && response.options.length >= 0
           ? response.options[0]
           : null
@@ -43,8 +44,9 @@ export const ProductPage = () => {
     setQuantity(1);
   }, [product]);
 
-  const handleCheckboxChange = (value: string) => {
-    setSelectedCheck((prev) => (prev === value ? null : value));
+  const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setSelectedOption((prev) => (prev === value ? null : value));
   };
 
   const handleNegativeQuantity = () => {
@@ -59,10 +61,10 @@ export const ProductPage = () => {
     <div className="contentBody">
       <div className="content lg:h-full lg:flex lg:justify-center lg:items-center">
         <div className="flex flex-col items-center justify-center lg:h-full lg:w-full lg:flex-row lg:mt-[80px] lg:space-x-10">
-          <div className="cursor-pointer mb-2 lg:h-full lg:w-full">
+          <div className="cursor-pointer mb-2 md:h-2/3 md:w-2/3 lg:w-full lg:h-full">
             {product && product.images && (
               <img
-                className="lg:h-full object-cover"
+                className="h-full max-md:w-full lg:ms-28"
                 src={product.images[0]}
                 alt={product?.name}
               />
@@ -70,8 +72,8 @@ export const ProductPage = () => {
           </div>
           <div className="w-11/12 flex flex-col space-y-2">
             <div className="text-black text-2xl font-semibold">
-              {product?.name}{" "}
-              <span className="secondary-color font-normal">
+              {product?.name}
+              <span className="secondary-color font-normal ms-2">
                 {chosenVariant?.variantName}
               </span>
             </div>
@@ -79,7 +81,7 @@ export const ProductPage = () => {
               {product?.discount ? (
                 <div className="flex flex-col">
                   <span className="font-semibold text-xl text-red-600">
-                    {getSalesPrice(product.price, product.discount).toFixed(2)}{" "}
+                    {getSalesPrice(product.price, product.discount).toFixed(2)}
                     kr
                     <span className="text-secondary-color/70 ms-2 text-lg">
                       inkl. moms
@@ -114,21 +116,22 @@ export const ProductPage = () => {
                     ))}
                   </div>
                 )} */}
-            {product?.options && (
-              <div className="flex flex-row space-x-4">
-                {product.options.map((option, index) => (
-                  <div className="flex items-center" key={index}>
-                    <input
-                      type="checkbox"
-                      id={option}
-                      value={option}
-                      className="size-6 me-2 cursor-pointer"
-                      checked={selectedCheck === option}
-                      onChange={() => handleCheckboxChange(option)}
-                    />
-                    <label htmlFor={option}>{option}</label>
-                  </div>
-                ))}
+            {product?.options && selectedOption && (
+              <div className="flex flex-row flex-wrap space-x-4">
+                <select
+                  name="options"
+                  id="options"
+                  value={selectedOption || ""}
+                  className="h-fit border border-black min-w-[6rem] p-2 rounded-sm font-semibold cursor-pointer
+                            "
+                  onChange={(e) => handleOptionChange(e)}
+                >
+                  {product.options.map((option, index) => (
+                    <option value={option} key={index}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
               </div>
             )}
             {product?.variants && (
@@ -179,14 +182,14 @@ export const ProductPage = () => {
                 onClick={() => {
                   console.log("Adding to cart:", {
                     product,
-                    selectedCheck,
+                    selectedOption,
                     chosenVariant,
                     quantity,
                   });
                   product &&
                     setCartQuantity(
                       product,
-                      selectedCheck,
+                      selectedOption,
                       chosenVariant,
                       quantity
                     );
@@ -205,6 +208,7 @@ export const ProductPage = () => {
             </div>
           </div>
         </div>
+        <Footer />
       </div>
     </div>
   );

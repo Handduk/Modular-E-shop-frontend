@@ -1,6 +1,5 @@
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./Views/root.css";
 
 import { PageRoutes } from "./Pageroutes";
 import { Navbar } from "./Components/Navbar/Navbar";
@@ -11,15 +10,25 @@ import { ProductProvider } from "./Context/ProductContext";
 
 export const App = () => {
   const location = useLocation();
-
-  const hideNavbar = ["/reseller", "/admin", "/login", "/admin/category"];
+  const hideNavbar = [
+    "/reseller",
+    "/admin",
+    "/login",
+    "/admin/category",
+    "/checkout",
+  ];
+  const showNavbar = !hideNavbar.includes(location.pathname);
   return (
     <>
       <AuthProvider>
         <ProductProvider>
           <CartProvider>
-            {!hideNavbar.includes(location.pathname) && <Navbar />}
-            <PageRoutes />
+            <div className="min-h-screen flex flex-col">
+              {showNavbar && <Navbar />}
+              <main className="flex flex-grow">
+                <PageRoutes />
+              </main>
+            </div>
           </CartProvider>
         </ProductProvider>
       </AuthProvider>

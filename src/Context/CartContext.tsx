@@ -18,6 +18,7 @@ type CartContext = {
     variant: Variant | null,
     value: number
   ) => void;
+  updateCartQuantity: (item: CartItem, value: number) => void;
   decreaseCartQuantity: (id: number) => void;
   removeFromCart: (item: CartItem) => void;
   cartQuantity: number;
@@ -104,6 +105,18 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     });
   };
 
+  const updateCartQuantity = (item: CartItem, value: number) => {
+    setShoppingCartItems((prevItems) =>
+      prevItems.map((i) => {
+        const isSameItem =
+          i.product.id === item.product.id &&
+          i.option === item.option &&
+          i.variant?.id === item.variant?.id;
+        return isSameItem ? { ...i, quantity: value } : i;
+      })
+    );
+  };
+
   const decreaseCartQuantity = (id: number) => {
     setShoppingCartItems((currItems) => {
       if (currItems.find((item) => item.product.id === id)?.quantity === 1) {
@@ -139,6 +152,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
         closeCart,
         getItemQuantity,
         setCartQuantity,
+        updateCartQuantity,
         decreaseCartQuantity,
         removeFromCart,
         cartQuantity,

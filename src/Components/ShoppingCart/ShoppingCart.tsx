@@ -92,7 +92,7 @@ export const ShoppingCart = () => {
             )}
           </div>
           <div
-            className="sticky flex flex-col w-full border-t-[color:var(--bs-gray)] bg-[white] pt-2 border-t border-solid bottom-0
+            className="sticky bottom-0 right-0 flex flex-col w-full border-t-[color:var(--bs-gray)] bg-[white] pt-2 border-t border-solid
           px-4"
           >
             <div className="flex justify-between font-semibold mb-4">
