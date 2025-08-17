@@ -7,11 +7,13 @@ import { Footer } from "../../../Components/Footer/footer";
 export const Homepage = () => {
   return (
     <>
-      <div className="contentBody lg:pt-0">
+      <div className="contentBody">
         <div className="content">
           <Header />
-          <Topsection />
-          <CategorySection />
+          <div className="w-full lg:px-20">
+            <Topsection />
+            <CategorySection />
+          </div>
           <SecondSection />
           <Footer />
         </div>

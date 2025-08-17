@@ -58,13 +58,13 @@ export const ProductPage = () => {
   };
 
   return (
-    <div className="contentBody">
-      <div className="content lg:h-full lg:flex lg:justify-center lg:items-center">
-        <div className="flex flex-col items-center justify-center lg:h-full lg:w-full lg:flex-row lg:mt-[80px] lg:space-x-10">
-          <div className="cursor-pointer mb-2 md:h-2/3 md:w-2/3 lg:w-full lg:h-full">
+    <div className="contentBody lg:pt-20">
+      <div className="content lg:px-20">
+        <div className="flex flex-col items-center justify-center md:w-full lg:w-full lg:flex-row lg:space-x-10">
+          <div className="cursor-pointer mb-2 md:h-2/3 md:w-2/3 lg:w-1/2 lg:h-1/2">
             {product && product.images && (
               <img
-                className="h-full max-md:w-full lg:ms-28"
+                className="h-full max-md:w-full lg:h-[700px] lg:w-[550px] object-cover"
                 src={product.images[0]}
                 alt={product?.name}
               />
@@ -143,7 +143,7 @@ export const ProductPage = () => {
                       return (
                         <div
                           key={index}
-                          className={`h-full flex items-center p-2 py-2 me-2 rounded-md cursor-pointer
+                          className={`h-full flex items-center p-2 py-2 me-2 rounded-md cursor-pointer md:!p-4
                 ${
                   isSelected
                     ? "bg-yellow-500 text-black"
@@ -208,8 +208,8 @@ export const ProductPage = () => {
             </div>
           </div>
         </div>
-        <Footer />
       </div>
+      <Footer />
     </div>
   );
 };

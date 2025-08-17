@@ -86,7 +86,7 @@ export const Products = () => {
   };
 
   return (
-    <div className="contentBody max-lg:py-[80px]">
+    <div className="contentBody pt-[80px] lg:px-20">
       <div className="content">
         <div className="w-full mb-6 px-3 pt-2">
           {category && (
@@ -133,8 +133,8 @@ export const Products = () => {
             />
           </div>
         )}
-        <Footer />
       </div>
+      <Footer />
     </div>
   );
 };

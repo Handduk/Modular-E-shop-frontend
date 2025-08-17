@@ -48,7 +48,7 @@ export const Cart = () => {
 
   return (
     <div className="contentBody">
-      <div className="h-full w-full flex flex-col justify-around mt-20 space-x-5 lg:flex-row lg:justify-center lg:mt-10">
+      <div className="h-full w-full flex flex-col justify-around mt-20 space-x-5 lg:flex-row lg:justify-center lg:mt-36">
         <div
           className="w-full h-[calc(100%-11rem)] border border-neutral-400 rounded-sm p-2 mb-44
          md:p-4 lg:w-1/2 lg:h-fit lg:mb-0 overflow-auto "
