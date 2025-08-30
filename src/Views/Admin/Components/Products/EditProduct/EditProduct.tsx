@@ -39,7 +39,12 @@ export const EditProduct = ({
     const response = await getProductById(prod.id);
     if (response) {
       setProduct(response);
-      setImagePreview([]);
+      if (
+        response.variants !== undefined
+          ? (response.price = response.variants[0].variantPrice)
+          : (response.price = response.price)
+      )
+        setImagePreview([]);
       setImages([]);
       setNewVariant(initVariant);
     }
@@ -90,7 +95,10 @@ export const EditProduct = ({
       brand: product.brand,
       name: product.name,
       description: product.description,
-      price: product.price,
+      price:
+        (product.price === 0 || "") && product.variants
+          ? product.variants[0].variantPrice
+          : product.price,
       discount: product.discount,
       options: product.options,
       newImages: images,

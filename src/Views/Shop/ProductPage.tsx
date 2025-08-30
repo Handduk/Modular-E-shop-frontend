@@ -6,7 +6,7 @@ import { getSalesPrice } from "../../Handlers/SalesPrice";
 import { useProduct } from "../../Context/ProductContext";
 import { getProductById } from "../../services/productApi";
 import { Variant } from "../../Models/Variant";
-import { Footer } from "../../Components/Footer/footer";
+import { Footer } from "../../Components/Footer/Footer";
 
 export const ProductPage = () => {
   const { setCartQuantity } = useCart();
@@ -32,11 +32,7 @@ export const ProductPage = () => {
           ? response.options[0]
           : null
       );
-      setChosenVariant(
-        response.variants && response.variants?.length <= 0
-          ? response.variants[0]
-          : null
-      );
+      setChosenVariant(response.variants ? response.variants[0] : null);
     }
   };
 

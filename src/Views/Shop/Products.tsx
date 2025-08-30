@@ -9,7 +9,7 @@ import { SortProducts } from "../../Models/Register";
 import { ProductPosts } from "../../Components/Products/ProductPosts";
 import { PaginationMenu } from "../../Components/Products/PaginationMenu";
 import { Category } from "../../Models/Category";
-import { Footer } from "../../Components/Footer/footer";
+import { Footer } from "../../Components/Footer/Footer";
 
 export const Products = () => {
   const [defaultSort, setDefaultSort] = useState<Product[]>([]);
@@ -98,13 +98,13 @@ export const Products = () => {
           <div className="text-neutral-800 text-[0.9rem] mb-2">
             {prods.length} <span>PRODUKTER</span>
           </div>
-          <div className="flex flex-row justify-between">
-            <div className="pr-2 flex items-center">
+          <div className="flex flex-row justify-end lg:pe-18">
+            {/* <div className="pr-2 flex items-center">
               <button className="flex items-center border border-black rounded-[1px] px-2 py-1">
                 Filtrera
                 <FontAwesomeIcon className="ml-4" icon={faBarsStaggered} />
               </button>
-            </div>
+            </div> */}
             <div className="pl-2">
               <select
                 name="sorting"
