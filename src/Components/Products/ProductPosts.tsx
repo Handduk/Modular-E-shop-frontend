@@ -35,7 +35,7 @@ export const ProductPosts = ({ products }: ProductPostsProps) => {
                     </p>
                   </>
                 ) : (
-                  `${res.price.toFixed(2)} kr`
+                  `från ${res.price.toFixed(2)} kr`
                 )}
               </div>
             </div>

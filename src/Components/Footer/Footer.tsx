@@ -4,7 +4,7 @@ import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 
 export const Footer = () => {
   return (
-    <div className="w-screen bg-secondary-color flex flex-col justify-center p-2 mt-auto md:items-center">
+    <div className="w-screen bg-secondary-color flex flex-col justify-center p-2 md:items-center">
       <div className="text-xl font-bold text-main-color lg:text-3xl">
         Hitta till oss!
       </div>

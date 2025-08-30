@@ -81,7 +81,7 @@ export const AddCategoryProduct = () => {
   ]);
 
   return (
-    <div className="h-[calc(100vh-80px)] text-center">
+    <div className="h-screen w-screen text-center">
       <div className="w-full h-fit flex justify-end">
         <div className="w-1/2 flex flex-row items-center justify-between me-[48px]">
           <h1>{category && category.name}</h1>

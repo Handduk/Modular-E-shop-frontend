@@ -82,7 +82,9 @@ export const handleChangeProduct = (e: React.ChangeEvent<HTMLInputElement> | Rea
       name: product.name,
       description: product.description,
       options: product.options,
-      price: product.price,
+      price: (product.price === 0 || "") && product.variants
+          ? product.variants[0].variantPrice
+          : product.price,
       discount: product.discount,
       images: images,
       variants: product.variants || [],

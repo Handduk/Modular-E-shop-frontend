@@ -17,15 +17,10 @@
 
 @layer components {
   .contentBody {
-    width: 100vw;
-    height: calc(100vh - 80px);
-    background-color: var(--main-color);
-    @apply lg:flex lg:flex-col lg:items-center lg:[padding:80px];
+    @apply flex flex-col min-h-screen w-full bg-[var(--main-color)] lg:items-center;
   }
+
   .content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
+    @apply flex flex-col flex-grow items-center w-full;
   }
 }
