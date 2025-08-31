@@ -1,6 +1,6 @@
 import { useCart } from "../../Context/CartContext";
 import { CartItems } from "./CartItems";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 export const ShoppingCart = () => {
   const { closeCart, shoppingCartItems, isOpen } = useCart();
   const [sale, setSale] = useState<number>(0);
+  const cartRef = useRef<HTMLDivElement | null>(null);
 
   const navigate = useNavigate();
 
@@ -56,62 +57,51 @@ export const ShoppingCart = () => {
   };
 
   return (
-    <span
-      className={`fixed top-0 bg-main-color z-[100] w-[80vw] h-screen py-2 flex flex-col items-center overflow-hidden right-0
-        md:w-2/6 xl:w-1/4
-  ${
-    isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-  } transition-all duration-200 ease-linear`}
+    <div
+      className={`fixed inset-0 z-[99] transition-colors duration-300 ${
+        isOpen
+          ? "bg-black/15 pointer-events-auto"
+          : "bg-transparent pointer-events-none"
+      }`}
+      onClick={closeCart}
     >
-      <div className="flex justify-between items-center w-full h-1/12">
-        <div className="text-xl font-semibold self-center ps-2">Varukorg</div>
-        <div className="px-3 py-2 cursor-pointer" onClick={() => closeCart()}>
-          <FontAwesomeIcon icon={faX} />
+      <div
+        ref={cartRef}
+        className={`absolute top-0 right-0 bg-main-color z-[100] w-[80vw] min-h-1/3 py-2 flex flex-col items-center overflow-hidden
+          md:w-2/6 lg:w-1/4 shadow shadow-gray-400 rounded-l-xl
+          transform transition-transform duration-300
+          ${isOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"}
+        `}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex justify-between items-center w-full h-1/12">
+          <div className="text-xl font-semibold self-center ps-2">Varukorg</div>
+          <div className="px-3 py-2 cursor-pointer" onClick={closeCart}>
+            <FontAwesomeIcon icon={faX} />
+          </div>
         </div>
-      </div>
 
-      <div className="py-2 w-full overflow-auto">
-        <div className="overflow-y-scroll space-y-2 md:w-full">
-          {shoppingCartItems.map((res, index) => (
-            <CartItems key={index} item={res} />
-          ))}
-          <div className="flex flex-col">
-            {sale !== 0 && (
-              <>
-                <div className="flex justify-between font-semibold mb-4">
-                  <div className="text-[1.2rem]">Pris före rabatt</div>
-                  <div className="">{getTotalPrice().toFixed(2)} kr</div>
-                </div>
-                <div className="flex justify-between font-semibold mb-4 text-red-600">
-                  <div className="">Sale </div>
-                  <div className="">
-                    -{(getTotalPrice() - Number(sale)).toFixed(2)} kr
-                  </div>
-                </div>
-              </>
-            )}
-          </div>
-          <div
-            className="sticky bottom-0 right-0 flex flex-col w-full border-t-[color:var(--bs-gray)] bg-[white] pt-2 border-t border-solid
-          px-4"
-          >
-            <div className="flex justify-between font-semibold mb-4">
-              <div className="">Pris exkl. Frakt</div>
-              <div className="">
-                {sale !== 0
-                  ? `${sale?.toFixed(2)} kr`
-                  : `${getTotalPrice().toFixed(2)} kr`}
+        <div className="py-2 w-full overflow-auto">
+          <div className="overflow-y-scroll space-y-2 md:w-full">
+            {shoppingCartItems.map((res, index) => (
+              <CartItems key={index} item={res} />
+            ))}
+
+            <div className="sticky bottom-0 right-0 flex flex-col w-full border-t bg-white pt-2 px-4">
+              <div className="flex justify-between font-semibold mb-4">
+                <div>Pris exkl. Frakt</div>
+                <div>{getTotalPrice().toFixed(2)} kr</div>
               </div>
+              <button
+                className="bg-secondary-color py-3 text-main-color mb-4 rounded"
+                onClick={handleNavigate}
+              >
+                GÅ TILL KASSAN
+              </button>
             </div>
-            <button
-              className="bg-secondary-color py-3 text-main-color mb-4 rounded"
-              onClick={() => handleNavigate()}
-            >
-              GÅ TILL KASSAN
-            </button>
           </div>
         </div>
       </div>
-    </span>
+    </div>
   );
 };

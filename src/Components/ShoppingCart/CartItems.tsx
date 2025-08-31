@@ -10,7 +10,7 @@ interface CartItemsProps {
 }
 
 export const CartItems = ({ item }: CartItemsProps) => {
-  const { removeFromCart } = useCart();
+  const { removeFromCart, closeCart } = useCart();
 
   const navigate = useNavigate();
 
@@ -18,9 +18,12 @@ export const CartItems = ({ item }: CartItemsProps) => {
     <div className="border-b-secondary-color pb-2 border-b border-solid flex px-2">
       <img
         className="h-24 w-20 object-cover me-2 cursor-pointer"
-        src={item.product?.images[0]}
+        src={item.productImage}
         alt={item.product?.name}
-        onClick={() => navigate(`/product?id=${item.product?.id}`)}
+        onClick={() => {
+          navigate(`/product?id=${item.product?.id}`);
+          closeCart();
+        }}
       />
       <div className="flex flex-col justify-center h-[inherit] mr-auto">
         <div className="text-md text-black space-y-1">

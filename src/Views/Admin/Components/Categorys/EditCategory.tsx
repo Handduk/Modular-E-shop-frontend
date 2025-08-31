@@ -12,6 +12,12 @@ interface EditCategoryProps {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   setDeletedCat: React.Dispatch<React.SetStateAction<boolean>>;
   setUpdatedCat: React.Dispatch<React.SetStateAction<boolean>>;
+  setPopup: React.Dispatch<
+    React.SetStateAction<{
+      message: string;
+      type: "success" | "delete" | "info" | "warning";
+    } | null>
+  >;
 }
 
 export const EditCategory = ({
@@ -20,6 +26,7 @@ export const EditCategory = ({
   setShow,
   setDeletedCat,
   setUpdatedCat,
+  setPopup,
 }: EditCategoryProps) => {
   const [category, setCategory] = useState<Category>(cat);
   const [imagePreview, setImagePreview] = useState<string>("");
@@ -63,6 +70,10 @@ export const EditCategory = ({
       const response = await updateCategory(formData, category.id);
       console.log("Category updated:", response);
       handleClose();
+      setPopup({
+        message: `Kategori ${response.name} uppdaterad.`,
+        type: "success",
+      });
       setUpdatedCat(true);
       updateStorage("category", response);
     } catch (error) {
@@ -94,6 +105,11 @@ export const EditCategory = ({
         window.alert("Något gick fel, produkten raderades inte!");
       }
       handleClose();
+      setPopup({
+        message: `Kategori ${category.name} raderad.`,
+        type: "delete",
+      });
+      removeStorage("category");
       setDeletedCat(true);
     }
   };

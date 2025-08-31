@@ -20,6 +20,12 @@ interface EditProductProps {
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   setDeletedProd: React.Dispatch<React.SetStateAction<boolean>>;
   setUpdatedProduct: React.Dispatch<React.SetStateAction<boolean>>;
+  setPopup: React.Dispatch<
+    React.SetStateAction<{
+      message: string;
+      type: "success" | "delete" | "info" | "warning";
+    } | null>
+  >;
 }
 export const EditProduct = ({
   prod,
@@ -27,6 +33,7 @@ export const EditProduct = ({
   setShow,
   setDeletedProd,
   setUpdatedProduct,
+  setPopup,
 }: EditProductProps) => {
   const [product, setProduct] = useState<Product>(prod);
   const [imagePreview, setImagePreview] = useState<string[]>([]);
@@ -138,6 +145,10 @@ export const EditProduct = ({
       const response = await updateProduct(formData, product.id);
       console.log("Product updated:", response);
       handleClose();
+      setPopup({
+        message: `Produkt ${response.name} uppdaterad.`,
+        type: "success",
+      });
       setUpdatedProduct(true);
     } catch (error) {
       console.error("Error updating product:", error);
@@ -171,6 +182,7 @@ export const EditProduct = ({
         window.alert("Något gick fel, produkten raderades inte!");
       }
       handleClose();
+      setPopup({ message: `Produkt ${product.name} raderad.`, type: "delete" });
       setDeletedProd(true);
     }
   };

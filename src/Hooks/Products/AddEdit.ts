@@ -124,6 +124,11 @@ export const handleChangeProduct = (e: React.ChangeEvent<HTMLInputElement> | Rea
     setNewProd: React.Dispatch<React.SetStateAction<boolean>>,
     setShow: React.Dispatch<React.SetStateAction<boolean>>,
     setProduct: React.Dispatch<React.SetStateAction<Product>>,
+    setPopup: React.Dispatch<
+    React.SetStateAction<{
+      message: string;
+      type: "success" | "delete" | "info" | "warning";
+    } | null>>
     ) => {
     e.preventDefault();
 
@@ -138,6 +143,7 @@ export const handleChangeProduct = (e: React.ChangeEvent<HTMLInputElement> | Rea
       console.log("Product created:", response);
       setNewProd(true);
       setShow(false);
+      setPopup({ message: `Produkt ${response.name} skapad.`, type: "success" });
       setProduct({
           id: 0,
           categoryId: id,

@@ -14,6 +14,12 @@ interface AddProductProps {
   show: boolean;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   setNewProd: React.Dispatch<React.SetStateAction<boolean>>;
+  setPopup: React.Dispatch<
+    React.SetStateAction<{
+      message: string;
+      type: "success" | "delete" | "info" | "warning";
+    } | null>
+  >;
 }
 
 export const AddProduct = ({
@@ -21,6 +27,7 @@ export const AddProduct = ({
   show,
   setShow,
   setNewProd,
+  setPopup,
 }: AddProductProps) => {
   const defaultValue: Product = {
     id: 0,
@@ -72,7 +79,8 @@ export const AddProduct = ({
                 images,
                 setNewProd,
                 setShow,
-                setProduct
+                setProduct,
+                setPopup
               )
             }
           >
