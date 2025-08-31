@@ -15,7 +15,7 @@ export const CategorySection = () => {
           <div className="w-full pl-4 pb-4" key={index}>
             <div
               className="h-[175px] border border-secondary-color rounded-[2.5px] border-solid
-            md:h-[250px] lg:h-[400px]"
+            md:h-[250px] lg:h-[400px] dark:!border-0"
             >
               <img
                 src={cat.image}
@@ -27,7 +27,7 @@ export const CategorySection = () => {
             <div className="flex justify-center mb-2">
               <div
                 onClick={() => navigate(`/shop/${cat.name.toLowerCase()}`)}
-                className="text-secondary-color font-semibold lg:text-2xl"
+                className="text-secondary-color font-semibold cursor-pointer mt-2 lg:text-2xl dark:text-dark-secondary-color"
               >
                 {cat.name}
               </div>

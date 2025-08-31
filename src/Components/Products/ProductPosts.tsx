@@ -21,7 +21,7 @@ export const ProductPosts = ({ products }: ProductPostsProps) => {
                md:h-72 lg:w-10/12 lg:h-96"
               onClick={() => navigate(`/product?id=${res.id}`)}
             />
-            <div className="font-semibold text-neutral-950">
+            <div className="font-semibold text-neutral-950 dark:text-dark-secondary-color">
               <div className="flex">{res.name}</div>
               <div className="flex">
                 {res.discount ? (

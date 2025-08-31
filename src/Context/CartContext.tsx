@@ -1,9 +1,16 @@
-import { ReactNode, createContext, useContext, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { ShoppingCart } from "../Components/ShoppingCart/ShoppingCart";
 import { Product } from "../Models/Product";
 import { Variant } from "../Models/Variant";
 import { CartItem } from "../Models/Cart";
 import { getProductImage } from "../Hooks/Products/ProductHooks";
+import { getStorage, setStorage } from "../Hooks/localstorage";
 
 interface CartProviderProps {
   children: ReactNode;
@@ -36,7 +43,19 @@ export const useCart = () => {
 
 export const CartProvider = ({ children }: CartProviderProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [shoppingCartItems, setShoppingCartItems] = useState<CartItem[]>([]);
+  const [shoppingCartItems, setShoppingCartItems] = useState<CartItem[]>(() => {
+    try {
+      const storedCart = getStorage("shoppingCart");
+      return storedCart ? storedCart : [];
+    } catch (error) {
+      console.error("Failed to parse shopping cart from localStorage:", error);
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    setStorage("shoppingCart", shoppingCartItems);
+  }, [shoppingCartItems]);
 
   const cartQuantity = shoppingCartItems.reduce(
     (quantity, item) => item.quantity + quantity,

@@ -20,6 +20,7 @@ export const Navbar = () => {
   const showNavbar = useScrollVisibility(20);
 
   const checkLocation = showNavbar || location.pathname !== "/";
+  const checkIfInCart = location.pathname === "/cart";
 
   useEffect(() => {
     if (show || isOpen) {
@@ -64,18 +65,22 @@ export const Navbar = () => {
           className={`w-full h-full py-0 border-b border-solid !z-50
             ${
               checkLocation
-                ? "bg-main-color border-b-neutral-900"
+                ? "bg-main-color border-b-neutral-90 dark:bg-secondary-color dark:border-b-neutral-800"
                 : "bg-transparent border-0"
             }
             ${init ? "opacity-100" : "opacity-0"} ${
             location.pathname === "/" ? "transition-all duration-200" : ""
           }`}
         >
-          <div className="flex justify-between items-center h-full">
+          <div className="flex justify-between items-center h-full ">
             <div
               className={`w-11 h-full border-0 flex flex-col justify-center items-center cursor-pointer pointer-events-auto transition-all duration-500 z-50
                  lg:hidden
-                ${checkLocation ? "text-secondary-color" : "text-white"}
+                ${
+                  checkLocation
+                    ? "text-secondary-color dark:text-dark-secondary-color"
+                    : "text-white dark:text-dark-secondary-color"
+                }
                 ${show && "hidden"}`}
               onClick={() => toggleMenu()}
             >
@@ -101,7 +106,9 @@ export const Navbar = () => {
               >
                 <ul
                   className={`mb-0 flex space-x-6 text-2xl lg:text-xl z-40 ${
-                    checkLocation ? "text-secondary-color" : "text-white"
+                    checkLocation
+                      ? "text-secondary-color dark:text-dark-secondary-color"
+                      : "text-dark-secondary-color dark:text-dark-secondary-color"
                   }`}
                 >
                   {categorys &&
@@ -140,7 +147,12 @@ export const Navbar = () => {
             <div
               className={`w-11 h-full ms-auto border-0 flex flex-col justify-center items-center cursor-pointer relative
             transition-all duration-500
-              ${checkLocation ? "text-secondary-color" : "text-white"}`}
+              ${
+                checkLocation
+                  ? "text-secondary-color dark:text-dark-secondary-color"
+                  : "text-dark-secondary-color"
+              }
+              ${checkIfInCart && "hidden"}`}
             >
               <FontAwesomeIcon
                 icon={faCartShopping}

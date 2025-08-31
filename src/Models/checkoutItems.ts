@@ -10,4 +10,5 @@ export type CheckoutItems = {
     option: string | null;
     variant: Variant | null;
     quantity: number;
+    productImage: string;
 }

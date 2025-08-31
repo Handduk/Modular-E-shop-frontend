@@ -20,6 +20,7 @@ export const Cart = () => {
       totalPrice: item.variant
         ? item.variant.variantPrice * item.quantity
         : item.product.price * item.quantity,
+      productImage: item.product.images[0],
       option: item.option || null,
       variant: item.variant || null,
       quantity: item.quantity,
@@ -47,7 +48,7 @@ export const Cart = () => {
   }, [shoppingCartItems]);
 
   return (
-    <div className="contentBody">
+    <div className="contentBody dark:bg-dark-main-color">
       <div className="h-full w-full flex flex-col justify-around mt-20 space-x-5 lg:flex-row lg:justify-center lg:mt-36">
         <div
           className="w-full h-[calc(100%-11rem)] border border-neutral-400 rounded-sm p-2 mb-44
@@ -56,7 +57,10 @@ export const Cart = () => {
           <CartProducts items={items} setItems={setItems} />
         </div>
         <div className="w-full h-44 fixed bottom-0 left-0 z-50 lg:w-1/3 md:h-52 lg:h-full lg:mt-10 lg:static">
-          <div className="w-full h-full bg-neutral-100 rounded-sm p-3 lg:p-4 lg:w-10/12 lg:h-fit">
+          <div
+            className="w-full h-full bg-neutral-100 rounded-sm p-3 lg:p-4 lg:w-10/12 lg:h-fit
+           dark:bg-dark-main-color dark:border dark:border-neutral-400 dark:text-dark-secondary-color"
+          >
             <div className="flex flex-col space-y-2 lg:space-y-4">
               <div className="font-semibold text-lg flex justify-between lg:text-xl">
                 <div>Summa</div>
