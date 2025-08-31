@@ -20,6 +20,7 @@ export const Navbar = () => {
   const showNavbar = useScrollVisibility(20);
 
   const checkLocation = showNavbar || location.pathname !== "/";
+  const checkIfInCart = location.pathname === "/cart";
 
   useEffect(() => {
     if (show || isOpen) {
@@ -140,7 +141,8 @@ export const Navbar = () => {
             <div
               className={`w-11 h-full ms-auto border-0 flex flex-col justify-center items-center cursor-pointer relative
             transition-all duration-500
-              ${checkLocation ? "text-secondary-color" : "text-white"}`}
+              ${checkLocation ? "text-secondary-color" : "text-white"}
+              ${checkIfInCart && "hidden"}`}
             >
               <FontAwesomeIcon
                 icon={faCartShopping}

@@ -10,7 +10,6 @@ import { Footer } from "../../Components/Footer/Footer";
 import { ProductImageModal } from "../../Components/Products/ProductImageModal";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { PopupMessage } from "../../Components/Popups/PopupMessage";
 
 interface ProductImageProps {
   image: string;
@@ -89,10 +88,14 @@ export const ProductPage = () => {
   };
 
   const showOptionImage = (value: number) => {
-    setImagePreview({
-      image: product?.images.find((_img, index) => index === value) || "",
-      index: value,
-    });
+    if (product?.images.length === 1) {
+      setImagePreview(imagePreview);
+    } else {
+      setImagePreview({
+        image: product?.images.find((_img, index) => index === value) || "",
+        index: value,
+      });
+    }
   };
 
   const showNextImage = () => {
@@ -135,11 +138,16 @@ export const ProductPage = () => {
         <div className="flex flex-col items-center justify-center md:w-full lg:w-full lg:flex-row lg:space-x-10">
           <div className="mb-2 md:h-2/3 md:w-2/3 lg:w-1/2 lg:h-full lg:!mb-0">
             <div
-              className={`relative flex justify-center items-center h-[500px] w-full select-none md:h-[700px] lg:h-full`}
+              className={`relative flex justify-center items-center h-[500px] w-screen select-none md:w-full md:h-[700px] lg:h-full`}
             >
               <div
                 className={`absolute left-0 h-[500px] w-[75px] flex items-center cursor-pointer ${
                   viewPort > 800 && "relative h-fit w-fit px-2 py-6"
+                } ${
+                  product &&
+                  product.images &&
+                  product.images.length <= 2 &&
+                  "hidden"
                 }`}
                 onClick={() => showPrevImage()}
               >
@@ -160,6 +168,11 @@ export const ProductPage = () => {
               <div
                 className={`absolute right-0 h-[500px] w-[75px] flex items-center justify-end cursor-pointer ${
                   viewPort > 800 && "relative h-fit w-fit px-2 py-6"
+                } ${
+                  product &&
+                  product.images &&
+                  product.images.length <= 2 &&
+                  "hidden"
                 }`}
                 onClick={() => showNextImage()}
               >
@@ -201,7 +214,7 @@ export const ProductPage = () => {
                 </div>
               )}
             </div>
-            <div>
+            <div className={`${!product?.options && "m-0"}`}>
               <span>Produkt: </span>
               <span className="font-bold">{product?.name}</span>
             </div>
@@ -219,7 +232,11 @@ export const ProductPage = () => {
                   </div>
                 )} */}
             {product?.options && selectedOption && (
-              <div className="flex flex-row flex-wrap space-x-4">
+              <div
+                className={`flex flex-row flex-wrap space-x-4 ${
+                  !product.variants?.length && "m-0"
+                }`}
+              >
                 <select
                   name="options"
                   id="options"
@@ -239,13 +256,13 @@ export const ProductPage = () => {
             {product?.variants && (
               <div className="w-full h-full flex flex-row items-center">
                 {product.variants.length > 0 && (
-                  <div className="w-fit my-2 h-full flex flex-row flex-wrap items-center">
+                  <div className="w-fit h-full flex flex-row flex-wrap items-center">
                     {product.variants.map((variant, index) => {
                       const isSelected = chosenVariant?.id === variant.id;
                       return (
                         <div
                           key={index}
-                          className={`h-full flex items-center p-2 py-2 me-2 rounded-md cursor-pointer md:!p-4
+                          className={`flex items-center justify-center p-2 me-2 rounded-md cursor-pointer md:!p-4
                 ${
                   isSelected
                     ? "bg-yellow-500 text-black"
@@ -278,9 +295,9 @@ export const ProductPage = () => {
                 <div className="text-3xl">+</div>
               </button>
             </div>
-            <div className="w-full h-12 mt-2">
+            <div className="w-full mt-2">
               <button
-                className="border border-secondary-color w-full h-full bg-secondary-color text-main-color"
+                className="border border-secondary-color w-full h-full bg-secondary-color text-main-color py-3"
                 onClick={() => {
                   product &&
                     setCartQuantity(

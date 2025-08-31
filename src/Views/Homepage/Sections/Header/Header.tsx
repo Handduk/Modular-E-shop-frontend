@@ -30,7 +30,7 @@ export const Header = () => {
             Närrostat och därodlat
           </h1>
         </div>
-        <div>
+        {/* <div>
           <button
             className="p-4 text-main-color font-semibold bg-black/50 !rounded-sm
                 hover:bg-white/50 hover:text-secondary-color
@@ -40,7 +40,7 @@ export const Header = () => {
           >
             Till våra produkter
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

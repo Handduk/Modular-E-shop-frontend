@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 export const ShoppingCart = () => {
   const { closeCart, shoppingCartItems, isOpen } = useCart();
   const [sale, setSale] = useState<number>(0);
-  const cartRef = useRef<HTMLDivElement | null>(null);
 
   const navigate = useNavigate();
 
@@ -66,7 +65,6 @@ export const ShoppingCart = () => {
       onClick={closeCart}
     >
       <div
-        ref={cartRef}
         className={`absolute top-0 right-0 bg-main-color z-[100] w-[80vw] min-h-1/3 py-2 flex flex-col items-center overflow-hidden
           md:w-2/6 lg:w-1/4 shadow shadow-gray-400 rounded-l-xl
           transform transition-transform duration-300
