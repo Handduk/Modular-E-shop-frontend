@@ -3,6 +3,7 @@ import { ShoppingCart } from "../Components/ShoppingCart/ShoppingCart";
 import { Product } from "../Models/Product";
 import { Variant } from "../Models/Variant";
 import { CartItem } from "../Models/Cart";
+import { getProductImage } from "../Hooks/Products/ProductHooks";
 
 interface CartProviderProps {
   children: ReactNode;
@@ -11,6 +12,7 @@ interface CartProviderProps {
 type CartContext = {
   openCart: () => void;
   closeCart: () => void;
+  cartPopup: () => void;
   getItemQuantity: (id: number) => number;
   setCartQuantity: (
     product: Product,
@@ -44,6 +46,13 @@ export const CartProvider = ({ children }: CartProviderProps) => {
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
 
+  const cartPopup = () => {
+    setIsOpen(true);
+    setTimeout(() => {
+      setIsOpen(false);
+    }, 4000);
+  };
+
   const getItemQuantity = (id: number) => {
     return (
       shoppingCartItems.find((item) => item.product.id === id)?.quantity || 0
@@ -57,25 +66,19 @@ export const CartProvider = ({ children }: CartProviderProps) => {
     value: number
   ) => {
     if (!product) return;
-
-    console.log(
-      "Setting cart quantity for product:",
-      product.name,
-      "with value:",
-      value
-    );
-    console.log(shoppingCartItems);
     if (product.variants && variant === null) {
       window.alert("Välj en storlek innan du lägger till i varukorgen");
       return;
     }
+    const productImage = getProductImage(product, option);
     setShoppingCartItems((currItems) => {
       if (
         currItems.find(
           (item) =>
             item.product.id === product.id &&
             item.option === option &&
-            item.variant?.id === variant?.id
+            item.variant?.id === variant?.id &&
+            item.productImage === productImage
         ) == null
       ) {
         return [
@@ -85,6 +88,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
             option: option,
             variant: variant,
             quantity: value,
+            productImage: productImage,
           },
         ];
       } else {
@@ -150,6 +154,7 @@ export const CartProvider = ({ children }: CartProviderProps) => {
       value={{
         openCart,
         closeCart,
+        cartPopup,
         getItemQuantity,
         setCartQuantity,
         updateCartQuantity,

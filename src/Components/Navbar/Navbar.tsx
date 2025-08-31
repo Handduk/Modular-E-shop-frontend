@@ -100,7 +100,7 @@ export const Navbar = () => {
                 }`}
               >
                 <ul
-                  className={`mb-0 flex space-x-6 text-2xl lg:text-xl z-50 ${
+                  className={`mb-0 flex space-x-6 text-2xl lg:text-xl z-40 ${
                     checkLocation ? "text-secondary-color" : "text-white"
                   }`}
                 >

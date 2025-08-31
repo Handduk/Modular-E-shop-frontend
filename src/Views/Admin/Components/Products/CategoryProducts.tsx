@@ -13,6 +13,7 @@ import { EditProduct } from "./EditProduct/EditProduct";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPen } from "@fortawesome/free-solid-svg-icons";
 import { EditCategory } from "../Categorys/EditCategory";
+import { PopupMessage } from "../../../../Components/Popups/PopupMessage";
 
 export const AddCategoryProduct = () => {
   const { id } = useURLId();
@@ -38,6 +39,10 @@ export const AddCategoryProduct = () => {
   const [updatedProduct, setUpdatedProduct] = useState<boolean>(false);
   const [deleteCategory, setDeletedCategory] = useState<boolean>(false);
   const [updateCategory, setUpdatedCategory] = useState<boolean>(false);
+  const [popup, setPopup] = useState<{
+    message: string;
+    type: "success" | "delete" | "info" | "warning";
+  } | null>(null);
 
   const category = getStorage("category") as Category;
 
@@ -133,6 +138,7 @@ export const AddCategoryProduct = () => {
         setNewProd={setNewProd}
         show={showModal}
         setShow={setShowModal}
+        setPopup={setPopup}
       />
       <EditProduct
         prod={singleProduct}
@@ -140,6 +146,7 @@ export const AddCategoryProduct = () => {
         setUpdatedProduct={setUpdatedProduct}
         show={showProductModal}
         setShow={setShowProductModal}
+        setPopup={setPopup}
       />
       <EditCategory
         cat={category}
@@ -147,7 +154,9 @@ export const AddCategoryProduct = () => {
         setShow={setShowEditCategoryModal}
         setDeletedCat={setDeletedCategory}
         setUpdatedCat={setUpdatedCategory}
+        setPopup={setPopup}
       />
+      {popup && <PopupMessage message={popup.message} type={popup.type} />}
     </div>
   );
 };

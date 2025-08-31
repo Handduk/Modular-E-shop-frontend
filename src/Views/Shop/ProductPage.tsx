@@ -7,15 +7,30 @@ import { useProduct } from "../../Context/ProductContext";
 import { getProductById } from "../../services/productApi";
 import { Variant } from "../../Models/Variant";
 import { Footer } from "../../Components/Footer/Footer";
+import { ProductImageModal } from "../../Components/Products/ProductImageModal";
+import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { PopupMessage } from "../../Components/Popups/PopupMessage";
+
+interface ProductImageProps {
+  image: string;
+  index: number;
+}
 
 export const ProductPage = () => {
-  const { setCartQuantity } = useCart();
+  const { setCartQuantity, cartPopup } = useCart();
   const { id } = useURLId();
   const { products } = useProduct();
   const [product, setProduct] = useState<Product | null>(null);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [chosenVariant, setChosenVariant] = useState<Variant | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
+  const [showimgModal, setShowImgModal] = useState<boolean>(false);
+  const [imagePreview, setImagePreview] = useState<ProductImageProps>({
+    image: product?.images[0] || "",
+    index: 0,
+  });
+  const [viewPort, setViewPort] = useState<number>(window.innerWidth);
 
   useEffect(() => {
     getProduct();
@@ -32,6 +47,7 @@ export const ProductPage = () => {
           ? response.options[0]
           : null
       );
+      setImagePreview({ image: response.images[0] || "", index: 0 });
       setChosenVariant(response.variants ? response.variants[0] : null);
     }
   };
@@ -40,9 +56,28 @@ export const ProductPage = () => {
     setQuantity(1);
   }, [product]);
 
+  useEffect(() => {
+    if (showimgModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [showimgModal]);
+
+  useEffect(() => {
+    const handeResize = () => setViewPort(window.innerWidth);
+    window.addEventListener("resize", handeResize);
+    return () => window.removeEventListener("resize", handeResize);
+  }, []);
+
   const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
+    const indexValue = e.target.selectedIndex;
     setSelectedOption((prev) => (prev === value ? null : value));
+    showOptionImage(indexValue);
   };
 
   const handleNegativeQuantity = () => {
@@ -53,19 +88,90 @@ export const ProductPage = () => {
     }
   };
 
+  const showOptionImage = (value: number) => {
+    setImagePreview({
+      image: product?.images.find((_img, index) => index === value) || "",
+      index: value,
+    });
+  };
+
+  const showNextImage = () => {
+    const nextImageIndex = imagePreview.index + 1;
+    if (
+      product &&
+      product.images &&
+      nextImageIndex > product.images.length - 1
+    ) {
+      setImagePreview({ image: product.images[0], index: 0 });
+      setSelectedOption(product.options ? product.options[0] : null);
+    } else {
+      setImagePreview({
+        image:
+          product?.images.find((_img, index) => index === nextImageIndex) || "",
+        index: nextImageIndex,
+      });
+      setSelectedOption(
+        (product && product.options && product.options[nextImageIndex]) || null
+      );
+    }
+  };
+
+  const showPrevImage = () => {
+    setImagePreview((prev) => {
+      if (!product) return prev;
+      const prevIndex =
+        prev.index === 0 ? product.images.length - 1 : prev.index - 1;
+      setSelectedOption(product.options?.[prevIndex] || null);
+      return {
+        image: product.images[prevIndex],
+        index: prevIndex,
+      };
+    });
+  };
+
   return (
     <div className="contentBody lg:pt-20">
       <div className="content lg:px-20">
         <div className="flex flex-col items-center justify-center md:w-full lg:w-full lg:flex-row lg:space-x-10">
-          <div className="cursor-pointer mb-2 md:h-2/3 md:w-2/3 lg:w-1/2 lg:h-1/2">
-            {product && product.images && (
-              <img
-                className="h-full max-md:w-full lg:h-[700px] lg:w-[550px] object-cover"
-                src={product.images[0]}
-                alt={product?.name}
-              />
-            )}
+          <div className="mb-2 md:h-2/3 md:w-2/3 lg:w-1/2 lg:h-full lg:!mb-0">
+            <div
+              className={`relative flex justify-center items-center h-[500px] w-full select-none md:h-[700px] lg:h-full`}
+            >
+              <div
+                className={`absolute left-0 h-[500px] w-[75px] flex items-center cursor-pointer ${
+                  viewPort > 800 && "relative h-fit w-fit px-2 py-6"
+                }`}
+                onClick={() => showPrevImage()}
+              >
+                <FontAwesomeIcon
+                  icon={faAngleLeft}
+                  className={`text-3xl cursor-pointer 
+                ${viewPort < 800 ? "text-white drop-shadow-lg ms-2" : ""}`}
+                />
+              </div>
+              {product && product.images && (
+                <img
+                  className="h-full w-full object-cover cursor-pointer lg:h-[700px]"
+                  onClick={() => setShowImgModal(true)}
+                  src={imagePreview.image}
+                  alt={product?.name}
+                />
+              )}
+              <div
+                className={`absolute right-0 h-[500px] w-[75px] flex items-center justify-end cursor-pointer ${
+                  viewPort > 800 && "relative h-fit w-fit px-2 py-6"
+                }`}
+                onClick={() => showNextImage()}
+              >
+                <FontAwesomeIcon
+                  icon={faAngleRight}
+                  className={`text-3xl cursor-pointer 
+        ${viewPort < 800 ? "text-white drop-shadow-lg me-2" : ""}`}
+                />
+              </div>
+            </div>
           </div>
+
           <div className="w-11/12 flex flex-col space-y-2">
             <div className="text-black text-2xl font-semibold">
               {product?.name}
@@ -176,12 +282,6 @@ export const ProductPage = () => {
               <button
                 className="border border-secondary-color w-full h-full bg-secondary-color text-main-color"
                 onClick={() => {
-                  console.log("Adding to cart:", {
-                    product,
-                    selectedOption,
-                    chosenVariant,
-                    quantity,
-                  });
                   product &&
                     setCartQuantity(
                       product,
@@ -189,6 +289,7 @@ export const ProductPage = () => {
                       chosenVariant,
                       quantity
                     );
+                  cartPopup();
                 }}
               >
                 Lägg i varukorg
@@ -206,6 +307,11 @@ export const ProductPage = () => {
         </div>
       </div>
       <Footer />
+      <ProductImageModal
+        show={showimgModal}
+        setShow={setShowImgModal}
+        image={product && product.images ? imagePreview.image : ""}
+      />
     </div>
   );
 };
