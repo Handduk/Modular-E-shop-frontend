@@ -8,7 +8,7 @@ import { FooterInfo } from "../../../Components/Footer/FooterInfo";
 export const Homepage = () => {
   return (
     <>
-      <div className="contentBody">
+      <div className="contentBody bg-main-color dark:bg-dark-main-color">
         <div className="content">
           <Header />
           <div className="w-full lg:px-20">

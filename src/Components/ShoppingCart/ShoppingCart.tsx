@@ -68,6 +68,7 @@ export const ShoppingCart = () => {
         className={`absolute top-0 right-0 bg-main-color z-[100] w-[80vw] min-h-1/3 py-2 flex flex-col items-center overflow-hidden
           md:w-2/6 lg:w-1/4 shadow shadow-gray-400 rounded-l-xl
           transform transition-transform duration-300
+          dark:bg-dark-main-color dark:text-dark-secondary-color
           ${isOpen ? "translate-x-0 opacity-100" : "translate-x-full opacity-0"}
         `}
         onClick={(e) => e.stopPropagation()}
@@ -80,18 +81,22 @@ export const ShoppingCart = () => {
         </div>
 
         <div className="py-2 w-full overflow-auto">
-          <div className="overflow-y-scroll space-y-2 md:w-full">
+          <div className="overflow-y-scroll space-y-2  md:w-full">
             {shoppingCartItems.map((res, index) => (
               <CartItems key={index} item={res} />
             ))}
 
-            <div className="sticky bottom-0 right-0 flex flex-col w-full border-t bg-white pt-2 px-4">
+            <div
+              className="sticky bottom-0 right-0 flex flex-col w-full border-t bg-white pt-2 px-4
+             dark:!bg-dark-main-color dark:text-dark-secondary-color"
+            >
               <div className="flex justify-between font-semibold mb-4">
                 <div>Pris exkl. Frakt</div>
                 <div>{getTotalPrice().toFixed(2)} kr</div>
               </div>
               <button
-                className="bg-secondary-color py-3 text-main-color mb-4 rounded"
+                className="bg-secondary-color py-3 text-main-color mb-4 rounded font-semibold
+                dark:bg-yellow-600 dark:text-dark-main-color"
                 onClick={handleNavigate}
               >
                 GÅ TILL KASSAN

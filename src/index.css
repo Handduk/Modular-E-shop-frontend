@@ -4,6 +4,8 @@
 @theme {
   --color-main-color: white;
   --color-secondary-color: #252422;
+  --color-dark-main-color: #121212;
+  --color-dark-secondary-color: #e4e2e0;
   --shadow-box: 0 0 10px 5px rgba(37, 36, 34, 0.1);
 }
 
@@ -11,6 +13,8 @@
   :root {
     --main-color: white;
     --secondary-color: #252422;
+    --dark-main-color: #121212;
+    --dark-secondary-color: #e4e2e0;
     --section-section: flex flex-col items-center mb-4;
   }
 }

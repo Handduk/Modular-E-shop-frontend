@@ -86,7 +86,7 @@ export const Products = () => {
   };
 
   return (
-    <div className="contentBody pt-[80px] lg:px-20">
+    <div className="contentBody pt-[80px] lg:px-20 dark:bg-dark-main-color dark:text-dark-secondary-color">
       <div className="content">
         <div className="w-full mb-6 px-3 pt-2">
           {category && (
@@ -95,7 +95,7 @@ export const Products = () => {
               <div className="leading-[1.3] mb-2">{category?.description}</div>
             </div>
           )}
-          <div className="text-neutral-800 text-[0.9rem] mb-2">
+          <div className="text-neutral-800 text-[0.9rem] mb-2 dark:text-dark-secondary-color">
             {prods.length} <span>PRODUKTER</span>
           </div>
           <div className="flex flex-row justify-end lg:pe-18">
@@ -105,11 +105,12 @@ export const Products = () => {
                 <FontAwesomeIcon className="ml-4" icon={faBarsStaggered} />
               </button>
             </div> */}
-            <div className="pl-2">
+            <div className="pl-2 dark:text-dark-secondary-color">
               <select
                 name="sorting"
                 id="sort"
-                className="border rounded-[1px] border-black px-2 py-1"
+                className="border rounded-[1px] border-black px-2 py-1 
+                dark:bg-dark-main-color dark:!text-dark-secondary-color dark:!border-dark-secondary-color"
                 onChange={(e) => handleSort(e)}
               >
                 {SortProducts &&

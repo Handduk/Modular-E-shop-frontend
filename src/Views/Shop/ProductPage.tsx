@@ -133,7 +133,7 @@ export const ProductPage = () => {
   };
 
   return (
-    <div className="contentBody lg:pt-20">
+    <div className="contentBody lg:pt-20 dark:bg-dark-main-color dark:text-dark-secondary-color">
       <div className="content lg:px-20">
         <div className="flex flex-col items-center justify-center md:w-full lg:w-full lg:flex-row lg:space-x-10">
           <div className="mb-2 md:h-2/3 md:w-2/3 lg:w-1/2 lg:h-full lg:!mb-0">
@@ -186,9 +186,9 @@ export const ProductPage = () => {
           </div>
 
           <div className="w-11/12 flex flex-col space-y-2">
-            <div className="text-black text-2xl font-semibold">
+            <div className="text-black text-2xl font-semibold dark:!text-dark-secondary-color">
               {product?.name}
-              <span className="secondary-color font-normal ms-2">
+              <span className="text-secondary-color dark:text-dark-secondary-color font-normal ms-2">
                 {chosenVariant?.variantName}
               </span>
             </div>
@@ -241,8 +241,8 @@ export const ProductPage = () => {
                   name="options"
                   id="options"
                   value={selectedOption || ""}
-                  className="h-fit border border-black min-w-[6rem] p-2 rounded-sm font-semibold cursor-pointer
-                            "
+                  className="border border-black min-w-[6rem] p-2 rounded-sm font-semibold cursor-pointer
+                  dark:bg-dark-main-color dark:text-dark-secondary-color dark:!border-dark-secondary-color"
                   onChange={(e) => handleOptionChange(e)}
                 >
                   {product.options.map((option, index) => (
@@ -265,8 +265,8 @@ export const ProductPage = () => {
                           className={`flex items-center justify-center p-2 me-2 rounded-md cursor-pointer md:!p-4
                 ${
                   isSelected
-                    ? "bg-yellow-500 text-black"
-                    : "bg-secondary-color text-main-color"
+                    ? "bg-yellow-500 text-secondary-color"
+                    : "bg-secondary-color text-dark-secondary-color"
                 }`}
                           onClick={() => setChosenVariant(variant)}
                         >
@@ -280,7 +280,8 @@ export const ProductPage = () => {
             )}
             <div className="flex w-full h-12">
               <button
-                className="border border-black w-16 bg-secondary-color text-main-color"
+                className="border border-black w-16 bg-secondary-color text-main-color
+                dark:!border-dark-secondary-color"
                 onClick={() => handleNegativeQuantity()}
               >
                 <div className="text-3xl">-</div>
@@ -289,7 +290,8 @@ export const ProductPage = () => {
                 {quantity}
               </div>
               <button
-                className="border border-black w-16 bg-secondary-color text-main-color"
+                className="border border-black w-16 bg-secondary-color text-main-color
+                dark:!border-dark-secondary-color"
                 onClick={() => setQuantity(quantity + 1)}
               >
                 <div className="text-3xl">+</div>
@@ -313,10 +315,10 @@ export const ProductPage = () => {
               </button>
             </div>
             <div className="flex flex-col space-y-2 mt-2 mb-16">
-              <span className="text-black text-xl font-semibold">
+              <span className="text-black text-xl font-semibold dark:!text-dark-secondary-color">
                 Produktinformation
               </span>
-              <span className="text-black text-base whitespace-pre-line">
+              <span className="text-black text-base whitespace-pre-line dark:!text-dark-secondary-color">
                 {product?.description}
               </span>
             </div>

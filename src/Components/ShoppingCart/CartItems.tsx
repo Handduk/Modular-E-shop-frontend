@@ -15,7 +15,7 @@ export const CartItems = ({ item }: CartItemsProps) => {
   const navigate = useNavigate();
 
   return (
-    <div className="border-b-secondary-color pb-2 border-b border-solid flex px-2">
+    <div className="border-b-secondary-color pb-2 border-b border-solid flex px-2 dark:border-b-dark-secondary-color">
       <img
         className="h-24 w-20 object-cover me-2 cursor-pointer"
         src={item.productImage}
@@ -26,7 +26,7 @@ export const CartItems = ({ item }: CartItemsProps) => {
         }}
       />
       <div className="flex flex-col justify-center h-[inherit] mr-auto">
-        <div className="text-md text-black space-y-1">
+        <div className="text-md text-secondary-color space-y-1 dark:text-dark-secondary-color">
           {item.product.brand &&
             item.product.brand !== `"null"` &&
             item.product.brand !== "null" && <div>{item.product.brand}</div>}

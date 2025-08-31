@@ -42,7 +42,8 @@ export const NavbarMenu = ({ show, setShow }: menuProps) => {
       <div className="absolute inset-0 bg-black/15" />
       <div
         ref={menuRef}
-        className={`absolute top-0 left-0 h-screen bg-main-color w-2/3 md:w-1/3 shadow-xl transform transition-transform duration-300 ease-in-out
+        className={`absolute top-0 left-0 h-screen bg-main-color w-2/3 md:w-1/3 shadow-xl 
+          transform transition-transform duration-300 ease-in-out dark:bg-dark-main-color dark:text-dark-secondary-color
           ${show ? "translate-x-0" : "-translate-x-full"}`}
       >
         <ul className="h-full flex flex-col items-stretch !pl-0">

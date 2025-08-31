@@ -2,6 +2,7 @@ import { faPlay } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { isDarkMode } from "../../Hooks/useDarkMode";
 
 const accordionItems = [
   {
@@ -59,13 +60,19 @@ const accordionItems = [
       {
         id: 3,
         name: "Swish",
-        img: "public/IMG/Swish Logo Primary PNG.png",
+        img: [
+          "public/IMG/Swish Logo Primary PNG.png",
+          "public/IMG/Swish Logo Primary Dark-BG.png",
+        ],
         link: "/faq/paymentTerms",
       },
       {
         id: 4,
         name: "Klarna",
-        img: "public/IMG/Wordmark Transparent And Black.png",
+        img: [
+          "public/IMG/Wordmark Transparent And Black.png",
+          "public/IMG/Wordmark Transparent And Pink.png",
+        ],
         link: "/faq/paymentTerms",
       },
     ],
@@ -81,9 +88,41 @@ export const FooterInfo = () => {
     setOpenId(openId === id ? null : id);
   };
 
+  const showImage = (
+    item:
+      | {
+          id: number;
+          name: string;
+          img: string;
+          link: string;
+        }
+      | {
+          id: number;
+          name: string;
+          img: string[];
+          link: string;
+        }
+  ) => {
+    if (!isDarkMode() && typeof item.img === "string") {
+      return item.img;
+    }
+    if (!isDarkMode() && Array.isArray(item.img)) {
+      return item.img[0];
+    }
+    if (isDarkMode() && Array.isArray(item.img)) {
+      return item.img[1];
+    }
+    if (isDarkMode() && typeof item.img === "string") {
+      return item.img;
+    }
+  };
+
   return (
     <div>
-      <div className="w-screen flex flex-col justify-center min-sm:hidden bg-neutral-200">
+      <div
+        className="w-screen flex flex-col justify-center min-sm:hidden bg-neutral-200 
+      dark:bg-dark-main-color dark:text-dark-secondary-color"
+      >
         <div className="w-full flex flex-col">
           {accordionItems.map((item) => (
             <div key={item.id} className="border-b border-black py-2">
@@ -102,22 +141,22 @@ export const FooterInfo = () => {
 
               {openId === item.id && (
                 <div className="px-3 pb-3">
-                  {item.links.map((link) =>
-                    link.img == "" ? (
+                  {item.links.map((res) =>
+                    res.img == "" ? (
                       <div
-                        key={link.id}
-                        className="block py-1 text-gray-700 hover:underline"
-                        onClick={() => navigate(link.link)}
+                        key={res.id}
+                        className="block py-1 text-gray-700 dark:text-dark-secondary-color"
+                        onClick={() => navigate(res.link)}
                       >
-                        {link.name}
+                        {res.name}
                       </div>
                     ) : (
                       <img
-                        key={link.id}
-                        src={link.img}
+                        key={res.id}
+                        src={showImage(res)}
                         alt=""
                         className="size-16 object-contain inline-block mr-2"
-                        onClick={() => navigate(link.link)}
+                        onClick={() => navigate(res.link)}
                       />
                     )
                   )}
@@ -129,7 +168,7 @@ export const FooterInfo = () => {
       </div>
       <div
         className="w-screen h-fit flex flex-row justify-around max-md:hidden bg-main-color 
-      py-4"
+      py-4 dark:bg-dark-main-color dark:text-dark-secondary-color"
       >
         {accordionItems.map((item, index) => (
           <div
@@ -151,7 +190,7 @@ export const FooterInfo = () => {
                   ) : (
                     <img
                       title={res.name}
-                      src={res.img}
+                      src={showImage(res)}
                       alt={res.name}
                       className="size-15 lg:size-20 object-contain"
                     />

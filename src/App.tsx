@@ -17,6 +17,7 @@ export const App = () => {
     "/admin/category",
     "/checkout",
   ];
+
   const showNavbar = !hideNavbar.includes(location.pathname);
   return (
     <>
