@@ -12,7 +12,7 @@ export const Navbar = () => {
   const { categorys } = useProduct();
 
   const [show, setShow] = useState<boolean>(false);
-  const [brandImg, setBrandImg] = useState<string>("/IMG/logga.png");
+  const brandImg = "/IMG/logga.png";
   const [init, setInit] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();

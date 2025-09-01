@@ -1,4 +1,4 @@
-import { Footer } from "../../Components/Footer/footer";
+import { Footer } from "../../Components/Footer/Footer";
 
 export const Terms = () => {
   return (

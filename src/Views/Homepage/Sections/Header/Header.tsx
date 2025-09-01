@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 export const Header = () => {
   const [init, setInit] = useState<boolean>(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => setInit(true), 300);

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useCart } from "../../../Context/CartContext";
 import { CartProducts } from "./cartProducts";
 import { CheckoutItems } from "../../../Models/checkoutItems";
@@ -8,7 +8,8 @@ import { useNavigate } from "react-router-dom";
 export const Cart = () => {
   const { shoppingCartItems } = useCart();
   const [items, setItems] = useState<CheckoutItems[]>([]);
-  const [shippingCost, setShippingCost] = useState<number>(59);
+  /* const [shippingCost, setShippingCost] = useState<number>(59); */
+  const shippingCost = 59;
 
   const navigate = useNavigate();
 

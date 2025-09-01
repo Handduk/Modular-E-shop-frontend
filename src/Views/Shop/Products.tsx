@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { faBarsStaggered } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useLocation } from "react-router-dom";
 import { Product } from "../../Models/Product";
@@ -14,7 +12,8 @@ import { Footer } from "../../Components/Footer/Footer";
 export const Products = () => {
   const [defaultSort, setDefaultSort] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [prodPerPage, setProdPerPage] = useState<number>(10);
+  /* const [prodPerPage, setProdPerPage] = useState<number>(10); */
+  const prodPerPage = 10;
   const { products, categorys } = useProduct();
   const [category, setCategory] = useState<Category>();
   const [prods, setProds] = useState<Product[]>(products);

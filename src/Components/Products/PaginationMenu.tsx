@@ -7,7 +7,6 @@ interface PaginationProps {
 export const PaginationMenu = ({
   prodPerPage,
   totalProducts,
-  currentPage,
   paginate,
 }: PaginationProps) => {
   const pageNumbers = [];

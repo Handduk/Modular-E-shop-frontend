@@ -1,13 +1,12 @@
 import { useCart } from "../../Context/CartContext";
 import { CartItems } from "./CartItems";
-import { useEffect, useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faX } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 
 export const ShoppingCart = () => {
   const { closeCart, shoppingCartItems, isOpen } = useCart();
-  const [sale, setSale] = useState<number>(0);
+  /* const [sale, setSale] = useState<number>(0); */
 
   const navigate = useNavigate();
 
@@ -16,11 +15,11 @@ export const ShoppingCart = () => {
     closeCart();
   };
 
-  useEffect(() => {
+  /* useEffect(() => {
     const getTotalSale = () => {
       let totalSale: number[] = [];
       let isSale = false;
-      /* shoppingCartItems.map((res) => {
+      shoppingCartItems.map((res) => {
         const category = categorys.find((i) => i.id === res.categoryId);
         if (!category?.products) return;
         const item = category?.products.find((i) => i.id === res.id);
@@ -32,7 +31,7 @@ export const ShoppingCart = () => {
             totalSale.push(Number(item?.price));
           }
         }
-      }); */
+      });
 
       if (isSale) {
         const sum = totalSale.reduce((total, val) => total + val, 0);
@@ -42,7 +41,7 @@ export const ShoppingCart = () => {
     };
 
     getTotalSale();
-  }, [isOpen]);
+  }, [isOpen]); */
 
   const getTotalPrice = () => {
     const total = shoppingCartItems.reduce((total, cartItem) => {
