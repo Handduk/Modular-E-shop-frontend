@@ -1,4 +1,4 @@
-import { faPlay } from "@fortawesome/free-solid-svg-icons";
+import { faAngleRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -132,7 +132,7 @@ export const FooterInfo = () => {
               >
                 <span className="font-semibold">{item.name}</span>
                 <FontAwesomeIcon
-                  icon={faPlay}
+                  icon={faAngleRight}
                   className={`transition-transform duration-400 ${
                     openId === item.id ? "rotate-90" : "rotate-0"
                   }`}
